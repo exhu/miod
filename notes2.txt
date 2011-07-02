@@ -1,0 +1,69 @@
+revision 2, no pythonic idents, rather traditional curly braces.
+
+
+'public:' | 'private:'
+
+func myfuncname(args) int, throws {
+  if (abc > bbc) ;
+  elif (aaa) ;
+  else {
+
+  }
+
+  var x = 1
+  var uint x = 1, z = 3
+  var int[3] x = {1,2,3}
+  const cc = 3
+  var strong[int] sabc = new[int](3)
+  var weak[int] wabc
+  var mycls c(initargs),
+      ptr[mycls] pc = new[mycls]()
+
+  switch(z) {
+   3: break
+  }
+
+  var ptr[byte] pint = cast[ptr[byte]](ref[x])
+
+  delete[pc] // frees memory and nulls for ptrs or just nulls strong or weak pointers, compilation error for scope objects
+
+
+  return 1
+}
+
+cfunc myname(args) int, stdcall {
+
+}
+
+
+interface [T1, ...] myint {
+  func myfunc(T1 a, T1 b)
+}
+
+@factory // register class in the factory
+@properties(pa, pb, pc) // register properties -- creates a table with propname and propsetter/getter pointers
+class [T1, ...] myint extends mybase implements a,b,c {
+  protected: // default
+
+  private:
+    int pa, pb
+
+  public:
+    func pc() int {
+      return pa+pb;
+    }
+    
+}
+
+struct [entity_type T1] mystruct {
+  T1 a,b
+}
+
+
+funcptr name(abc) int, throws
+cfuncptr name(abc) int, stdcall
+methodptr name(abc) int, throws
+
+alias new_name for typedef
+
+

@@ -1,0 +1,64 @@
+Very close to java:
+Src dir = package_name/../class_source_file
+out dir = package_name/../compiled class description file, object file, optional C source file
+
+
+when you ask to generate a program, then a main.c file with platform-dependant main() function is generated which calls specified class static function.
+
+All classes are based on system Object class which provides: clone, hash etc methods and storage for weak pointer to this. If object is a stack allocated one, then weak is invalid and so this object cannot be used to get method_ptr, delegate, this etc.
+
+local class_name varname; -- a stack/data allocated uninitialized object
+class_name varname; -- a strong ptr to class
+weak class_name varname; -- a weak reference to a class
+
+int i; -- a stack allocated object
+strong_ptr int i; -- unallocated strong pointer to int
+
+operator new is appropriate for pointers and classes.
+
+char [] a = "asds"; -- sizeof(a) = 5
+ptr char a = "aaa"; sizeof(a) = 4 or 8
+strong_ptr char a = "aaa"; --- ERROR!
+
+int [] c = {1,2,3,4,5};
+mystruct d = {x = 3, y = 4, name = "aaa"};
+myclass e = new myclass()
+
+bare class {} = a class without the base class (needed?)
+
+static class {}  = a class which cannot be instantiated
+
+import <package.*> -- declares a class or package as available by calling static construction code for all of them if they are used
+force_import <package.*> -- does the same as above but also calls static initialziation code even if the class is not used.
+
+pointers:
+
+ptr mytype varname; --- usual mytype * varname C pointer
+strong_ptr mytype varname; -- automatically managed reference pointer
+weak_ptr mytype varname; -- automatically managed non-incrementing pointer
+
+[alias] function_ptr type varname(args); -- if alias then this is a typedef-like
+
+[alias] method_ptr type varname(args); -- a structure, strong_ptr to object, and method address
+
+[alias] delegate type varname(args); -- a structure with optional pointer to object, i.e. it can contain a pointer to function or a pointer to object and its method.
+
+references:
+
+out type name; -- always initialize
+ref type name;
+
+structures:
+
+struct name {} -- struct to interface C
+
+enums:
+enum name {} -- as in C but values are referenced as name.const
+
+
+
+misc:
+sizeof(var or type name)
+ptr() instead of C & operator
+cast(dest_type)src_type
+

@@ -1,0 +1,129 @@
+implement all C features.
+
+module _module_name_
+import _module_name_
+
+version VERNAME: --- conditional compilation
+def_version(VERNAME)
+undef_version(VERNAME)
+
+
+
+types: string/wstring = possible future runtime supported string class
+	char, wchar, pchar, pwchar = char, wchar_t, char*, wchar*
+
+[private:]
+
+cdef funcname() [type] [,stdcall]: -- declares a function with C calling convention (for callbacks from C libraries), no exception handling, C ABI name.
+	pass
+
+extern namespace from "header.h": -- C functions and types are accessed via namespace
+	cdef func
+	[typedef] struct name:
+		pass
+	int some_global_var
+	typedef name;
+	
+
+
+
+def name([ref|out] var_type var_name [= default value]) int [, throws] [, inline] [, final {for methods only}]:  -- function with possible exception handling etc. extensions to C
+	pass
+
+struct/union name:  -- equals to C structure
+	pass
+
+
+typedef def name
+
+-- not necessary: [public] import modulename --- public import externalizes all imported symbols to the module that imports this one
+
+[const] typename varname [= smth]
+
+
+private = static, private typedefs and structs cannot be used in functon declarations and other public types
+
+
+ref var_type var_name = C++ var_type & var_name
+
+
+sizeof
+
+ptr void = C void*
+
+Also supports named arguments, e.g.
+
+	def make_point(int x, int y):
+		...
+	make_point(x = 3, y = 4)
+
+
+
+only simple initialization for global vars, i.e. structs only, no classes.
+
+-- further inner functions support
+
+
+Function pointers are declared as:
+funcptr cdef typename() [type] [,stdcall]
+funcptr def typename() [type] [, throws]
+
+
+cast[typename]()
+
+for([vardecl, ...];[condition, ...];[iteration, ...]):
+
+while condition:
+
+if condition:
+elif condition:
+else:
+
+pass
+
+const vardecl
+
+enum name:
+  constname [= value]
+
+---------------------------------
+--- FURTHER EXTENSIONS TO C, which require runtime library support
+
+delegate def typename() [type] [, throw] -- with this smart pointer
+
+weak, strong pointer modifiers = wrap pointers to smart reference counted pointers 
+
+class name(parent, interface1, interfaceN): -- like C++ class
+interface name(interface1, interfaceN):
+
+Object -- built-in base class for all classes
+
+
+Object.create("string_name_of_the_class") -- returns ptr Object
+[ptr | strong ]ClassName(constructor_args) -- returns Object, ptr Object, strong Object
+
+
+properties:
+classvar.fieldOrMethodname 
+classsvar.fieldOrMethodname = value
+
+a) look for field, b) look for method with non-void return type, or with void return type and single argument
+ 
+alias name substitution
+
+
+------------------------------
+MODULES CYCLIC DEPENDENCY:
+
+module initialization:
+
+hidden_full_module_name_init()
+1) register classes
+2) initialize globals -- smart pointers
+
+hidden_full_module_name_free()
+1) undo all the previous
+
+basic runtime:
+base class, classes factory, weak/strong pointer support, exception structure (module name, function, line number)
+
