@@ -1,0 +1,6 @@
+Miod is a compilable programming language to extend C.
+Under FreeBSD licence.
+
+It's a set of ideas now, planning stage only. The files here are a soup of ideas and concepts.
+
+ANTLR v3 will be used to implement the translator.
