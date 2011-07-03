@@ -25,7 +25,7 @@ func myfuncname(args) int, throws {
 
   var ptr[byte] pint = cast[ptr[byte]](ref[x])
 
-  delete[pc] // frees memory and nulls for ptrs or just nulls strong or weak pointers, compilation error for scope objects
+  delete(pc) // frees memory and nulls for ptrs or just nulls strong or weak pointers, compilation error for scope objects
 
 
   return 1
