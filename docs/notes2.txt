@@ -1,9 +1,34 @@
 revision 2, no pythonic idents, rather traditional curly braces.
 
+reserved words: int, uint, [u]int[8,16,32,64], float32, float64, bool, char, wchar,
+  sizeof, ptr, strong, weak, ref, in, inout, enum, const, static, public, private, new, delete, func, cfunc,
+  funcptr, cfuncptr
+
+
+cimport "header.h" {
+	cstruct mystruct
+	{
+		// allows partial specification, e.g. only fields that are used
+
+	}
+
+	cfunc
+}
+
+
+Pointer dereferencing:
+ptr[int], strong[int], weak[int] = int[1], i.e. to access value you write varname[0] = 1
+you can access structure or class fields both for pointers or value objects by just dot operator.
+
+To allocate an array or to access pointer to bytes as pointer to array, you declare:
+
+ptr[int[]] -- unrestricted array, ptr[int[6]] -- limited size.
+
+strong[int[]] ar = new[int[70]](0)
 
 'public:' | 'private:'
 
-func myfuncname(args) int, throws {
+func myfuncname(out int z, inout int y, int k) int, throws {
   if (abc > bbc) ;
   elif (aaa) ;
   else {
@@ -12,7 +37,7 @@ func myfuncname(args) int, throws {
 
   var x = 1
   var uint x = 1, z = 3
-  var int[3] x = {1,2,3}
+  var int[3] x = [1,2,3]
   const cc = 3
   var strong[int] sabc = new[int](3)
   var weak[int] wabc
@@ -20,10 +45,10 @@ func myfuncname(args) int, throws {
       ptr[mycls] pc = new[mycls]()
 
   switch(z) {
-   3: break
+   case 3: break
   }
 
-  var ptr[byte] pint = cast[ptr[byte]](ref[x])
+  var ptr[byte] pint = cast[ptr[byte]](ref(x)])
 
   delete(pc) // frees memory and nulls for ptrs or just nulls strong or weak pointers, compilation error for scope objects
 
