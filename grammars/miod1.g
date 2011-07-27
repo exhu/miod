@@ -79,8 +79,8 @@ var_decl
 	;		
 	
 var_init
-	:	typename ID^ ('='^ expr)?
-	|	ID '='^ expr	
+	:	typename ID ('=' expr)?	-> ^(ID typename ^('=' expr)?)
+	|	ID '=' expr		-> ^(ID ^('=' expr))
 	;
 	
 var_or_type
@@ -108,8 +108,8 @@ sum_expr
 //	|	'(' expr ')'
 	;
 	
-mulexpr	:	primexpr ('*'^ mulexpr)?
-	|	'('^ expr ')'!
+mulexpr	:	primexpr ('*'^ mulexpr | '/'^ mulexpr)?
+	|	'('! expr ')'!
 	;
 	
 primexpr
