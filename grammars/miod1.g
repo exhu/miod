@@ -75,7 +75,7 @@ module_part
 	;
 	
 var_decl
-	:	'var'^ var_init (','! var_init)*	
+	:	'var' var_init (',' var_init)* -> ^('var' var_init)+	
 	;		
 	
 var_init
@@ -83,12 +83,12 @@ var_init
 	|	ID '=' expr		-> ^(ID ^('=' expr))
 	;
 	
-var_or_type
-	:	ID ('.' var_or_type)?
+var_or_type_dot
+	:	ID^ ('.'! var_or_type_dot)?
 	;
 
 typename
-	:	var_or_type
+	:	var_or_type_dot
 	|	'strong' '[' typename ']'
 	|	'weak' '[' typename ']'
 	|	'ptr' '[' typename ']'
@@ -114,12 +114,12 @@ mulexpr	:	primexpr ('*'^ mulexpr | '/'^ mulexpr)?
 	
 primexpr
 	:	literal
-//	|	typename postf_op*
+	|	postf_op
 	;
 	
 postf_op
-	:	'.' var_or_type
-	|	'[' expr ']'
+	:	(ID -> ID) ('.' nm=ID -> ^('.' $postf_op $nm)
+	|	'[' e=expr ']' -> ^('[' $postf_op $e))*
 	;	
 
 	
