@@ -12,14 +12,43 @@ module
 	;
 
 
+// lexer part
 
 ID  :	('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')*
     ;
 
-INT :	'0'..'9'+
+fragment
+INT_N :	'0'..'9'+ 
     ;
 
-FLOAT
+
+INT :	INT_N 
+    ;
+    
+UINT :	INT_N ('u'|'U') 
+    ;
+
+LONG :	INT_N ('l'|'L')
+    ;
+
+ULONG :	INT_N ('ul'|'UL') 
+    ;
+
+LLONG :	INT_N ('ll'|'LL')
+    ;
+
+ULLONG	:	INT_N ('ull'|'ULL') 
+    ;
+
+
+FLOAT	:	FLOAT_N ('f'|'F')
+	;
+
+DOUBLE	:	FLOAT_N
+	;
+
+fragment
+FLOAT_N
     :   ('0'..'9')+ '.' ('0'..'9')* EXPONENT?
     |   '.' ('0'..'9')+ EXPONENT?
     |   ('0'..'9')+ EXPONENT
@@ -69,6 +98,8 @@ UNICODE_ESC
     :   '\\' 'u' HEX_DIGIT HEX_DIGIT HEX_DIGIT HEX_DIGIT
     ;
 
+
+// grammar
 	
 module_part 
 	:	var_decl
@@ -97,7 +128,7 @@ typename
 	
 	
 literal	
-	:	FLOAT | INT | STRING | CHAR
+	:	FLOAT | DOUBLE | INT | UINT | LONG | ULONG | LLONG | ULLONG | STRING | CHAR
 	;	
 
 expr	:	sum_expr
