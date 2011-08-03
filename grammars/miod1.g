@@ -3,9 +3,19 @@ options {
      language = Java;
      output = AST;
 }
+
+tokens {
+	FIELD_DECL;
+	VAR_TYPED; // variable with specified type name
+	VAR_ANY;
+}
+
+
 @header {
      package org.miod.antlr;
 }
+
+
 
 module	
 	:	module_part+
@@ -66,11 +76,26 @@ WS  :   ( ' '
         ) {$channel=HIDDEN;}
     ;
 
-STRING
+STRING	:	STRING_V
+	;
+
+CHAR	:	CHAR_V
+	;
+	
+WSTRING	:	'L' STRING_V
+	;
+	
+WCHAR	:	'L' CHAR_V
+	;
+
+
+fragment
+STRING_V
     :  '"' ( ESC_SEQ | ~('\\'|'"') )* '"'
     ;
 
-CHAR:  '\'' ( ESC_SEQ | ~('\''|'\\') ) '\''
+fragment
+CHAR_V:  '\'' ( ESC_SEQ | ~('\''|'\\') ) '\''
     ;
 
 fragment
@@ -103,15 +128,16 @@ UNICODE_ESC
 	
 module_part 
 	:	var_decl
+	|	type_decl
 	;
 	
 var_decl
-	:	'var' var_init (',' var_init)* -> ^('var' var_init)+	
+	:	'var' var_init (',' var_init)*	-> var_init+
 	;		
 	
 var_init
-	:	typename ID ('=' expr)?	-> ^(ID typename ^('=' expr)?)
-	|	ID '=' expr		-> ^(ID ^('=' expr))
+	:	typename ID ('=' expr)?	-> ^(VAR_TYPED ID typename ^('=' expr)?)
+	|	ID '=' expr		-> ^(VAR_ANY ID ^('=' expr))
 	;
 	
 var_or_type_dot
@@ -120,10 +146,11 @@ var_or_type_dot
 
 typename
 	:	var_or_type_dot
-	|	'strong' '[' typename ']'
-	|	'weak' '[' typename ']'
-	|	'ptr' '[' typename ']'
-	|	'array' '[' typename (',' expr)? ']'
+	|	'strong' '[' typename ']' -> ^('strong' typename)
+	|	'weak' '[' typename ']'  -> ^('weak' typename)
+	|	'ptr' '[' typename ']'  -> ^('ptr' typename)
+	|	'array' '[' typename (',' expr)? ']'  -> ^('array' typename expr?)
+	|	'int' | 'uint' | 'uintptr' | 'int8' | 'int32' | 'uint32' | 'int16' | 'uint16' | 'int64' | 'uint64' | 'uint8'
 	;
 	
 	
@@ -153,5 +180,11 @@ postf_op
 	|	'[' e=expr ']' -> ^('[' $postf_op $e))*
 	;	
 
+type_decl
+	:	'type' ID '=' typename (',' ID '=' typename)* -> ^('type' ID typename)+ 
+	|	'struct' ID '{' field_decl* '}' -> ^('struct' ID field_decl*)
+	;
 	
-	
+field_decl
+	:	typename ID (',' ID)* -> ^(FIELD_DECL typename ID)+
+	;
