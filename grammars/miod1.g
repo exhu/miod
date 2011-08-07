@@ -8,6 +8,9 @@ tokens {
 	FIELD_DECL;
 	VAR_TYPED; // variable with specified type name
 	VAR_ANY;
+	UNSIZED_ARRAY; // array size must be taken from initialization expression
+	SIZED_ARRAY;
+	NEGATION = '-';
 }
 
 
@@ -141,7 +144,7 @@ var_init
 	;
 	
 var_or_type_dot
-	:	ID^ ('.'! var_or_type_dot)?
+	:	(ID -> ID) (('.' n=ID) -> ^('.' $var_or_type_dot $n))*
 	;
 
 typename
@@ -149,13 +152,17 @@ typename
 	|	'strong' '[' typename ']' -> ^('strong' typename)
 	|	'weak' '[' typename ']'  -> ^('weak' typename)
 	|	'ptr' '[' typename ']'  -> ^('ptr' typename)
-	|	'array' '[' typename (',' expr)? ']'  -> ^('array' typename expr?)
+	|	'array' '[' typename {boolean fixed = false;} (',' expr {fixed  = true;})? ']'
+		-> {fixed}? ^(SIZED_ARRAY typename expr)
+		-> ^(UNSIZED_ARRAY typename)
 	|	'int' | 'uint' | 'uintptr' | 'int8' | 'int32' | 'uint32' | 'int16' | 'uint16' | 'int64' | 'uint64' | 'uint8'
+	|	'bool'
 	;
 	
 	
 literal	
 	:	FLOAT | DOUBLE | INT | UINT | LONG | ULONG | LLONG | ULLONG | STRING | CHAR
+	|	'true' | 'false'
 	;	
 
 expr	:	sum_expr
@@ -166,13 +173,17 @@ sum_expr
 //	|	'(' expr ')'
 	;
 	
-mulexpr	:	primexpr ('*'^ mulexpr | '/'^ mulexpr)?
+mulexpr	:	('~'^ |'not'^ | NEGATION^)? primexpr ('*'^ mulexpr | '/'^ mulexpr 
+		| '%'^ mulexpr | '<<'^ mulexpr | '>>'^ mulexpr | '|'^ mulexpr | '&'^ mulexpr | '^'^ mulexpr
+		| 'or'^ mulexpr | 'and'^ mulexpr | 'xor'^ mulexpr)?
 	|	'('! expr ')'!
 	;
 	
 primexpr
 	:	literal
 	|	postf_op
+	|	'sizeof' '(' typename ')'
+	|	'ptr' '(' postf_op ')'
 	;
 	
 postf_op
