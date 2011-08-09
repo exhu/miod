@@ -182,8 +182,9 @@ mulexpr	:	('~'^ |'not'^ | NEGATION^)? primexpr ('*'^ mulexpr | '/'^ mulexpr
 primexpr
 	:	literal
 	|	postf_op
-	|	'sizeof' '(' typename ')'
-	|	'ptr' '(' postf_op ')'
+	|	'sizeof' '(' typename ')' -> ^('sizeof' typename)
+	|	'ptr' '(' postf_op ')' -> ^('ptr' postf_op)
+	|	'cast' '[' typename ']' '(' expr ')' -> ^('cast' expr typename)
 	;
 	
 postf_op
