@@ -91,4 +91,4 @@ methodptr name(abc) int, throws
 
 alias new_name for typedef
 
-
+classes have empty arguments in constructors
