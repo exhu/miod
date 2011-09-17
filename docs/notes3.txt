@@ -1,0 +1,5 @@
+Revision 3,
+
+reserved words: int, uint, [u]int[8,16,32,64], float32, float64, bool, char, wchar,
+  sizeof, ptr, strong, weak, ref, in, inout, enum, const, static, public, private, new, delete, func, cfunc,
+  funcptr, cfuncptr
