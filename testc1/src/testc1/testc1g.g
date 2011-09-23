@@ -1,4 +1,10 @@
 grammar testc1g;
+options {
+     language = Java;
+     output = AST;
+     //ASTLabelType=MyAstNode;
+}
+
 @header {
     package testc1;
     import java.util.HashMap;
@@ -68,5 +74,21 @@ UNICODE_ESC
 program : stat+
 ;
 
-stat : ID '=' INT
+stat : assignment
 ;
+
+assignment 
+	:	ID '='^ expr;
+	
+value	:	ID | INT | FLOAT | STRING | CHAR
+	;
+	
+expr 	:	add
+	;
+	
+add 	:	mulexpr ('+'^ mulexpr)*
+	;
+	
+mulexpr :	value ('*'^ value)*
+	;
+	
