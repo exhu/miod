@@ -12,4 +12,18 @@ public class Symbol {
     String name;
     Type type;
     
+    
+    
+    public Symbol(String n, Type t) {
+        name = n;
+        type = t;
+    }
+    
+    public Symbol(String n) {
+        name = n;
+    }
+    
+    public String getName() {
+        return name;
+    }
 }

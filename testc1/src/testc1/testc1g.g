@@ -14,6 +14,8 @@ options {
     package testc1;
 }
 
+@members {SymbolTable symtab;}
+
 
 ID  :	('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')*
     ;
@@ -71,14 +73,28 @@ UNICODE_ESC
     :   '\\' 'u' HEX_DIGIT HEX_DIGIT HEX_DIGIT HEX_DIGIT
     ;
 
-program : stat+
+
+program [SymbolTable symtab] // pass symbol table to start rule
+@init {this.symtab = symtab;}
+// set the parser's field
+ : stat+
 ;
 
-stat : assignment
+stat
+        : varDecl
+        | assignment
 ;
+
+varDecl
+        :       type vn=ID {symtab.defineSymbol(new VariableSymbol($vn.text, $type.t));}
+        ;
 
 assignment 
 	:	ID '='^ expr;
+
+
+type[Type t]    :       tn=ID {$t = (Type)symtab.resolveSymbol($tn.text);}
+        ;
 	
 value	:	ID | INT | FLOAT | STRING | CHAR
 	;
