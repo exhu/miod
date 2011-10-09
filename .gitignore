@@ -13,3 +13,5 @@
 /testc1/src/testc1/TestC1ScanLexer.java
 /testc1/TestC1Scan.tokens
 /testc1/TestC1Def.tokens
+/testc1/src/testc1/TestC1Def.g
+/testc1/src/testc1/TestC1Def.java
