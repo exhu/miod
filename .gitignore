@@ -9,3 +9,6 @@
 /javalibs
 /grammars/output
 
+/testc1/src/testc1/TestC1ScanParser.java
+/testc1/src/testc1/TestC1ScanLexer.java
+/testc1/TestC1Scan.tokens

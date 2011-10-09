@@ -1,8 +1,16 @@
-grammar testc1g;
+grammar TestC1Scan;
+
 options {
      language = Java;
+     //ASTLabelType=MyAstNode; requires custom Tree adaptor
      output = AST;
-     //ASTLabelType=MyAstNode;
+     
+}
+
+tokens
+{
+	VARDECL;
+
 }
 
 @header {
@@ -14,8 +22,42 @@ options {
     package testc1;
 }
 
-@members {SymbolTable symtab;}
+//@members {SymbolTable symtab;}
 
+
+program // pass symbol table to start rule
+//@init {this.symtab = symtab;}
+// set the parser's field
+ : stat+
+;
+
+stat
+        : varDecl
+        | assignment
+;
+
+varDecl
+        :       t=ID n=ID -> ^(VARDECL $t $n)
+        ;
+
+assignment 
+	:	ID '='^ expr;
+	
+value	:	ID | INT | FLOAT | STRING | CHAR
+	;
+	
+expr 	:	add
+	;
+	
+add 	:	mulexpr ('+'^ mulexpr)*
+	;
+	
+mulexpr :	value ('*'^ value)*
+	;
+
+
+
+// tokens follow
 
 ID  :	('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')*
     ;
@@ -72,39 +114,4 @@ fragment
 UNICODE_ESC
     :   '\\' 'u' HEX_DIGIT HEX_DIGIT HEX_DIGIT HEX_DIGIT
     ;
-
-
-program [SymbolTable symtab] // pass symbol table to start rule
-@init {this.symtab = symtab;}
-// set the parser's field
- : stat+
-;
-
-stat
-        : varDecl
-        | assignment
-;
-
-varDecl
-        :       type vn=ID {symtab.defineSymbol(new VariableSymbol($vn.text, $type.t));}
-        ;
-
-assignment 
-	:	ID '='^ expr;
-
-
-type[Type t]    :       tn=ID {$t = (Type)symtab.resolveSymbol($tn.text);}
-        ;
-	
-value	:	ID | INT | FLOAT | STRING | CHAR
-	;
-	
-expr 	:	add
-	;
-	
-add 	:	mulexpr ('+'^ mulexpr)*
-	;
-	
-mulexpr :	value ('*'^ value)*
-	;
 	

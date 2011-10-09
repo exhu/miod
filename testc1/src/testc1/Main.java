@@ -15,7 +15,7 @@ import org.antlr.runtime.tree.CommonTree;
  *
  * @author yuryb
  */
-public class Testc1 {
+public class Main {
 
     /**
      * @param args the command line arguments
@@ -24,13 +24,17 @@ public class Testc1 {
         // TODO code application logic here
         try {
             ANTLRInputStream input = new ANTLRInputStream(new FileInputStream("test1src.txt"));// System.in);
-            testc1gLexer lexer = new testc1gLexer(input);
+            TestC1ScanLexer lexer = new TestC1ScanLexer(input);
             CommonTokenStream tokens = new CommonTokenStream(lexer);
-            testc1gParser parser = new testc1gParser(tokens);
+            TestC1ScanParser parser = new TestC1ScanParser(tokens);
             
             SymbolTable globals = new SymbolTable();
             
-            testc1gParser.program_return r = parser.program(globals);
+            // TODO 1) use TestC1Scan.g to build AST
+            // 2) build tree parser to populate symbol table
+            // 3) build tree parser to generate C source
+            
+            TestC1ScanParser.program_return r = parser.program();
             
             CommonTree t = (CommonTree)r.getTree();// extract AST
             System.out.println(t.toStringTree()); // print out
@@ -38,9 +42,9 @@ public class Testc1 {
             System.out.println(globals.toString());
 
         } catch (RecognitionException ex) {
-            Logger.getLogger(Testc1.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            Logger.getLogger(Testc1.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }

@@ -3,3 +3,35 @@ Revision 3,
 reserved words: int, uint, [u]int[8,16,32,64], float32, float64, bool, char, wchar,
   sizeof, ptr, strong, weak, ref, in, inout, enum, const, static, public, private, new, delete, func, cfunc,
   funcptr, cfuncptr
+
+
+-----
+class mycls {
+    constructor init() {}
+    constructor init_with_string(string a) {}
+    
+    destructor done() {}
+}
+
+interface abc {
+  func dosmth();
+}
+
+
+func my() int {
+
+mycls c;
+
+c = mycls.init();
+
+c = mycls.init() from {constructor init() {} void dothing() {} }
+
+class abc_cb implements abc {
+    constructor init() {}
+    func dosmth() {}
+}
+
+abc a = abc_cb.init();
+
+
+}
