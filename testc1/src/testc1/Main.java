@@ -10,6 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.antlr.runtime.*;
 import org.antlr.runtime.tree.CommonTree;
+import org.antlr.runtime.tree.CommonTreeNodeStream;
 
 /**
  *
@@ -39,6 +40,12 @@ public class Main {
             CommonTree t = (CommonTree)r.getTree();// extract AST
             System.out.println(t.toStringTree()); // print out
             
+            System.out.println(globals.toString());
+            
+            CommonTreeNodeStream nodes = new CommonTreeNodeStream(t);
+            TestC1Def walker = new TestC1Def(nodes);
+            walker.program(globals);
+
             System.out.println(globals.toString());
 
         } catch (RecognitionException ex) {

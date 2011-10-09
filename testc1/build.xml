@@ -79,13 +79,15 @@
         <!-- Full path to Antlr jar -->
         <property name="antlr.jar" location="../javalibs/antlr-3.4-complete.jar"/>
         <!-- Grammar path -->
-        <property name="antlr.grammar" location="src/testc1/TestC1Scan.g"/>
+        <property name="antlr.grammar1" location="src/testc1/TestC1Scan.g"/>
+        <property name="antlr.grammar2" location="src/testc1/TestC1Def.g"/>
     </target>
 
     <target name="antlr" depends="init-antlr" unless="up-to-date">
         <!-- Compiling grammar -->
         <java classname="org.antlr.Tool"  fork="true">
-            <arg value="${antlr.grammar}"/>
+            <arg value="${antlr.grammar1}"/>
+            <arg value="${antlr.grammar2}"/>
             <classpath path="${antlr.jar}"/>
         </java>        
     </target>

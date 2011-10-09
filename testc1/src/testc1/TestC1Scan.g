@@ -10,6 +10,7 @@ options {
 tokens
 {
 	VARDECL;
+	ASSIGN;
 
 }
 
@@ -41,7 +42,7 @@ varDecl
         ;
 
 assignment 
-	:	ID '='^ expr;
+	:	ID '=' expr -> ^(ASSIGN ID expr);
 	
 value	:	ID | INT | FLOAT | STRING | CHAR
 	;
