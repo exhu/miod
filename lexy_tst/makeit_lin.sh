@@ -1,5 +1,5 @@
 #!/bin/sh
 
-flex myjson_lex.l
+flex myjson.l
 gcc lex.yy.c -lfl
 
