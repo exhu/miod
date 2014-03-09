@@ -1,0 +1,21 @@
+iface EntryField
+    proc name(): string
+    proc fromString(s: string)
+    proc toString(): string
+end
+
+
+iface Entry
+    proc fields(): array[EntryField]
+end
+
+
+object DirEntry: Entry
+    id: IDField
+    name: TextField
+    timestamp: DateTimeField
+
+    proc fields(): array[EntryField] override
+       return [id.addr, name.addr, timestamp.addr] 
+    end
+end
