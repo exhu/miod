@@ -26,6 +26,7 @@ class DirEntry: Entry =
     w1: weak[Entry]  # just weak reference, is not checked in release build
     w2: weak_watch[Entry] # weak reference, becomes NULL on release
 
+    # TODO think over possible HEAP POOLS for same types
     proc init() =
         # constructor 1
         # allocates an instance from heap
