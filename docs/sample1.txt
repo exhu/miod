@@ -9,11 +9,40 @@ iface Entry =
     proc fields(): array[EntryField];
 end
 
+struct MyValueType =
+    x, y: int
+    sz: uint
+end
+
+alias PMyValue = ptr[MyValueType]
+
+cproc someCProcedure(a, b: cint): cint {name("asum")};
+cproc printf(a: cstring) cvarargs;
 
 class DirEntry: Entry =
     id: IDField
     name: TextField
     timestamp: DateTimeField
+    w1: weak[Entry]  # just weak reference, is not checked in release build
+    w2: weak_watch[Entry] # weak reference, becomes NULL on release
+
+    proc init() =
+        # constructor 1
+        # allocates an instance from heap
+    end
+
+    proc init(id: IDField) =
+        # constructor 2
+        this.id = id
+    end
+
+    proc done() =
+        # destructor
+    end
+
+    proc id(): IDField final =
+        return this.id
+    end
 
     proc fields(): array[EntryField] override =
        return [id.addr, name.addr, timestamp.addr] 
