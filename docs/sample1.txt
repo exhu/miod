@@ -16,10 +16,10 @@ end
 
 alias PMyValue = ptr[MyValueType]
 
-cproc someCProcedure(a, b: cint): cint {name("asum")};
+cproc someCProcedure(a, b: cint): cint name("asum");
 cproc printf(a: cstring) cvarargs;
 
-class DirEntry: Entry =
+class DirEntry(Entry) =
     id: IDField
     name: TextField
     timestamp: DateTimeField
@@ -41,11 +41,11 @@ class DirEntry: Entry =
         # destructor
     end
 
-    proc id(): IDField final =
+    proc id(): IDField final inline =
         return this.id
     end
 
-    proc fields(): array[EntryField] override =
+    proc fields(): array[EntryField] override final =
        return [id.addr, name.addr, timestamp.addr] 
     end
 
