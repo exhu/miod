@@ -1,25 +1,29 @@
-iface EntryField =
+type EntryField = interface
     proc name(): string;
     proc fromString(s: string);
     proc toString(): string;
-end
+endi
 
 
-iface Entry =
+type Entry = interface
     proc fields(): array[EntryField];
-end
+endi
 
-struct MyValueType =
+type MyValueType = struct
     x, y: int
     sz: uint
-end
 
-alias PMyValue = ptr[MyValueType]
+    proc mul() =
+        sz = x*y
+    end
+ends
+
+type PMyValue = ptr[MyValueType]
 
 cproc someCProcedure(a, b: cint): cint name("asum");
 cproc printf(a: cstring) cvarargs;
 
-class DirEntry(Entry) =
+type DirEntry = class(Entry)
     id: IDField
     name: TextField
     timestamp: DateTimeField
@@ -35,6 +39,7 @@ class DirEntry(Entry) =
     proc init(id: IDField) =
         # constructor 2
         this.id = id
+        # passing "this" var as argument is not allowed here
     end
 
     proc done() =
@@ -49,12 +54,22 @@ class DirEntry(Entry) =
        return [id.addr, name.addr, timestamp.addr] 
     end
 
-    protected:
+    protected
 
-    public:
+    public
 
-    private:
+    private
 
         
-end
+endc
+
+
+if a > b then b = a endif
+if c < b then c = b else c = b+1 endif
+if d != c then d = c elseif d > c then d = c+1 endif
+
+
+dyn_package.def:
+    org.palitsa.*
+    org.dum.MyModule
 
