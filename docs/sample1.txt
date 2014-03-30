@@ -30,6 +30,12 @@ type
 
     endc
 
+
+    ArrayList[T] = class
+        a: dynarray[T]
+
+    endc
+
 type DirEntryClass = classof(DirEntry)
 type DirEntry = @sql(table="ENTRY") class(Entry)
     @sql(col="ID")
