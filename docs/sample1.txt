@@ -23,7 +23,16 @@ type PMyValue = ptr[MyValueType]
 cproc someCProcedure(a, b: cint): cint name("asum");
 cproc printf(a: cstring) cvarargs;
 
-type DirEntry = class(Entry)
+type
+    # @_ = reserved annotations for language impl.
+    BareObject = @_nobase @_nortti @_valueclass class
+        
+
+    endc
+
+type DirEntryClass = classof(DirEntry)
+type DirEntry = @sql(table="ENTRY") class(Entry)
+    @sql(col="ID")
     id: IDField
     name: TextField
     timestamp: DateTimeField
@@ -31,18 +40,22 @@ type DirEntry = class(Entry)
     w2: weak_watch[Entry] # weak reference, becomes NULL on release
 
     # TODO think over possible HEAP POOLS for same types
-    proc init() =
+    # virtual constructor
+    # calling a constructor allocates variable
+    constr create() virtual =
         # constructor 1
         # allocates an instance from heap
     end
 
-    proc init(id: IDField) =
+    constr createWithId(id: IDField) virtual =
         # constructor 2
         this.id = id
         # passing "this" var as argument is not allowed here
     end
 
-    proc done() =
+    # always virtual, overriden
+    # you cannot call destructor manually, it's called automatically
+    destr destroy() =
         # destructor
     end
 
