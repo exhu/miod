@@ -1,3 +1,22 @@
+
+iface FromToString:
+    void fromString(s)
+    String toString()
+
+
+class TableField(FromToString):
+    name: String    
+
+@_value class IntegerField(TableField):
+    value: int
+
+    constr init(name: string)    
+    void fromString(s):
+        value = atoi(s)
+    string toString():
+        return IntToStr(value)
+
+
 type EntryField = interface
     proc name(): string;
     proc fromString(s: string);
