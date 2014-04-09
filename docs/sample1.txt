@@ -1,3 +1,6 @@
+compile-time interfaces, i.e. templates with required methods
+
+
 type EntryField = interface
     proc name(): string;
     proc fromString(s: string);
