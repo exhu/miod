@@ -71,6 +71,18 @@ endw
 
 'discard' word to call procs with return values
 
+passed parameters are all consts
+
+
+Strings:
+
+cstring = char*
+String = abstract class
+    HeapString = string, allocated on heap, used ref counter
+    StaticString = string, allocated on global data, e.g. constants, ignores
+        refcounting
+
+
 -=-=-=-=-=-=-
 unit gui.internal_win32
 # here gui = package name, internal_win32 = unit name
