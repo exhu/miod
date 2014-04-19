@@ -1,0 +1,12 @@
+no overloaded functions, C-way,
+abstractions can be implemented using type and duplicate inline procs:
+
+e.g.
+
+type MyFloat = float32
+
+proc MyAbs(a: MyFloat): MyFloat =
+    return fabs(a)
+endp
+
+
