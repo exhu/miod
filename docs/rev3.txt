@@ -5,8 +5,79 @@ e.g.
 
 type MyFloat = float32
 
-proc MyAbs(a: MyFloat): MyFloat =
+proc MyAbs(a: MyFloat): MyFloat do
     return fabs(a)
 endp
+
+Variable number of arguments are available via "array of const" pascal-derived
+construction. http://www.freepascal.org/docs-html/ref/refsu65.html
+
+high, low embedded functions for arrays and enums
+
+implicit type conversions:
+float32 -> float64
+int32 -> int64 etc
+uint32 -> uint64 etc
+
+range types:
+0..35 -> any int/uint
+-3..10 -> any int
+-3.5..4.5 -> float64
+-3.5f..4.5f -> float32, 64
+
+cardinal = 0..high(int32)
+myrangevalue[int64] = 0..n
+myspecialenum[int8] = (a: 3, b: 4)
+
+
+int = int32
+long = int64
+
+operators precedence:
+.
+[]
+*, /
+
+
+embedded procs:
+proc sizeof(a): cardinal
+proc high(a): any
+proc low(a): any
+
+cinterfacing:
+
+proc abc(a,b: cint, args: array[const]) cdecl; -- external
+proc a(a,b:cint) cdecl name("a") do // exported cproc
+
+endp
+
+loops:
+loop variables are reintroduced and do not exist beyond loop,
+warning is displayed for name clashes
+
+for a in 0..3 do
+
+endf
+
+for(a:int = 4, b: int =0; a > b; a = a - 1) do
+
+endf
+
+'do' is optional if newline follows.
+
+while cond do
+
+endw
+
+'discard' word to call procs with return values
+
+-=-=-=-=-=-=-
+unit gui.internal_win32
+# here gui = package name, internal_win32 = unit name
+
+For procs/types/vars the following levels of visibility are provided:
+default visibility is 'private' -- 'static' in C way.
+'protected' visibility means only accessible within package units.
+'public' means globally recognized
 
 
