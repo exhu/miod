@@ -93,3 +93,12 @@ default visibility is 'private' -- 'static' in C way.
 'public' means globally recognized
 
 
+-=-=-=-=-=
+Foreign API:
+Limit all FFI to a dedicated unit type.
+e.g. ffi_unit gui.ffi_win32
+
+- calling C functions
+- exporting miod functions and types as C-ABI
+- exporting miod functions and types for JNI
+
