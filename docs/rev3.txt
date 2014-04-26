@@ -73,6 +73,10 @@ endw
 
 passed parameters are all consts
 
+block endb
+
+scope_exit endse
+
 
 Strings:
 
@@ -86,6 +90,8 @@ String = abstract class
 -=-=-=-=-=-=-
 unit gui.internal_win32
 # here gui = package name, internal_win32 = unit name
+Proposal: remove package name from package code, i.e. unit name only,
+package is defined by a separate file which contains a list of sources.
 
 For procs/types/vars the following levels of visibility are provided:
 default visibility is 'private' -- 'static' in C way.
@@ -95,7 +101,7 @@ default visibility is 'private' -- 'static' in C way.
 
 -=-=-=-=-=
 Foreign API:
-Limit all FFI to a dedicated unit type.
+Limit all FFI to a dedicated unit type?
 e.g. ffi_unit gui.ffi_win32
 
 - calling C functions
