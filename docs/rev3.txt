@@ -88,8 +88,10 @@ String = abstract class
 
 
 -=-=-=-=-=-=-
-unit gui.internal_win32
-# here gui = package name, internal_win32 = unit name
+unit gui.internal.win32
+# here gui = package name, internal = subpackage (directory) name,
+win32 = unit name
+
 Proposal: remove package name from package code, i.e. unit name only,
 package is defined by a separate file which contains a list of sources.
 
