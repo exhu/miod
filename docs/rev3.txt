@@ -33,6 +33,15 @@ myspecialenum[int8] = (a: 3, b: 4)
 int = int32
 long = int64
 
+
+type MyStruct = struct( align = 4 )
+        a : cstring
+    ends
+
+
+type MyClass = class(Object, Inteface1, Interface2; rtti)
+    endc
+
 operators precedence:
 .
 []
