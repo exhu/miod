@@ -39,7 +39,7 @@ type MyStruct = struct( align = 4 )
     ends
 
 
-type MyClass = class(Object, Inteface1, Interface2; rtti)
+type MyClass = class(Object; Inteface1, Interface2; rtti/options)
     endc
 
 operators precedence:
