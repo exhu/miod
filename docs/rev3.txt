@@ -168,6 +168,26 @@ default visibility is 'private' -- 'static' in C way.
 'protected' visibility means only accessible within package units.
 'public' means globally recognized
 
+=============
+with statement
+
+type Rect = struct
+    x,y,w,h,x2,y2: int
+    proc update()
+        x2 = x+w-1;
+        y2 = y+h-1
+    endp
+    ends
+
+var r: Rect
+
+with r do
+    x = 3
+    y = 4
+    w = 60
+    h = 80
+    update()
+endwi
 
 -=-=-=-=-=
 Foreign API:
