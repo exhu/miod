@@ -9,8 +9,53 @@ proc MyAbs(a: MyFloat): MyFloat do
     return fabs(a)
 endp
 
+
+Discarded:
+{{{
+Alternative overloading extension pascal-way:
+
+proc abs(a: float32): float32, overload do return c.fabs(a) endp
+proc abs(a: int): int, overload do return c.abs(a) endp
+
+If there can be no overload and non-overload procs within a single unit.
+If there are overloaded functions imported, a non-overloaded proc can be
+introduced and used only with fully qualified name.
+
+Overloading is supported only based on the first argument type.
+}}}
+
+------------
+
+Proposal for generic/templates:
+A whole unit can be generic,
+
+generic unit a.generic;
+type MyNumeric = generic
+type MyString = generic
+const maxA = generic
+
+proc Abs(a: MyNumeric): MyNumeric do custom_abs(a) endp
+proc check(a: MyNumeric): bool
+    if a > maxA then return false endif
+    return true
+endp
+
+unit a.implInt
+implement a.generic
+type MyNumeric = float
+type MyString = cstring
+const maxA = 120.0f
+
+proc custom_abs(a: float) do return fabs(a) endp
+
+endim
+
+-----------------
+
 Variable number of arguments are available via "array of const" pascal-derived
 construction. http://www.freepascal.org/docs-html/ref/refsu65.html
+
+------------
 
 high, low embedded functions for arrays and enums
 
@@ -26,8 +71,8 @@ range types:
 -3.5f..4.5f -> float32, 64
 
 cardinal = 0..high(int32)
-myrangevalue[int64] = 0..n
-myspecialenum[int8] = (a: 3, b: 4)
+myrangevalue: int64 = 0..n
+myspecialenum: int8 = (a: 3, b: 4)
 
 
 int = int32
@@ -39,8 +84,22 @@ type MyStruct = struct( align = 4 )
     ends
 
 
-type MyClass = class(Object; Inteface1, Interface2; rtti/options)
+type MyClass = class(Object, Inteface1, Interface2; rtti/options)
     endc
+
+anonymous class (for closure, inline impl), implementing Inteface:
+
+new[class(Inteface1)
+    a: int
+    proc initWithA(a: int), constructor
+        this.a = a
+    endp
+    proc doJob() override
+        print("hello")
+    endp].initWithA(a)
+endc
+
+
 
 operators precedence:
 .
@@ -55,8 +114,8 @@ proc low(a): any
 
 cinterfacing:
 
-proc abc(a,b: cint, args: array[const]) cdecl; -- external
-proc a(a,b:cint) cdecl name("a") do // exported cproc
+proc abc(a,b: cint, args: array[const]), cdecl; -- external
+proc a(a,b:cint), cdecl name("a") do // exported cproc
 
 endp
 
