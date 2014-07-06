@@ -1,0 +1,67 @@
+unit myprog.hello
+import c.stdio
+
+
+type
+    Rect = struct
+        x,y,w,h,x2,y2: int
+        proc update()
+            x2 = x+w
+            y2 = y+h
+        endp
+    ends
+
+
+    # add static methods to type Rect
+    RectPlus = struct_helper(Rect)
+        proc add(r: Rect)
+            x += r.x
+            y += r.y
+        endp
+    ends
+
+    MyUnion = union
+        dw: uint32
+        w1, w2: uint16
+    endu
+
+    sql = annotation
+        table: string
+    enda
+
+    field = annotation
+        name: string
+    enda
+
+    @sql{table:"myt"}
+    MyCls = class(Object, Cloneable)
+        public
+        proc assign(o: MyCls)
+           a = o.a
+           b = o.b
+        endp
+
+
+        private
+        @field{name:"a"}
+        a,
+        @field{name:"b"}
+        b: int
+
+        parent: weak[MyCls]
+    endc
+
+    MyClsHelper = class_helper(MyCls)
+        public
+        proc add(o: MyCls)
+            a += o.a
+            b += o.b
+        endp
+    endc
+        
+
+public
+
+proc main()
+    printf("Hi! %d\n", [1]);
+endp

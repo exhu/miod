@@ -1,3 +1,9 @@
+[] = array index/decl, type specifier, dynamically constructed array (for args)
+() = function arguments, class parent decl etc.
+{} = structure values
+
+
+----------
 no overloaded functions, C-way,
 abstractions can be implemented using type and duplicate inline procs:
 

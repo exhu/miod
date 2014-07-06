@@ -56,4 +56,5 @@ packages:
     unicode
     buffers
 
+package_data "/usr/share/miod/dyn/pkgdata"
 ------------
