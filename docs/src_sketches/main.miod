@@ -1,8 +1,16 @@
 unit myprog.hello
 import c.stdio
 
+const
+    scrRect: Rect = {x: 0, y:0, w: 640, h: 480}
+    # syntax sugar for structs with only two members:
+    myMap: array[Pair] = {"aa": "bb", "ww": "cc"}
 
 type
+    Pair = struct
+        k, v: String
+    ends
+
     Rect = struct
         x,y,w,h,x2,y2: int
         proc update()
@@ -34,7 +42,7 @@ type
     enda
 
     @sql{table:"myt"}
-    MyCls = class(Object, Cloneable)
+    MyCls = class(Object; Cloneable)
         public
         proc assign(o: MyCls)
            a = o.a
@@ -58,7 +66,19 @@ type
             b += o.b
         endp
     endc
+
+
+    Map<K, V> = interface
+        proc get(k: K): V
+        proc set(k: K, v: V)
+
+    endi
+
+    MyColl<K,V> = class(Object; Map)
+
+    endc
         
+    MyCollS = MyColl<String, String>
 
 public
 
