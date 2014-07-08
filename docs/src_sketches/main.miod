@@ -6,6 +6,16 @@ const
     # syntax sugar for structs with only two members:
     myMap: array[Pair] = {"aa": "bb", "ww": "cc"}
 
+    mybin = 0b1111_1100_0011
+    myhex = 0xFFFF_1234
+    mysuperstring = """
+
+dfsdf
+
+dsfsdf
+
+"""
+
 var
     dynAr: dynarray[Pair]
     nw: ref[scrRect]
@@ -63,8 +73,8 @@ type
         parent: weak[MyCls]
 
         public
-        prop(pa: int, read: a)
-        prop(pb: int, write: b, read: b)
+        property(pa: int, read: a)
+        property(pb: int, write: b, read: b)
         
     endc
 
