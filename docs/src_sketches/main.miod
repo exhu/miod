@@ -6,6 +6,10 @@ const
     # syntax sugar for structs with only two members:
     myMap: array[Pair] = {"aa": "bb", "ww": "cc"}
 
+var
+    dynAr: dynarray[Pair]
+    nw: ref[scrRect]
+
 type
     Pair = struct
         k, v: String
@@ -42,7 +46,7 @@ type
     enda
 
     @sql{table:"myt"}
-    MyCls = class(Object; Cloneable)
+    MyCls = class(Cloneable)
         public
         proc assign(o: MyCls)
            a = o.a
@@ -57,6 +61,11 @@ type
         b: int
 
         parent: weak[MyCls]
+
+        public
+        prop(pa: int, read: a)
+        prop(pb: int, write: b, read: b)
+        
     endc
 
     MyClsHelper = class_helper(MyCls)
@@ -81,6 +90,20 @@ type
     MyCollS = MyColl<String, String>
 
 public
+
+cproc printf(fmt: cstring), cvarargs
+
+proc format(fmt: String, args: array[Object]): String
+    for i in args do
+        
+
+    endf
+endp
+
+proc mod(a: int, var b:int)
+    b = a+1
+endp
+
 
 proc main()
     printf("Hi! %d\n", [1]);

@@ -2,6 +2,9 @@
 () = function arguments, class parent decl etc.
 {} = structure values
 
+-----
+new[Type] -- RTL-defined pool
+new[Type, pool: AllocationPool] -- user-defined pool
 
 ----------
 no overloaded functions, C-way,
