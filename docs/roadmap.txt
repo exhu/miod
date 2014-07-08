@@ -1,0 +1,44 @@
+Version 1 features
+
+- constants with literals
+- procs with local vars
+- visibility levels (public, protected, private)
+- structs
+- unions
+- global vars
+- cprocs
+- static packages
+- cstrings
+
+Version 2
+
+- cmake integration
+
+Version 3
+
+- reference-counted classes with weak pointers and references
+- interfaces
+
+Version 4
+
+- dynamic arrays
+- Base object class, base interface (interface -> Object instance)
+- String class
+
+Version 5
+
+- Generics (auto type-cast) support
+
+Version 6
+
+- generic units support (templates-like engine)
+
+Version 7
+
+- RTL
+
+Version 8
+
+- dynamic packages (sets)
+
+
