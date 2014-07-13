@@ -1,11 +1,13 @@
-[] = array index/decl, type specifier, dynamically constructed array (for args)
+[] = array index, pointer deref, dynamically constructed array (for args),
+    array initialization
 () = function arguments, class parent decl etc.
 {} = structure values
+<> = type arguments, cast etc.
 
 -----
-new[Type] -- RTL-defined pool
-new[Type, pool: AllocationPool] -- user-defined pool
-
+new(Type) -- RTL-defined pool
+new(Type, pool: AllocationPool) -- user-defined pool
+cast(Type, expr)
 ----------
 no overloaded functions, C-way,
 abstractions can be implemented using type and duplicate inline procs:

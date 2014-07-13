@@ -4,7 +4,7 @@ import c.stdio
 const
     scrRect: Rect = {x: 0, y:0, w: 640, h: 480}
     # syntax sugar for structs with only two members:
-    myMap: array[Pair] = {"aa": "bb", "ww": "cc"}
+    myMap: array<Pair> = {"aa": "bb", "ww": "cc"}
 
     mybin = 0b1111_1100_0011
     myhex = 0xFFFF_1234
@@ -17,8 +17,8 @@ dsfsdf
 """
 
 var
-    dynAr: dynarray[Pair]
-    nw: ref[scrRect]
+    dynAr: dynarray<Pair>
+    nw: ref<scrRect>
 
 type
     Pair = struct
@@ -70,7 +70,7 @@ type
         @field{name:"b"}
         b: int
 
-        parent: weak[MyCls]
+        parent: weak<MyCls>
 
         public
         property(pa: int, read: a)
@@ -103,7 +103,7 @@ public
 
 cproc printf(fmt: cstring), cvarargs
 
-proc format(fmt: String, args: array[Object]): String
+proc format(fmt: String, args: array<Object>): String
     for i in args do
         
 
