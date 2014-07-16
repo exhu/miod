@@ -8,6 +8,26 @@
 new(Type) -- RTL-defined pool
 new(Type, pool: AllocationPool) -- user-defined pool
 cast(Type, expr)
+
+discarded
+{{{
+type aliasing is required e.g.
+alias RectShort = fig.2d.shapes.Rectangle
+
+type a = b is the same as aliasing, for distinct types one can
+use
+type MyID = struct
+    id: int
+    ends
+}}}
+
+
+Annotations:
+
+system annotations start with @_, e.g. @_noinit before variable decl
+marks variable/field as undefined. By default all variables/fields
+are initialized (usually it's zero or first element for enums).
+
 ----------
 no overloaded functions, C-way,
 abstractions can be implemented using type and duplicate inline procs:
