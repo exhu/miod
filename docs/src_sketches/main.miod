@@ -10,11 +10,13 @@ const
     myhex = 0xFFFF_1234
     mysuperstring = """
 
-dfsdf
+#[[
 
-dsfsdf
+long comments
 
-"""
+#]]
+
+## documentation comment
 
 var
     dynAr: dynarray<Pair>
