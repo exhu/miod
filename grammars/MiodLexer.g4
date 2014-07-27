@@ -18,7 +18,9 @@ COMMENT: '#' .*? NEWLINE -> skip;
 
 //////
 
-mode(DOC_COMMENTS)
+ALL: . ;
+
+mode DOC_COMMENTS;
 
 DOC_LINE: .*? NEWLINE -> popMode;
 
