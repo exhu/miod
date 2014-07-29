@@ -43,17 +43,20 @@ SHR: 'shr';
 
 // literals
 fragment ESC: '\\"' | '\\\\';
+fragment ESC_CHAR: '\\\'' | '\\\\';
 STRING: '"' (ESC|~('\r'|'\n'))*? '"';
 RAW_STRING: '"""' .*? '"""';
+CHAR_STR: '\'' (ESC_CHAR|~('\r'|'\n'))*? '\'';
 
 fragment HEX: [a-fA-F0-9_];
 fragment DIGIT: [0-9_];
 fragment OCTAL: [0-7_];
+fragment BIN: [01_];
 fragment ID: [a-zA-Z_]+[0-9a-zA-Z]*;
 
 INT_OCTAL: '-'? '0o' OCTAL+;
 INT_HEX: '-'? '0x' HEX+;
-INT_BIN: '-'? '0b' [01_]+;
+INT_BIN: '-'? '0b' BIN+;
 FLOAT: '-'? ((DIGIT+ '.' DIGIT*) | (DIGIT* '.' DIGIT+)) ([eE][+\-]DIGIT+)? 'f'?;
 INTEGER: '-'? DIGIT+;
 
