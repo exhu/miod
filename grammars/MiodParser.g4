@@ -7,7 +7,9 @@ unit_body: global_stmt+;
 
 global_stmt: static_if
     |   global_decl
-    | NEWLINE;
+    | NEWLINE
+    | doc_comments
+    ;
 
 static_if: STATIC_IF const_expr THEN global_stmt (ELSE global_stmt)? ENDIF;
 const_expr: ;
@@ -16,7 +18,9 @@ global_decl: const_decl
     | var_decl
     | proc_decl
     | type_decl
-    | import_decl;
+    | import_decl
+    | include_decl
+    ;
 
 const_decl: CONST;
 
@@ -27,6 +31,8 @@ proc_decl: PROC;
 type_decl: TYPE;
 
 import_decl: IMPORT;
+
+include_decl: INCLUDE STRING;
 
 doc_comments: DOC_COMMENT+;
 

@@ -16,6 +16,7 @@ CONST: 'const';
 VAR: 'var';
 PROC: 'proc';
 IMPORT: 'import';
+INCLUDE: 'include';
 TYPE: 'type';
 STATIC_IF: 'static_if';
 THEN: 'then';
@@ -46,6 +47,8 @@ fragment ESC: '\\"' | '\\\\';
 fragment ESC_CHAR: '\\\'' | '\\\\';
 STRING: '"' (ESC|~('\r'|'\n'))*? '"';
 RAW_STRING: '"""' .*? '"""';
+// must evaluate to single code point, i.e. 1 byte for ASCII,
+// 2 byte for widechar etc.
 CHAR_STR: '\'' (ESC_CHAR|~('\r'|'\n'))*? '\'';
 
 fragment HEX: [a-fA-F0-9_];
