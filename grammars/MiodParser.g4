@@ -1,17 +1,17 @@
 parser grammar MiodParser;
 options {tokenVocab = MiodLexer; }
 
-comp_unit: unit_header unit_body;
-unit_header: doc_comments? UNIT UNIT_NAME end_stmt;
+comp_unit: unit_header unit_body?;
+unit_header: doc_comments? UNIT DOT_NAME end_stmt;
 unit_body: global_stmt+;
 
-global_stmt: static_if
-    |   global_decl
+global_stmt: static_if NEWLINE
+    |   global_decl NEWLINE
     | NEWLINE
     | doc_comments
     ;
 
-static_if: STATIC_IF const_expr THEN global_stmt (ELSE global_stmt)? ENDIF;
+static_if: STATIC_IF const_expr THEN global_stmt* (ELSE global_stmt*)? ENDIF;
 const_expr: ;
 
 global_decl: const_decl
@@ -22,7 +22,9 @@ global_decl: const_decl
     | include_decl
     ;
 
-const_decl: CONST;
+const_decl: CONST NEWLINE #ConstSection
+    | CONST NON_DOT_NAME TYPE_DECL? ASSIGN const_expr #ConstDecl
+    ;
 
 var_decl: VAR;
 

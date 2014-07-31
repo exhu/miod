@@ -63,7 +63,9 @@ INT_BIN: '-'? '0b' BIN+;
 FLOAT: '-'? ((DIGIT+ '.' DIGIT*) | (DIGIT* '.' DIGIT+)) ([eE][+\-]DIGIT+)? 'f'?;
 INTEGER: '-'? DIGIT+;
 
-UNIT_NAME: ID ('.' ID)*;
+DOT_NAME: ID ('.' ID)*;
+NON_DOT_NAME: ID;
+TYPE_DECL: ':' DOT_NAME;
 // IDs
 
 //////
