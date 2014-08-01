@@ -40,7 +40,9 @@ NOT_EQ: '!=';
 ASSIGN: '=';
 SHL: 'shl';
 SHR: 'shr';
-
+NULL: 'null';
+TRUE: 'true';
+FALSE: 'false';
 
 // literals
 fragment ESC: '\\"' | '\\\\';

@@ -3,16 +3,17 @@ options {tokenVocab = MiodLexer; }
 
 comp_unit: unit_header unit_body?;
 unit_header: doc_comments? UNIT DOT_NAME end_stmt;
-unit_body: global_stmt+;
+unit_body: global_stmts;
 
-global_stmt: static_if NEWLINE
-    |   global_decl NEWLINE
+global_stmt: static_if
+    | global_decl
     | NEWLINE
     | doc_comments
     ;
 
-static_if: STATIC_IF const_expr THEN global_stmt* (ELSE global_stmt*)? ENDIF;
-const_expr: ;
+global_stmts: global_stmt (NEWLINE global_stmt)*;
+
+static_if: STATIC_IF const_expr THEN global_stmts? (ELSE global_stmts?)? ENDIF;
 
 global_decl: const_decl
     | var_decl
@@ -25,6 +26,29 @@ global_decl: const_decl
 const_decl: CONST NEWLINE #ConstSection
     | CONST NON_DOT_NAME TYPE_DECL? ASSIGN const_expr #ConstDecl
     ;
+
+const_expr: global_expr;
+
+/// no function calls
+global_expr: expr;
+
+expr: literal
+    ;
+
+literal: NULL
+    | INTEGER
+    | INT_OCTAL 
+    | INT_HEX
+    | INT_BIN
+    | FLOAT
+    | DOT_NAME
+    | STRING
+    | RAW_STRING
+    | CHAR_STR
+    | TRUE
+    | FALSE
+    ;
+
 
 var_decl: VAR;
 
