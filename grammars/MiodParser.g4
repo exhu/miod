@@ -1,37 +1,37 @@
 parser grammar MiodParser;
 options {tokenVocab = MiodLexer; }
 
-comp_unit: unit_header unit_body?;
-unit_header: doc_comments? UNIT DOT_NAME end_stmt;
-unit_body: global_stmts;
+compUnit: unitHeader unitBody?;
+unitHeader: docComments? UNIT DOT_NAME endStmt;
+unitBody: globalStmts;
 
-global_stmt: static_if
-    | global_decl
+globalStmt: staticIf
+    | globalDecl
     | NEWLINE
-    | doc_comments
+    | docComments
     ;
 
-global_stmts: global_stmt (NEWLINE global_stmt)*;
+globalStmts: globalStmt (NEWLINE globalStmt)*;
 
-static_if: STATIC_IF const_expr THEN global_stmts? (ELSE global_stmts?)? ENDIF;
+staticIf: STATIC_IF constExpr THEN globalStmts? (ELSE globalStmts?)? ENDIF;
 
-global_decl: const_decl
-    | var_decl
-    | proc_decl
-    | cproc_decl
-    | type_decl
-    | import_decl
-    | include_decl
+globalDecl: constDecl
+    | varDecl
+    | procDecl
+    | cprocDecl
+    | typeDecl
+    | importDecl
+    | includeDecl
     ;
 
-const_decl: CONST NEWLINE #ConstSection
-    | CONST NON_DOT_NAME TYPE_DECL? ASSIGN const_expr #ConstDecl
+constDecl: CONST NEWLINE #ConstSection
+    | CONST NON_DOT_NAME TYPE_DECL? ASSIGN constExpr #ConstAssign
     ;
 
-const_expr: global_expr;
+constExpr: globalExpr;
 
 /// no function calls
-global_expr: expr;
+globalExpr: expr;
 
 expr: literal
     ;
@@ -51,23 +51,23 @@ literal: NULL
     ;
 
 
-var_decl: VAR;
+varDecl: VAR;
 
-proc_var_decl: var_decl
-    | let_decl;
+procVarDecl: varDecl
+    | letDecl;
 
-let_decl: LET;
+letDecl: LET;
 
-proc_decl: PROC;
+procDecl: PROC;
 
-cproc_decl: CPROC;
+cprocDecl: CPROC;
 
-type_decl: TYPE;
+typeDecl: TYPE;
 
-import_decl: IMPORT;
+importDecl: IMPORT;
 
-include_decl: INCLUDE STRING;
+includeDecl: INCLUDE STRING;
 
-doc_comments: DOC_COMMENT+;
+docComments: DOC_COMMENT+;
 
-end_stmt: NEWLINE | EOF;
+endStmt: NEWLINE | EOF;
