@@ -27,7 +27,13 @@ type
         k, v: String
     ends
 
-    Rect = struct
+    Updateable = interface
+        proc update()
+    endi
+
+    ## static interface, i.e. compiler will emit error if update() is not
+    ## implemented. Structs support inheritence but no virtuals.
+    Rect = struct(Updateable)
         x,y,w,h,x2,y2: int
         proc update()
             x2 = x+w
