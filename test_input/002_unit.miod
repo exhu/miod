@@ -1,0 +1,5 @@
+## unit docs
+unit mypak.my
+
+static_if then const a = "asdsd" endif
+
