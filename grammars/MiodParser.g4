@@ -18,6 +18,7 @@ static_if: STATIC_IF const_expr THEN global_stmts? (ELSE global_stmts?)? ENDIF;
 global_decl: const_decl
     | var_decl
     | proc_decl
+    | cproc_decl
     | type_decl
     | import_decl
     | include_decl
@@ -52,7 +53,14 @@ literal: NULL
 
 var_decl: VAR;
 
+proc_var_decl: var_decl
+    | let_decl;
+
+let_decl: LET;
+
 proc_decl: PROC;
+
+cproc_decl: CPROC;
 
 type_decl: TYPE;
 

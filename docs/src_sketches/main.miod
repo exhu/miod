@@ -1,6 +1,8 @@
 unit myprog.hello
 import c.stdio
 
+alias log = printf
+
 const
     scrRect: Rect = {x: 0, y:0, w: 640, h: 480}
     # syntax sugar for structs with only two members:
@@ -36,6 +38,8 @@ type
     Rect = struct(Updateable)
         x,y,w,h,x2,y2: int
         proc update()
+            # local constant
+            let a = x+w
             x2 = x+w
             y2 = y+h
         endp

@@ -15,6 +15,7 @@ COMMENT: '#' .*? (NEWLINE|EOF) -> skip;
 CONST: 'const';
 VAR: 'var';
 PROC: 'proc';
+CPROC: 'cproc';
 IMPORT: 'import';
 INCLUDE: 'include';
 TYPE: 'type';
@@ -43,6 +44,8 @@ SHR: 'shr';
 NULL: 'null';
 TRUE: 'true';
 FALSE: 'false';
+ALIAS: 'alias';
+LET: 'let';
 
 // literals
 fragment ESC: '\\"' | '\\\\';
