@@ -15,6 +15,7 @@ COMMENT: '#' .*? (NEWLINE|EOF) -> skip;
 CONST: 'const';
 VAR: 'var';
 PROC: 'proc';
+END_PROC: 'end_p';
 CPROC: 'cproc';
 IMPORT: 'import';
 INCLUDE: 'include';
@@ -22,7 +23,7 @@ TYPE: 'type';
 STATIC_IF: 'static_if';
 THEN: 'then';
 ELSE: 'else';
-ENDIF: 'endif';
+ENDIF: 'end_if';
 UNIT: 'unit';
 PLUS: '+';
 MINUS: '-';
@@ -35,7 +36,7 @@ BOR: '|';
 BAND: '&';
 OR: 'or';
 AND: 'and';
-XOR: 'xor'; // only binary
+XOR: '^'; // only binary
 EQUALS: '==';
 NOT_EQ: '!=';
 ASSIGN: '=';
@@ -46,6 +47,8 @@ TRUE: 'true';
 FALSE: 'false';
 ALIAS: 'alias';
 LET: 'let';
+SCOPE_LEAVE: 'scope_leave'; // code block run at leaving scope
+END_SCOPE_LEAVE: 'end_sl';
 
 // literals
 fragment ESC: '\\"' | '\\\\';
