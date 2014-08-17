@@ -121,6 +121,19 @@ type
         # initialize vtbl, class pointer etc.
         proc init(o: Object)
         end
+
+        proc allocInit(): Object
+            var o = allocator.new()
+            init(o)
+            return o
+        end
+
+        # optional extensions
+        # can use default, or fixed 
+        allocator: ClassAllocator
+
+        # RTTI
+        properties: Properties
     end_struct
 
     MyColl<K,V> = class(Map, NewInstance, CopyFrom)
