@@ -110,6 +110,19 @@ type
 
     end_interface
 
+    ## system structure
+    Class = struct
+        ## CRC32 ?
+        id: int32 
+        size: cardinal
+        name: String
+        vtbl: pointer
+
+        # initialize vtbl, class pointer etc.
+        proc init(o: Object)
+        end
+    end_struct
+
     MyColl<K,V> = class(Map, NewInstance, CopyFrom)
     public
         ## default destructor from Object class
@@ -117,14 +130,15 @@ type
             # some destructor stuff
         end
 
+        ## Obsolete?
         ## NewInstance, return new uninit. instance of this class
-        proc new_instance(): Object, override
-            return new<MyColl<>>()
+        proc new_instance(a: Allocator): Object, override
+            return a.new(MyColl)
         end
 
         ## CopyFrom, copy data from o
         proc copy_from(o: Object), override
-           assert(o is MyColl) 
+           assert(o.instance_of(MyColl)) 
            var src = cast<MyColl>(o)
         end
 
