@@ -23,15 +23,17 @@ long comments
 var
     dynAr: dynarray<Pair>
     nw: ref<scrRect>
+    arrr: array<int, 3>
+    arauto = [1,2,3]
 
 type
     Pair = struct
         k, v: String
-    ends
+    end_struct
 
     Updateable = interface
         proc update()
-    endi
+    end_interface
 
     ## static interface, i.e. compiler will emit error if update() is not
     ## implemented. Structs support inheritence but no virtuals.
@@ -42,8 +44,8 @@ type
             let a = x+w
             x2 = x+w
             y2 = y+h
-        endp
-    ends
+        end
+    end_struct
 
 
     # add static methods to type Rect
@@ -51,21 +53,21 @@ type
         proc add(r: Rect)
             x += r.x
             y += r.y
-        endp
-    ends
+        end
+    end_struct
 
     MyUnion = union
         dw: uint32
         w1, w2: uint16
-    endu
+    end_union
 
     sql = annotation
         table: string
-    enda
+    end_annotation
 
     field = annotation
         name: string
-    enda
+    end_annotation
 
     @sql{table:"myt"}
     MyCls = class(Cloneable)
@@ -73,7 +75,7 @@ type
         proc assign(o: MyCls)
            a = o.a
            b = o.b
-        endp
+        end
 
 
         private
@@ -88,45 +90,50 @@ type
         property(pa: int, read: a)
         property(pb: int, write: b, read: b)
         
-    endc
+    end_class
 
     MyClsHelper = class_helper(MyCls)
         public
         proc add(o: MyCls)
             a += o.a
             b += o.b
-        endp
-    endc
+        end
+    end_class
 
 
     Map<K, V> = interface
         proc get(k: K): V
         proc set(k: K, v: V)
 
-    endi
+    end_interface
 
     MyColl<K,V> = class(Object; Map)
 
-    endc
+    end_class
         
     MyCollS = MyColl<String, String>
 
 public
 
-cproc printf(fmt: cstring), cvarargs
+@_cattr{cc:"cdecl", header:"<stdio.h>", name:"printf"}
+cproc printf(fmt: cstring, args: cvarargs)
 
 proc format(fmt: String, args: array<Object>): String
-    for i in args do
+    for a,i in args do
         
 
-    endf
-endp
+    end_for
+
+    for(a: int = 0, b = 3; a+= b; a != 3)
+
+    end_for
+end
 
 proc mod(a: int, var b:int)
     b = a+1
-endp
+end
 
 
 proc main()
     printf("Hi! %d\n", [1]);
-endp
+end
