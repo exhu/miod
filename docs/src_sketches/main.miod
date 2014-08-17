@@ -31,6 +31,9 @@ type
         k, v: String
     end_struct
 
+    FILE = cstruct
+    PFILE = ptr<FILE>
+
     Updateable = interface
         proc update()
     end_interface
@@ -107,7 +110,27 @@ type
 
     end_interface
 
-    MyColl<K,V> = class(Object; Map)
+    MyColl<K,V> = class(Map, NewInstance, CopyFrom)
+    public
+        ## default destructor from Object class
+        proc finalize(), override
+            # some destructor stuff
+        end
+
+        ## NewInstance, return new uninit. instance of this class
+        proc new_instance(): Object, override
+            return new<MyColl<>>()
+        end
+
+        ## CopyFrom, copy data from o
+        proc copy_from(o: Object), override
+           assert(o is MyColl) 
+           var src = cast<MyColl>(o)
+        end
+
+    private
+        keys: dynarray<K>
+        values: dynarray<V>
 
     end_class
         
