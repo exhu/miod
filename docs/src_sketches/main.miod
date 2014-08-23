@@ -110,6 +110,11 @@ type
 
     end_interface
 
+    ClassAllocator = struct
+        alloc: proc(sz: cardinal): pointer
+        free: proc(p: pointer)
+    end_struct
+
     ## system structure
     Class = struct
         ## CRC32 ?
@@ -123,7 +128,7 @@ type
         end
 
         proc allocInit(): Object
-            var o = allocator.new()
+            var o = cast<Object>(allocator.alloc(size))
             init(o)
             return o
         end
