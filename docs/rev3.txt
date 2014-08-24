@@ -229,3 +229,13 @@ e.g. ffi_unit gui.ffi_win32
 - exporting miod functions and types as C-ABI
 - exporting miod functions and types for JNI
 
+------------
+
+Cross C/JAVA dialect:
+
+- uint types are temporarily extended for maths, warning is generated
+- nstring type = cstring for C or jstring for java
+    - any string has AsUTF8() proc etc.
+
+- special dialect sugar for accessing java/c
+- jni extensions?
