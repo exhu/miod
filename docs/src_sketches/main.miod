@@ -20,11 +20,24 @@ long comments
 
 ## documentation comment
 
+# hidden 'length' parameter is passed with arrays
+proc some_ar(a: array<int>)
+    for v,i in a do
+        print("item value = %i, at %i\n", v, i)
+    end_for
+end
+
+# proposed for future:
+proc some_buf(b: ptr<int>, len: cardinal)
+    var ab = cast<ptr<array<int,len>>(b) 
+end
+
 var
-    dynAr: dynarray<Pair>
+    dynAr: DynArray<Pair>
     nw: ref<scrRect>
-    arrr: array<int, 3>
-    arauto = [1,2,3]
+    arrr: array<int, 3> # static array, length can be obtained by length(arrr)
+    arauto = [1,2,3] # static array
+    p_ar: ptr<array<int, MAX_CARDINAL>>
 
 type
     Pair = struct
