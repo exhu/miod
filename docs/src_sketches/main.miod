@@ -184,7 +184,7 @@ type
 public
 
 @_cattr{cc:"cdecl", header:"<stdio.h>", name:"printf"}
-cproc printf(fmt: cstring, args: cvarargs)
+extern proc printf(fmt: cstring, args: cvarargs)
 
 proc format(fmt: String, args: array<Object>): String
     for a,i in args do
@@ -199,6 +199,36 @@ end
 
 proc mod(a: int, var b:int)
     b = a+1
+end
+
+proc in_transaction(r: Runnable)
+    start_transaction()
+    r.run()
+    end_transaction()
+end
+
+
+type tempCls = class(Runnable)
+        aa, bb: int
+        
+        proc run(), override
+            aa += bb
+        end
+        end_class
+
+
+proc use_transaction()
+    in_transaction(new(class(Runnable)
+        aa, bb: int
+        
+        proc init(a, b: int): this
+            aa = a
+            bb = b
+        end
+        proc run(), override
+            aa += bb
+        end
+        end_class).init(3, 4))
 end
 
 

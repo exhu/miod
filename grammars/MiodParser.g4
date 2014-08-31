@@ -18,7 +18,6 @@ staticIf: STATIC_IF constExpr THEN globalStmts? (ELSE globalStmts?)? ENDIF;
 globalDecl: constDecl
     | varDecl
     | procDecl
-    | cprocDecl
     | typeDecl
     | importDecl
     | includeDecl
@@ -59,8 +58,6 @@ procVarDecl: varDecl
 letDecl: LET;
 
 procDecl: PROC;
-
-cprocDecl: CPROC;
 
 typeDecl: TYPE;
 
