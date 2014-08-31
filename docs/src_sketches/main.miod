@@ -183,8 +183,10 @@ type
 
 public
 
-@_cattr{cc:"cdecl", header:"<stdio.h>", name:"printf"}
-extern proc printf(fmt: cstring, args: cvarargs)
+type method_ptr = proc(my: obj), class
+
+@_cattr{header:"<stdio.h>", name:"printf"}
+extern proc printf(fmt: cstring, args: cvarargs), cdecl
 
 proc format(fmt: String, args: array<Object>): String
     for a,i in args do
