@@ -1,0 +1,30 @@
+Language limited to java-friendly implementation with special annotations
+for possible C optimizations.
+
+Alter syntax (if necessary) to skip new lines and whitespace.
+
+Union, pointers are not available, or are implemented using "opaque" type.
+
+extern proc, extern class, extern struct --- native partially "opaque"
+declarations. Extern class is only available for Java target.
+
+How to access a byte buffer for C target:
+
+1) Miod declarations
+type Buf = opaque
+
+extern proc get_byte(b: Buf, ofs: int): byte
+extern proc set_byte(b: Buf, ofs: int, v: byte)
+
+2) C impl:
+typedef char* Buf;
+
+inline uchar get_byte(Buf b, int ofs) {
+    return b[ofs];
+}
+
+inline void set_byte(Buf b, int ofs, uchar b) {
+    b[ofs] = b;
+}
+
+-------
