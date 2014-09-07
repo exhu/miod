@@ -3,7 +3,7 @@ for possible C optimizations.
 
 Alter syntax (if necessary) to skip new lines and whitespace.
 
-Union, pointers are not available, or are implemented using "opaque" type.
+Union, pointers are not available, but can be accessed using "opaque" type.
 
 extern proc, extern class, extern struct --- native partially "opaque"
 declarations. Extern class is only available for Java target.
@@ -28,3 +28,14 @@ inline void set_byte(Buf b, int ofs, uchar b) {
 }
 
 -------
+
+Annotations for classes:
+- 'nortti' - do not store class name etc., makes dynamic checked casts
+impossible (C optimization)
+- 'props' - export properties as published (C+Java optimization)
+
+
+Difference between 'alias' and 'type':
+type Abc = opaque # requires direct cast to other opaq derivatives
+alias Bbc = opaque # the same as 'opaque' everywhere
+
