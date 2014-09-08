@@ -12,15 +12,15 @@ declarations. Extern class is only available for Java target.
 
 How to access a byte buffer for C target:
 
-1) Miod declarations
-::
+1) Miod declarations::
+
         type Buf = opaque
         extern proc get_byte(b: Buf, ofs: int): byte
         extern proc set_byte(b: Buf, ofs: int, v: byte)
 
 
-2) C impl
-::
+2) C impl::
+
         typedef char* Buf;
 
         inline uchar get_byte(Buf b, int ofs) {
@@ -39,6 +39,7 @@ impossible (C optimization)
 
 
 Difference between *alias* and *type*::
+
     type Abc = opaque # requires direct cast to other opaq derivatives
     alias Bbc = opaque # the same as 'opaque' everywhere
 
