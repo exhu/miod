@@ -44,4 +44,21 @@ Difference between *alias* and *type*::
     alias Bbc = opaque # the same as 'opaque' everywhere
 
 
+Reference types
+---------------
+
+Classes are the only reference objects, if you need a pointer, you use
+a class instance.
+
+A variable reference is an excpetion, i.e. procs have const parameters by
+default, but there can be 'var' arguments, which are modifiable.
+
+Optimization is possible via 'opaque' types and C native code.
+
+**Weak references** are of two kinds, a) watchable/checked, a proxy, can be implemented using a class instance, and b) optimized/unchecked.
+
+A checked reference is automatically nulled when class instance is freed (
+although at a cost of a proxy object), but the unchecked one is not (although
+is lightweight).
+
 
