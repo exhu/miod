@@ -74,6 +74,9 @@ Additional private runtime information can be put into *full_package_name.MiodRt
 
 Callbacks for java are declared using *extern* interfaces.
 
+Static procs are declared as *extern proc* with *@_jattr{name: ""}* with fully
+qualified name specified in the annotation.
+
 
 C target mappings
 -----------------
@@ -81,7 +84,12 @@ C target mappings
 Modules/units are compiled into *full_package_name.c/h*, where only public
 members are defined as *extern* in the header file.
 
-Callbacks for C are declared using 'cdecl' convention.
+Callbacks for C are declared using *@_cattr* for types and implementation.
+Headers and sources can be specified in one of the cattr annotations using
+*header* and optionally *source* keys.
+
+C procs are declared using *extern proc*.
+
 
 Packages
 --------

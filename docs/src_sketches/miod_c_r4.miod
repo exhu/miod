@@ -14,7 +14,8 @@ type
 
 extern proc SetCb(c: MyCb)
 
-int myCcb(user: UserData), extern
+@_cattr
+int myCcb(user: UserData)
     var a = cast<MyCls>(user)
     a.field += 1
 end
