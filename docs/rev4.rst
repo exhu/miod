@@ -62,3 +62,67 @@ although at a cost of a proxy object), but the unchecked one is not (although
 is lightweight).
 
 
+Java target mappings
+--------------------
+
+Top level procs and globals (vars, consts) are put into
+*full_package_name.Globals* java class.
+
+Classes, structs etc. are put into *full_package_name.ClassName*.
+
+Additional private runtime information can be put into *full_package_name.MiodRtti* class.
+
+
+C target mappings
+-----------------
+
+Modules/units are compiled into *full_package_name.c/h*, where only public
+members are defined as *extern* in the header file.
+
+
+Packages
+--------
+
+There are several meanings to the word *package* in the Miod context:
+
+    1) dot-separated paths to modules;
+
+    2) a compiled set of data and binary modules:
+
+        a) statically linked library and optional data files,
+        copied during program linking stage.
+        
+        b) dynamically linked library and optional data files, stored
+        in the filesystem.
+    
+
+There's always a package definition file or optional application definition
+file. If there's not any application definition file with the app sources
+then one must provide used packages via command line arguments or
+comments/uses clause (TBD).
+
+
+Application/package directory layout
+------------------------------------
+::
+
+    - 'myapp' or 'mypkg' (DIR)
+        |   main.miod
+        |   l10n (DIR)
+            |   en.strings
+
+    - 'myapp.mapp' or 'mypkg.mpkg'
+
+
+Application definition file (mapp)
+----------------------------------
+
+TBD
+
+
+Package definition file (mpkg)
+------------------------------
+
+TBD
+
+
