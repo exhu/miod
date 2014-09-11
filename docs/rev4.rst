@@ -72,6 +72,8 @@ Classes, structs etc. are put into *full_package_name.ClassName*.
 
 Additional private runtime information can be put into *full_package_name.MiodRtti* class.
 
+Callbacks for java are declared using *extern* interfaces.
+
 
 C target mappings
 -----------------
@@ -79,6 +81,7 @@ C target mappings
 Modules/units are compiled into *full_package_name.c/h*, where only public
 members are defined as *extern* in the header file.
 
+Callbacks for C are declared using 'cdecl' convention.
 
 Packages
 --------
