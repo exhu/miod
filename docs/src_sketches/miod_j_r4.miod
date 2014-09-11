@@ -1,0 +1,29 @@
+
+unit sketches.miod_j_r4
+
+type
+    @_jattr{import: "sketches.JCb"}
+    JCb = extern interface
+        proc myCcb(i, j: int): int
+    end_interface
+
+    # extern classes not supported, because no function bodies are avail
+    @_jattr{import: "sketches.JCall"}
+    JCall = extern interface
+        proc doCall(a: JCb)
+    end_interface
+
+
+# calling static method
+@_jattr{name: "JCall.newInst"}
+extern proc newJCall(): JCall
+
+
+proc main()
+    newJCall().doCall(new(class(JCb)
+        proc myCcb(i, j:int): int
+            return i+j
+        end
+    end_class))
+end
+

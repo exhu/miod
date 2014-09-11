@@ -4,7 +4,8 @@ type
     @_cattr{header: "mycallbacks.h", source:"mycallbacks.c"}
     UserData = opaque
 
-    MyCb = proc(u: UserData), extern
+    @_cattr
+    MyCb = proc(u: UserData)
 
     MyCls = class
         var field: int
