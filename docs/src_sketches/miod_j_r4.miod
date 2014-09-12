@@ -1,14 +1,14 @@
-
+@_jattr{imports: ["sketches.JCb", "sketches.JCall"]}
 unit sketches.miod_j_r4
 
 type
-    @_jattr{import: "sketches.JCb"}
+    @_jattr{name: "sketches.JCb"}
     JCb = extern interface
         proc myCcb(i, j: int): int
     end_interface
 
     # extern classes not supported, because no function bodies are avail
-    @_jattr{import: "sketches.JCall"}
+    @_jattr{name: "sketches.JCall"}
     JCall = extern interface
         proc doCall(a: JCb)
     end_interface
