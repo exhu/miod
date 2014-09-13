@@ -93,11 +93,9 @@ Even with automatic reference counting there can be dangling pointers, as
 illustrated below::
     
     var storage: array[MyClass, 10]
-    var my = new(MyClass)
-    
     proc main()
-        storage[0] = my
-        update(0, my) # pass 'my' as weak pointer
+        storage[0] = new(MyClass)
+        update(0, storage[0]) # passed as weak pointer
     end
 
     proc update(i: cardinal, o: MyClass)
@@ -106,6 +104,14 @@ illustrated below::
         # because it's passed weak and had only one strong reference 
         # in the 'storage' array.
     end
+
+When compiled for **release**, it will **crash**. In **debug** mode, however, the 'o'
+becomes a weak (watched) reference and the null reference is
+**detected early**.
+
+Optionally one can compile program with all strong pointers, so the code
+will work ok at the cost of performance (a lot of inc/dec refs for
+arguments passing).
 
 
 Java target mappings
