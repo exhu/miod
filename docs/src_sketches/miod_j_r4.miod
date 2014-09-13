@@ -1,29 +1,45 @@
-@_jattr{imports: ["sketches.JCb", "sketches.JCall"]}
+@_jattr{
+    imports: [
+    "sketches.JCb",
+    "sketches.JCall"]
+}
 unit sketches.miod_j_r4
 
 type
-    @_jattr{name: "sketches.JCb"}
-    JCb = extern interface
-        proc myCcb(i, j: int): int
-    end_interface
+@_jattr{name: "sketches.JCb"}
+JCb = extern interface
+    proc myCcb(i, j: int): int
+end_interface
 
-    # extern classes not supported, because no function bodies are avail
-    @_jattr{name: "sketches.JCall"}
-    JCall = extern interface
-        proc doCall(a: JCb)
-    end_interface
+# extern classes not supported, because no function bodies are avail
+@_jattr{name: "sketches.JCall"}
+JCall = extern interface
+    proc doCall(a: JCb)
+end_interface
 
 
 # calling static method
 @_jattr{name: "JCall.newInst"}
 extern proc newJCall(): JCall
 
+type
+Flags = int
 
-proc main()
+const
+    Flags_Read: Flags = 0x1 # no need to cast in declaration
+    Flags_Write: Flags = 0x2
+   
+
+proc open(fn: nstring, f: Flags)
+end
+
+proc main() =
     newJCall().doCall(new(class(JCb)
         proc myCcb(i, j:int): int
             return i+j
         end
     end_class))
+
+    open("aaa", Flags_Read | 3) # error, '3' requires explicit cast
 end
 

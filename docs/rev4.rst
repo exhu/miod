@@ -50,16 +50,62 @@ Reference types
 Classes are the only reference objects, if you need a pointer, you use
 a class instance.
 
-A variable reference is an excpetion, i.e. procs have const parameters by
+A variable reference is an exception, i.e. procs have const parameters by
 default, but there can be 'var' arguments, which are modifiable.
 
-Optimization is possible via 'opaque' types and C native code.
+Pointer usage is allowed for C targets 'opaque' types and extern procs.
 
 **Weak references** are of two kinds, a) watchable/checked, a proxy, can be implemented using a class instance, and b) optimized/unchecked.
 
 A checked reference is automatically nulled when class instance is freed (
 although at a cost of a proxy object), but the unchecked one is not (although
-is lightweight).
+is lightweight). All weak pointers are implemented as safe watched ones 
+in debug.
+
+Reference counter is incremented on assignment, so possible usage of *weak*
+modifier for proc's local variables can be carefully used to optimize.
+If unsafe, it'll trigger null pointer dereferencing in debug builds.
+
+
+Reference counter
+-----------------
+
+Class instances are the only automatically reference counted objects in
+the language. They are implemented as pointers for the C target.
+
+Temporary objects like the anonymous instance in 
+*callSomeProc(new(MyClass))* are automatically decRefed after the call,
+the decrement can be called just after the
+call or at the enclosing scope leave.
+
+Circular references must be solved manually using the *weak* modifier.
+
+Arguments are weak references if compiled in debug, i.e. the main policy
+is for safety, so all behind-the-curtains pointers are backed by
+weak references in debug in order to track class instances owning policy
+breakage. Arguments are not passed as strong pointers for speed sake.
+
+Weak pointers and references are implemented as proxy objects in C debug
+and probably for Java, to detect ownership problems early when writing
+both java and c targetted app.
+
+Even with automatic reference counting there can be dangling pointers, as
+illustrated below::
+    
+    var storage: array[MyClass, 10]
+    var my = new(MyClass)
+    
+    proc main()
+        storage[0] = my
+        update(0, my) # pass 'my' as weak pointer
+    end
+
+    proc update(i: cardinal, o: MyClass)
+        storage[i] = null
+        storage[i] = o # 'o' is a dangling pointer now, 
+        # because it's passed weak and had only one strong reference 
+        # in the 'storage' array.
+    end
 
 
 Java target mappings
