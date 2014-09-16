@@ -2,14 +2,16 @@ lexer grammar MiodLexer;
 
 fragment NL: ('\r'? '\n');
 NEWLINE: NL;
+// comments
+
+DOC_COMMENT: '##' .*? (NEWLINE|EOF);
+COMMENT: '#' .*? (NEWLINE|EOF) -> channel(hidden);
+
+//
 WS: (' ' | '\t')+ -> skip;
 
 JOIN_LINE: '\\' NEWLINE -> skip;
 
-// comments
-
-DOC_COMMENT: '##' .*? (NEWLINE|EOF);
-COMMENT: '#' .*? (NEWLINE|EOF) -> skip;
 
 // keywords
 CONST: 'const';
@@ -21,6 +23,7 @@ IMPORT: 'import';
 INCLUDE: 'include';
 TYPE: 'type';
 STATIC_IF: 'static_if';
+IF: 'if'
 THEN: 'then';
 ELSE: 'else';
 ENDIF: 'end_if';
@@ -30,10 +33,10 @@ MINUS: '-';
 DIV: '/';
 MUL: '*';
 MOD: '%';
-NOT: 'not';
 BNOT: '~';
 BOR: '|';
 BAND: '&';
+NOT: 'not';
 OR: 'or';
 AND: 'and';
 XOR: '^'; // only binary
@@ -49,6 +52,10 @@ ALIAS: 'alias';
 LET: 'let';
 SCOPE_LEAVE: 'scope_leave'; // code block run at leaving scope
 END_SCOPE_LEAVE: 'end_sl';
+STRUCT: 'struct';
+END_STRUCT: 'end_struct';
+ANNOTATE: '@';
+
 
 // literals
 fragment ESC: '\\"' | '\\\\';

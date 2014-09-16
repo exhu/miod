@@ -68,3 +68,9 @@ includeDecl: INCLUDE STRING;
 docComments: DOC_COMMENT+;
 
 endStmt: NEWLINE | EOF;
+
+annotation: ANNOTATE dictValue?;
+
+keyValue: NON_DOT_NAME ':' literal;
+dictValue: '{' (keyValue (',' keyValue)*)? '}';
+
