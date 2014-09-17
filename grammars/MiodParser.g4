@@ -2,7 +2,7 @@ parser grammar MiodParser;
 options {tokenVocab = MiodLexer; }
 
 compUnit: unitHeader unitBody?;
-unitHeader: docComments? UNIT DOT_NAME endStmt;
+unitHeader: docComments? UNIT DOT_NAME;
 unitBody: globalStmts;
 
 globalStmt: staticIf
@@ -13,7 +13,9 @@ globalStmt: staticIf
 
 globalStmts: globalStmt (NEWLINE globalStmt)*;
 
-staticIf: STATIC_IF constExpr THEN globalStmts? (ELSE globalStmts?)? ENDIF;
+staticIf:
+    | STATIC_IF THEN  {notifyErrorListeners("const expr expected for static_if");}
+    | STATIC_IF constExpr THEN globalStmts? (ELSE globalStmts?)? ENDIF;
 
 globalDecl: constDecl
     | varDecl
@@ -67,10 +69,10 @@ includeDecl: INCLUDE STRING;
 
 docComments: DOC_COMMENT+;
 
-endStmt: NEWLINE | EOF;
+// endStmt: NEWLINE | EOF;
 
 annotation: ANNOTATE dictValue?;
 
-keyValue: NON_DOT_NAME ':' literal;
-dictValue: '{' (keyValue (',' keyValue)*)? '}';
+keyValue: NON_DOT_NAME COLON literal;
+dictValue: DICT_BEG (keyValue (COMMA keyValue)*)? DICT_END;
 

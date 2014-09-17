@@ -1,11 +1,12 @@
 lexer grammar MiodLexer;
 
 fragment NL: ('\r'? '\n');
-NEWLINE: NL;
 // comments
 
-DOC_COMMENT: '##' .*? (NEWLINE|EOF);
-COMMENT: '#' .*? (NEWLINE|EOF) -> channel(hidden);
+DOC_COMMENT: '##' .*? (NEWLINE|EOF) -> channel(HIDDEN);
+COMMENT: '#' .*? (NEWLINE|EOF) -> channel(HIDDEN);
+
+NEWLINE: NL -> channel(HIDDEN);
 
 //
 WS: (' ' | '\t')+ -> skip;
@@ -23,7 +24,7 @@ IMPORT: 'import';
 INCLUDE: 'include';
 TYPE: 'type';
 STATIC_IF: 'static_if';
-IF: 'if'
+IF: 'if';
 THEN: 'then';
 ELSE: 'else';
 ENDIF: 'end_if';
@@ -55,6 +56,10 @@ END_SCOPE_LEAVE: 'end_sl';
 STRUCT: 'struct';
 END_STRUCT: 'end_struct';
 ANNOTATE: '@';
+DICT_BEG: '{';
+DICT_END: '}';
+COLON: ':';
+COMMA: ',';
 
 
 // literals
