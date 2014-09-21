@@ -1,5 +1,10 @@
-Miod programming language, revision 4
-=====================================
+====================================
+Miod Programming Language Revision 4
+====================================
+
+Intro
+-----
+
 Language limited to java-friendly implementation with special annotations
 for possible C optimizations.
 
