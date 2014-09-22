@@ -85,7 +85,6 @@ INTEGER: '-'? DIGIT+;
 
 DOT_NAME: ID ('.' ID)*;
 NON_DOT_NAME: ID;
-TYPE_DECL: ':' DOT_NAME;
 // IDs
 
 //////

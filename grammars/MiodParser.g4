@@ -7,15 +7,15 @@ unitBody: globalStmts;
 
 globalStmt: staticIf
     | globalDecl
-    | NEWLINE
     | docComments
     ;
 
-globalStmts: globalStmt (NEWLINE globalStmt)*;
+globalStmts: globalStmt+;
 
 staticIf:
-    | STATIC_IF THEN  {notifyErrorListeners("const expr expected for static_if");}
-    | STATIC_IF constExpr THEN globalStmts? (ELSE globalStmts?)? ENDIF;
+    //| STATIC_IF THEN  {notifyErrorListeners("const expr expected for static_if");}
+    //| 
+    STATIC_IF constExpr THEN globalStmts? (ELSE globalStmts?)? ENDIF;
 
 globalDecl: constDecl
     | varDecl
@@ -25,8 +25,8 @@ globalDecl: constDecl
     | includeDecl
     ;
 
-constDecl: CONST NEWLINE #ConstSection
-    | CONST NON_DOT_NAME TYPE_DECL? ASSIGN constExpr #ConstAssign
+constDecl: 
+    CONST NON_DOT_NAME (COLON typeSpec)? ASSIGN constExpr
     ;
 
 constExpr: globalExpr;
@@ -36,6 +36,8 @@ globalExpr: expr;
 
 expr: literal
     ;
+
+typeSpec: DOT_NAME; // add array etc
 
 literal: NULL
     | INTEGER
