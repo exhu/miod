@@ -51,8 +51,8 @@ TRUE: 'true';
 FALSE: 'false';
 ALIAS: 'alias';
 LET: 'let';
-SCOPE_LEAVE: 'scope_leave'; // code block run at leaving scope
-END_SCOPE_LEAVE: 'end_sl';
+FINALLY: 'finally'; // code block run at leaving scope
+END_FINALLY: 'end_finally';
 STRUCT: 'struct';
 END_STRUCT: 'end_struct';
 ANNOTATE: '@';
