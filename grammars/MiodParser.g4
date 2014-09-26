@@ -2,7 +2,7 @@ parser grammar MiodParser;
 options {tokenVocab = MiodLexer; }
 
 compUnit: unitHeader unitBody?;
-unitHeader: docComments? UNIT DOT_NAME;
+unitHeader: docComments? UNIT name=DOT_NAME;
 unitBody: globalStmts;
 
 globalStmt: staticIf
