@@ -194,3 +194,22 @@ Package definition file (mpkg)
 TBD
 
 
+'With' statement
+----------------
+
+A *with-end_with* statement block encloses a new scope, where members of
+specified structure/class become available without prefix. E.g.::
+
+    type MyStruct = struct
+        x, y, z: int
+        end_struct
+
+    proc setupStruct(a: var MyStruct)
+        with a
+            x = 3
+            y = x+5
+            z = x/y
+        end_with
+    end
+
+

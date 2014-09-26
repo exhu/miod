@@ -60,6 +60,8 @@ DICT_BEG: '{';
 DICT_END: '}';
 COLON: ':';
 COMMA: ',';
+WITH: 'with';
+END_WITH: 'end_with';
 
 
 // literals
