@@ -5,10 +5,19 @@ Miod Programming Language Revision 4
 Intro
 -----
 
+Design goals:    
+    - No complex "under-the-hood" features, like C++-RAII, templates,
+      exceptions etc.;
+    - Cross-platform, cross-target compilation (Java, C);
+    - Possible memory and code optimization hints, e.g. memory pools,
+      native target types...
+    - Semi-automatic memory management, i.e. controllable allocations,
+      expected deallocations, yet no tedious book-keeping;
+    - Zero-cost foreign function interface.
+
+
 Language limited to java-friendly implementation with special annotations
 for possible C optimizations.
-
-Alter syntax (if necessary) to skip new lines and whitespace.
 
 Union, pointers are not available, but can be accessed using "opaque" type.
 
@@ -47,6 +56,7 @@ Difference between *alias* and *type*::
 
     type Abc = opaque # requires direct cast to other opaq derivatives
     alias Bbc = opaque # the same as 'opaque' everywhere
+
 
 
 Reference types
@@ -110,14 +120,22 @@ illustrated below::
         # in the 'storage' array.
     end
 
-When compiled for **release**, it will **crash**. In **debug** mode, however, the 'o'
-becomes a weak (watched) reference and the null reference is
+When compiled for **release**, it will **crash**. In **debug** mode, however,
+the 'o' becomes a weak (watched) reference and the null reference is
 **detected early**.
 
 Optionally one can compile program with all strong pointers, so the code
 will work ok at the cost of performance (a lot of inc/dec refs for
 arguments passing).
 
+Reference counting in Java
+--------------------------
+
+Classes which depend on reference counting can be marked as such with
+annotations so that when compiled for Java they maintain a reference counter
+and their destructor is called not in the 'finalize' method, but when the
+counter reaches zero. This can be useful for objects which hold 
+some system resources. e.g. files.
 
 Java target mappings
 --------------------
@@ -210,6 +228,40 @@ specified structure/class become available without prefix. E.g.::
             y = x+5
             z = x/y
         end_with
+    end
+
+
+Classes
+-------
+
+As exceptions are not supported by the language, the constructors are not
+supported too. All fields are initialized to zeroes.
+
+Destructors are not guaranteed to execute as well, i.e. if target language
+is Java and no reference-counting is used.
+
+
+
+
+'Finally' without a 'try'?
+--------------------------
+
+Although there's no *try* keyword and exceptions support, there is a
+convenient *finally* keyword to mark a code block, executed at the end of the
+enclosing scope::
+
+    proc readData(fileName: nstring): bool
+        var f = fileOpen(fileName, "rb")
+        finally
+            f.close()
+        end_finally
+
+        # do some work with file which can cause read error etc.
+
+        # *return* leaves the scope so the finally block gets executed here:
+        if error then return false end_if
+        
+        return true
     end
 
 
