@@ -137,6 +137,11 @@ and their destructor is called not in the 'finalize' method, but when the
 counter reaches zero. This can be useful for objects which hold 
 some system resources. e.g. files.
 
+But this feature is still questionable because it complicates things. Probably
+it will be implemented in an only *all-or-none* principle for debugging
+purpose.
+
+
 Java target mappings
 --------------------
 
@@ -263,5 +268,16 @@ enclosing scope::
         
         return true
     end
+
+
+Standard library
+----------------
+
+There will be a set of packages. The standard one is minimal and contains
+only compiler-dependent features like memory allocation, strings, RTTI and
+reflection, base object class, strong/weak references, debug features...
+
+However collections, Unicode, Network, Threads will be in separate packages.
+Along with standard collections there will be *intrusive lists* etc.
 
 
