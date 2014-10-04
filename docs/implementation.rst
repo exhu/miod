@@ -56,4 +56,5 @@ in expressions.
 *Clean IDs* -- identifiers without dots, used in var, const, proc, type
 declarations.
 
-
+TODO: limit dot to member-access only operation. Use '::' or anything else
+for name qualification.
