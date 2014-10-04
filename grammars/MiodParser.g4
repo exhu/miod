@@ -78,3 +78,11 @@ annotation: ANNOTATE dictValue?;
 keyValue: NON_DOT_NAME COLON literal;
 dictValue: DICT_BEG (keyValue (COMMA keyValue)*)? DICT_END;
 
+forEachLoop: FOR varNames IN expr DO blockStmts? END_FOR;
+forLoop: FOR OPEN_BRACE varAssigns SEMI_COLON loopActs SEMI_COLON boolExpr CLOSE_BRACE;
+
+varNames: NON_DOT_NAME (',' NON_DOT_NAME)*;
+varAssigns: varAssign | varInitAssign (',' varAssign | varInitAssign)*
+varAssign: NON_DOT_NAME ASSIGN expr;
+varInitAssign: NON_DOT_NAME COLON typeSpec ASSIGN expr;
+blockStmts:;

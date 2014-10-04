@@ -47,3 +47,13 @@ Java target
 Class names are prefixed with upper case, methods with lower case.
 All generated code is put into "md" package.
 
+Identifiers
+~~~~~~~~~~~
+
+*Qualified* -- dot-separated fully qualified, used as type names, module names,
+in expressions.
+
+*Clean IDs* -- identifiers without dots, used in var, const, proc, type
+declarations.
+
+
