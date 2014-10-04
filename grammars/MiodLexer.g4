@@ -65,6 +65,7 @@ WITH: 'with';
 END_WITH: 'end_with';
 OPEN_BRACE: '(';
 CLOSE_BRACE: ')';
+MEMBER_ACCESS: '\.';
 
 
 // literals
@@ -88,7 +89,7 @@ INT_BIN: '-'? '0b' BIN+;
 FLOAT: '-'? ((DIGIT+ '.' DIGIT*) | (DIGIT* '.' DIGIT+)) ([eE][+\-]DIGIT+)? 'f'?;
 INTEGER: '-'? DIGIT+;
 
-DOT_NAME: ID ('.' ID)*;
+DOT_NAME: ID ('::' ID)*;
 NON_DOT_NAME: ID;
 // IDs
 

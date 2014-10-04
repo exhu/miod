@@ -1,5 +1,5 @@
-unit myprog.hello
-import c.stdio
+unit myprog::hello
+import c::stdio
 
 alias log = printf
 

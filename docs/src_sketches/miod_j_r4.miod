@@ -3,7 +3,7 @@
     "sketches.JCb",
     "sketches.JCall"]
 }
-unit sketches.miod_j_r4
+unit sketches::miod_j_r4
 
 type
 @_jattr{name: "sketches.JCb"}

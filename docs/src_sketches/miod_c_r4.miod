@@ -1,5 +1,5 @@
 @_cattr{headers:["mycallbacks.h"], sources:["mycallbacks.c"]}
-unit sketches.miod_c_r4
+unit sketches::miod_c_r4
 
 type
     @_cattr

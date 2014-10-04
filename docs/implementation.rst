@@ -50,11 +50,9 @@ All generated code is put into "md" package.
 Identifiers
 ~~~~~~~~~~~
 
-*Qualified* -- dot-separated fully qualified, used as type names, module names,
-in expressions.
+*Qualified* -- dot-separated ('::') fully qualified, used as type names,
+module names, in expressions.
 
 *Clean IDs* -- identifiers without dots, used in var, const, proc, type
 declarations.
 
-TODO: limit dot to member-access only operation. Use '::' or anything else
-for name qualification.
