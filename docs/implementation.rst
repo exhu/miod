@@ -56,3 +56,28 @@ module names, in expressions.
 *Clean IDs* -- identifiers without dots, used in var, const, proc, type
 declarations.
 
+Memory pooling
+~~~~~~~~~~~~~~
+
+New construct or special function and annotation to allocate arrays of
+objects sequentially::
+
+    type
+        SSEFriendlYArray = @_sse array[int32]
+        PoolData = @_sse array[MyClass]
+    
+        ClassesPool<T> = class
+            proc init(count: cardinal)
+            end
+
+            proc newCls(): T
+            end
+
+        extern proc initArrayOfObjects(var o: PoolData)
+
+
+Such instances can be deallocated only all at once.
+
+TODO: invent a proper way to declare such pools.
+
+
