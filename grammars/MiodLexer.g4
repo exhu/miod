@@ -65,7 +65,10 @@ WITH: 'with';
 END_WITH: 'end_with';
 OPEN_BRACE: '(';
 CLOSE_BRACE: ')';
-MEMBER_ACCESS: '\.';
+MEMBER_ACCESS: '.';
+FOR: 'for';
+IN: 'in';
+END_FOR: 'end_for';
 
 
 // literals
