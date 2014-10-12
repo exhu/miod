@@ -80,4 +80,5 @@ Such instances can be deallocated only all at once.
 
 TODO: invent a proper way to declare such pools.
 
-
+Since it is a very low-level feature, it is probably better to leave it for
+the C language.
