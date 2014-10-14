@@ -31,6 +31,7 @@ Name Mangling
 Globals are prefixed with:
     a) "md" for vars, procs
     b) "Md" for types, structs, classes, interfaces, enums etc.
+    c) local vars have prefix "loc%d_", where %d is the scope number.
 
 C target
 ~~~~~~~~
@@ -68,7 +69,7 @@ objects sequentially::
     
         ClassesPool<T> = class
             proc init(count: cardinal)
-            end
+            endjava.io.DataInputStream
 
             proc newCls(): T
             end

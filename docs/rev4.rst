@@ -63,7 +63,7 @@ Reference types
 ---------------
 
 Classes are the only reference objects, if you need a pointer, you use
-a class instance.
+a class instance. Arrays are actually classes.
 
 A variable reference is an exception, i.e. procs have const parameters by
 default, but there can be 'var' arguments, which are modifiable.
