@@ -92,8 +92,8 @@ INT_BIN: '-'? '0b' BIN+;
 FLOAT: '-'? ((DIGIT+ '.' DIGIT*) | (DIGIT* '.' DIGIT+)) ([eE][+\-]DIGIT+)? 'f'?;
 INTEGER: '-'? DIGIT+;
 
-DOT_NAME: ID ('::' ID)*;
-NON_DOT_NAME: ID;
+QUALIF_NAME: ID ('::' ID)*;
+BARE_NAME: ID;
 // IDs
 
 //////

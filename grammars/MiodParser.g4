@@ -2,15 +2,21 @@ parser grammar MiodParser;
 options {tokenVocab = MiodLexer; }
 
 compUnit: unitHeader unitBody?;
-unitHeader: docComments? UNIT name=DOT_NAME;
+unitHeader: annotation? UNIT name=QUALIF_NAME;
+
+annotation: ANNOTATE dictValue?;
+
+keyValue: BARE_NAME COLON literal;
+dictValue: DICT_BEG (keyValue (COMMA keyValue)*)? DICT_END;
+
 unitBody: globalStmts;
+
+globalStmts: globalStmt+;
 
 globalStmt: staticIf
     | globalDecl
-    | docComments
     ;
 
-globalStmts: globalStmt+;
 
 staticIf:
     //| STATIC_IF THEN  {notifyErrorListeners("const expr expected for static_if");}
@@ -25,19 +31,17 @@ globalDecl: constDecl
     | includeDecl
     ;
 
-constDecl: 
-    CONST NON_DOT_NAME (COLON typeSpec)? ASSIGN constExpr
-    ;
+constDecl: CONST constAssign (COMMA constAssign)*;
 
-constExpr: globalExpr;
+constAssign: BARE_NAME (COLON typeSpec)? ASSIGN constExpr;
 
-/// no function calls
-globalExpr: expr;
+/// semantic pass must check for proc calls
+constExpr: expr;
 
 expr: literal
     ;
 
-typeSpec: DOT_NAME; // add array etc
+typeSpec: QUALIF_NAME; // add array etc
 
 literal: NULL
     | INTEGER
@@ -45,7 +49,7 @@ literal: NULL
     | INT_HEX
     | INT_BIN
     | FLOAT
-    | DOT_NAME
+    | QUALIF_NAME
     | STRING
     | RAW_STRING
     | CHAR_STR
@@ -69,14 +73,10 @@ importDecl: IMPORT;
 
 includeDecl: INCLUDE STRING;
 
-docComments: DOC_COMMENT+;
+//docComments: DOC_COMMENT+;
 
 // endStmt: NEWLINE | EOF;
 
-annotation: ANNOTATE dictValue?;
-
-keyValue: NON_DOT_NAME COLON literal;
-dictValue: DICT_BEG (keyValue (COMMA keyValue)*)? DICT_END;
 
 forEachLoop: FOR varNames IN expr blockStmts? END_FOR;
 forLoop: FOR OPEN_BRACE varAssigns SEMICOLON loopActs SEMICOLON boolExpr CLOSE_BRACE;
@@ -84,8 +84,10 @@ forLoop: FOR OPEN_BRACE varAssigns SEMICOLON loopActs SEMICOLON boolExpr CLOSE_B
 loopActs: ;
 boolExpr: ;
 
-varNames: NON_DOT_NAME (',' NON_DOT_NAME)*;
+varNames: BARE_NAME (',' BARE_NAME)*;
 varAssigns: varAssign | varInitAssign (',' varAssign | varInitAssign)*;
-varAssign: NON_DOT_NAME ASSIGN expr;
-varInitAssign: NON_DOT_NAME COLON typeSpec ASSIGN expr;
+varAssign: BARE_NAME ASSIGN expr;
+varInitAssign: BARE_NAME COLON typeSpec ASSIGN expr;
 blockStmts:;
+
+
