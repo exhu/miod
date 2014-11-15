@@ -70,7 +70,8 @@ default, but there can be 'var' arguments, which are modifiable.
 
 Pointer usage is allowed for C targets 'opaque' types and extern procs.
 
-**Weak references** are of two kinds, a) watchable/checked, a proxy, can be implemented using a class instance, and b) optimized/unchecked.
+**Weak references** are of two kinds, a) watchable/checked, a proxy, can be
+implemented using a class instance, and b) optimized/unchecked.
 
 A checked reference is automatically nulled when class instance is freed (
 although at a cost of a proxy object), but the unchecked one is not (although
@@ -279,5 +280,44 @@ reflection, base object class, strong/weak references, debug features...
 
 However collections, Unicode, Network, Threads will be in separate packages.
 Along with standard collections there will be *intrusive lists* etc.
+
+
+
+Basic types
+-----------
+
+::
+
+    int8
+    int16
+    int32
+    int64
+    uint8
+    uint16
+    uint32
+    uint64 (unsupported?)
+    float32
+    float64
+    nchar
+    nstring
+    nwchar
+    nwstring
+    cardinal
+    range type
+    enum
+    enum<nstring>
+    enum<nwstring>
+    opaque
+    int
+    long
+    array<int>
+    array<int, 120>
+    String
+    proc()
+    proc(), class
+
+
+Type mappings to C/Java
+-----------------------
 
 

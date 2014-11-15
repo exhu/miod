@@ -57,8 +57,8 @@ module names, in expressions.
 *Clean IDs* -- identifiers without dots, used in var, const, proc, type
 declarations.
 
-Memory pooling
-~~~~~~~~~~~~~~
+Memory pooling (discarded)
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 New construct or special function and annotation to allocate arrays of
 objects sequentially::
