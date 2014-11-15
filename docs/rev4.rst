@@ -286,38 +286,122 @@ Along with standard collections there will be *intrusive lists* etc.
 Basic types
 -----------
 
-::
 
-    int8
-    int16
-    int32
-    int64
-    uint8
-    uint16
-    uint32
-    uint64 (unsupported?)
-    float32
-    float64
-    nchar
-    nstring
-    nwchar
-    nwstring
-    cardinal
-    range type
-    enum
-    enum<nstring>
-    enum<nwstring>
-    opaque
-    int
-    long
-    array<int>
-    array<int, 120>
-    String
-    proc()
-    proc(), class
+=============================  ====================================
+Type name                       Comments
+=============================  ====================================
+int8
+int16
+int32
+int64
+uint8
+uint16
+uint32
+uint64 (unsupported?)
+float32
+float64
+nchar                          only first 127 ASCII codes as
+                               literals are allowed
+nstring                         Immutable!
+nwchar                         only first 127 ASCII codes as
+                               literals are allowed
+nwstring                        Immutable!
+cardinal
+range type
+enum
+enum<nstring>
+enum<nwstring>
+
+opaque                          Used to simplify bindings, e.g.
+                                to describe type that is available
+                                in target language only. Requires
+                                annotations.
+int
+long
+array<int>                      Passed by reference to functions
+array<int, 120>
+String                          Immutable string class with
+                                hash code support
+proc()
+proc(), class                   Instance pointer is guarded as
+                                weakref in debug builds!
+
+float                           alias for float32
+double                          alias for float64
+=============================  ====================================
+
+Type mappings to Java
+---------------------
+
+=============================  =============================================
+Miod                            Java
+=============================  =============================================
+int8                            byte
+int16                           short
+int32                           int
+int64                           long
+uint8                           byte, extended to int in arithmetic 
+uint16                          short, extended to int in arithmetic
+uint32                          int, extended to long in arithmetic
+uint64 (unsupported?)           long, displays warning
+float32                         float
+float64                         double
+nchar                           char
+nstring                         String
+nwchar                          char
+nwstring                        String
+cardinal                        int, checked for under/overflow
+range type                      int, bounds are checked
+enum                            int
+enum<nstring>                   String
+enum<nwstring>                  String
+opaque                          class instance or plain type
+int                             int
+long                            long
+array<int>                      array object, cloned or set on assignment
+array<int, 120>                 array object, cloned or set on assignment
+String                          maps to String object, plus additional
+                                functions, like fromUtf8, toUtf8 etc.
+proc()                          Interface instance, which calls appropriate 
+                                proc.
+proc(), class                   Interface instance with instance field,
+                                which calls appropriate proc on instance.
+=============================  =============================================
+
+Type mappings to C
+------------------
 
 
-Type mappings to C/Java
------------------------
+=============================  =============================================
+Miod                            C
+=============================  =============================================
+int8                            char
+int16                           short
+int32                           int
+int64                           int64
+uint8                           unsigned char
+uint16                          unsigned short
+uint32                          unsigned int
+uint64 (unsupported?)           unsigned int64
+float32                         float
+float64                         double
+nchar                           char
+nstring                         char*
+nwchar                          wchar_t
+nwstring                        wchat_t*
+cardinal                        int, checked for under/overflow
+range type                      int, bounds checked
+enum                            int
+enum<nstring>                   char*
+enum<nwstring>                  wchar_t*
+opaque                          pointer to struct instance or plain type
+int                             int
+long                            long long
+array<int>                      Struct { int * ptr, int sz }
+array<int, 120>                 int arr[120], const int arr_sz = 120
+String                          maps to char*, plus lengths, utf8 functions.
+proc()                          plain function pointer
+proc(), class                   Struct { void (\*proc)(), void * inst }
+=============================  =============================================
 
 
