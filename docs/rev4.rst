@@ -286,10 +286,9 @@ Along with standard collections there will be *intrusive lists* etc.
 Basic types
 -----------
 
-
-=============================  ====================================
+=============================  ==============================================
 Type name                       Comments
-=============================  ====================================
+=============================  ==============================================
 int8
 int16
 int32
@@ -328,10 +327,16 @@ proc(), class                   Instance pointer is guarded as
 
 float                           alias for float32
 double                          alias for float64
-=============================  ====================================
+literal<nstring|nwstring>(l)    Returns identifier (unit, class, var,
+                                type, enum etc.) name as string
+weak<typename>                  Plain object instance pointer type in release
+weak_ref<typename>              WeakRef<> in debug/release
+=============================  ==============================================
 
-Type mappings to Java
----------------------
+
+
+Type/expression mappings to Java
+--------------------------------
 
 =============================  =============================================
 Miod                            Java
@@ -366,11 +371,16 @@ proc()                          Interface instance, which calls appropriate
                                 proc.
 proc(), class                   Interface instance with instance field,
                                 which calls appropriate proc on instance.
+literal<nstring|nwstring>(l)     String "l"
+weak<typename>                  WeakRef<> in debug
+weak_ref<typename>              WeakRef<> in debug/release
 =============================  =============================================
 
-Type mappings to C
-------------------
 
+
+
+Type/expression mappings to C
+-----------------------------
 
 =============================  =============================================
 Miod                            C
@@ -402,6 +412,9 @@ array<int, 120>                 int arr[120], const int arr_sz = 120
 String                          maps to char*, plus lengths, utf8 functions.
 proc()                          plain function pointer
 proc(), class                   Struct { void (\*proc)(), void * inst }
+literal<nstring|nwstring>(l)    char* | wchar_t*
+weak<typename>                  weak reference with checks in debug
+weak_ref<typename>              weak reference with checks in debug/release
 =============================  =============================================
 
 
