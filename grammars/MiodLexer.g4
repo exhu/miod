@@ -69,6 +69,8 @@ MEMBER_ACCESS: '.';
 FOR: 'for';
 IN: 'in';
 END_FOR: 'end_for';
+CAST: 'cast'; // checked only in debug
+CAST_INSTANCE: 'cast_inst'; // checked cast, null if not that class
 
 
 // literals

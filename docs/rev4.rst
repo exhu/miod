@@ -331,6 +331,11 @@ literal<nstring|nwstring>(l)    Returns identifier (unit, class, var,
                                 type, enum etc.) name as string
 weak<typename>                  Plain object instance pointer type in release
 weak_ref<typename>              WeakRef<> in debug/release
+cast<typename>(a)               Converts type, if typename == class, then
+                                returns null in debug mode if 'a' is not a
+                                descendant of 'typename'. May crash in release.
+cast_inst<class>(a)             Checks if 'a' is 'class' descendant, returns
+                                null otherwise.
 =============================  ==============================================
 
 
