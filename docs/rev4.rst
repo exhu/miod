@@ -449,3 +449,11 @@ Debug/Release differences
 
 
 
+
+Type promotions, inference, convertions
+---------------------------------------
+
+Floats and integers cannot be mixed in arithmetic expressions, explicit
+type casts are required.
+
+
