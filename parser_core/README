@@ -1,0 +1,2 @@
+Core AST builder (lexer, parser), reusable for compiler and code analysis.
+
