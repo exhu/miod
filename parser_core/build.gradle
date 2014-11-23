@@ -1,0 +1,13 @@
+// todo
+apply plugin: 'java'
+
+// ../javalibs/*jar -- deps
+// ../grammars/*g4 - grammars
+
+antlrJar = 'antlr-4.4-complete.jar'
+
+dependencies {
+
+}
+
+
