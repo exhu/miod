@@ -4,7 +4,7 @@ apply plugin: 'java'
 // ../javalibs/*jar -- deps
 // ../grammars/*g4 - grammars
 
-def antlrJar = 'antlr-4.4-complete.jar'
+def antlrJar = '../javalibs/antlr-4.4-complete.jar'
 
 
 repositories {
@@ -14,7 +14,12 @@ repositories {
 }
 
 dependencies {
-    compile name:'antlr-4.4-complete'
+    // compile name:'antlr-4.4-complete'
+    compile files(antlrJar)
 }
 
+
+task genParser << {
+    println 'todo: generate using antlr'
+}
 
