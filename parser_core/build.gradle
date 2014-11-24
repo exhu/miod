@@ -6,8 +6,15 @@ apply plugin: 'java'
 
 def antlrJar = 'antlr-4.4-complete.jar'
 
+
+repositories {
+    flatDir {
+        dirs '../javalibs'
+    }
+}
+
 dependencies {
-    runtime files('../javalibs/$antlrJar')
+    compile name:'antlr-4.4-complete'
 }
 
 
