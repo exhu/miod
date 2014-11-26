@@ -19,7 +19,15 @@ dependencies {
 }
 
 
-task genParser << {
-    println 'todo: generate using antlr'
+task genParser(type: Exec) {
+    //println 'todo: generate using antlr'
+    // TODO antlr classpath and possible java exec
+
+    def genout = "src/main/java/org/miod/generated/"
+    def lexer = file("../grammars/MiodLexer.g4")
+    def parser = file("../grammars/MiodParser.g4")
+
+
+    commandLine 'java', 'org.antlr.v4.Tool', "-package org.miod.generated -o $genout $lexer $parser"
 }
 
