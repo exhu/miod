@@ -7,4 +7,5 @@ ANTLR v4 will be used to implement the translator.
 
 parser_core -- common lexer/parser
 
+Copy antlr-4.4-complete.jar to javalibs.
 Build using Gradle.
