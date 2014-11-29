@@ -247,6 +247,11 @@ Destructors are not guaranteed to execute as well, i.e. if target language
 is Java and no reference-counting is used.
 
 
+'const' vs 'let'
+----------------
+
+A *const* declares a value which is placed on use, *let* declares a read-only
+variable.
 
 
 'Finally' without a 'try'?
