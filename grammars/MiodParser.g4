@@ -6,7 +6,7 @@ unitHeader: annotation? UNIT name=QUALIF_NAME;
 
 annotation: ANNOTATE dictValue?;
 
-keyValue: BARE_NAME COLON literal;
+keyValue: literal COLON literal;
 dictValue: DICT_BEG (keyValue (COMMA keyValue)*)? DICT_END;
 
 unitBody: globalStmts;
@@ -29,7 +29,10 @@ globalDecl: constDecl
     | typeDecl
     | importDecl
     | includeDecl
+    | visibilityStmt
     ;
+
+visibilityStmt: PRIVATE | PROTECTED | PUBLIC;
 
 constDecl: CONST constAssign (COMMA constAssign)*;
 
@@ -79,7 +82,7 @@ includeDecl: INCLUDE STRING;
 
 
 forEachLoop: FOR varNames IN expr blockStmts? END_FOR;
-forLoop: FOR OPEN_BRACE varAssigns SEMICOLON loopActs SEMICOLON boolExpr CLOSE_BRACE;
+forLoop: FOR OPEN_BRACE varAssigns SEMICOLON loopActs SEMICOLON boolExpr CLOSE_BRACE blockStmts? END_FOR;
 
 loopActs: ;
 boolExpr: ;
@@ -88,6 +91,7 @@ varNames: BARE_NAME (',' BARE_NAME)*;
 varAssigns: varAssign | varInitAssign (',' varAssign | varInitAssign)*;
 varAssign: BARE_NAME ASSIGN expr;
 varInitAssign: BARE_NAME COLON typeSpec ASSIGN expr;
+
 blockStmts:;
 
 

@@ -6,7 +6,7 @@ Version 1 features
 - structs
 - unions
 - global vars
-- cprocs
+- cprocs (@_cattr)
 - static packages
 - cstrings
 
