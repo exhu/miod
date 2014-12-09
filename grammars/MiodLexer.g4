@@ -65,6 +65,8 @@ WITH: 'with';
 END_WITH: 'end_with';
 OPEN_BRACE: '(';
 CLOSE_BRACE: ')';
+ARRAY_BEG: '[';
+ARRAY_END: ']';
 MEMBER_ACCESS: '.';
 FOR: 'for';
 IN: 'in';

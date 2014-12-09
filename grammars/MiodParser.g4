@@ -4,14 +4,12 @@ options {tokenVocab = MiodLexer; }
 compUnit: unitHeader unitBody?;
 unitHeader: annotation? UNIT name=QUALIF_NAME;
 
-annotation: ANNOTATE dictValue?;
+annotation: ANNOTATE structInitValue?;
 
-keyValue: literal COLON literal;
-dictValue: DICT_BEG (keyValue (COMMA keyValue)*)? DICT_END;
+structFieldValue: BARE_NAME COLON expr;
+structInitValue: DICT_BEG (structFieldValue (COMMA structFieldValue)*)? DICT_END;
 
-unitBody: globalStmts;
-
-globalStmts: globalStmt+;
+unitBody: globalStmt+;
 
 globalStmt: staticIf
     | globalDecl
@@ -21,7 +19,7 @@ globalStmt: staticIf
 staticIf:
     //| STATIC_IF THEN  {notifyErrorListeners("const expr expected for static_if");}
     //| 
-    STATIC_IF constExpr THEN globalStmts? (ELSE globalStmts?)? ENDIF;
+    STATIC_IF expr THEN globalStmt* (ELSE globalStmt*)? ENDIF;
 
 globalDecl: constDecl
     | varDecl
@@ -36,13 +34,18 @@ visibilityStmt: PRIVATE | PROTECTED | PUBLIC;
 
 constDecl: CONST constAssign (COMMA constAssign)*;
 
-constAssign: BARE_NAME (COLON typeSpec)? ASSIGN constExpr;
-
-/// semantic pass must check for proc calls
-constExpr: expr;
+constAssign: BARE_NAME (COLON typeSpec)? ASSIGN expr;
 
 expr: literal
+    | QUALIF_NAME
+    | dictValue
+    | arrayValue
     ;
+
+keyValue: expr COLON expr;
+dictValue: DICT_BEG keyValue (COMMA keyValue)* DICT_END;
+
+arrayValue: ARRAY_BEG expr (COMMA expr)* ARRAY_END;
 
 typeSpec: QUALIF_NAME; // add array etc
 
@@ -52,7 +55,6 @@ literal: NULL
     | INT_HEX
     | INT_BIN
     | FLOAT
-    | QUALIF_NAME
     | STRING
     | RAW_STRING
     | CHAR_STR
@@ -72,7 +74,7 @@ procDecl: PROC;
 
 typeDecl: TYPE;
 
-importDecl: IMPORT;
+importDecl: IMPORT name=QUALIF_NAME;
 
 includeDecl: INCLUDE STRING;
 
