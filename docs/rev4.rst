@@ -461,4 +461,16 @@ Type promotions, inference, convertions
 Floats and integers cannot be mixed in arithmetic expressions, explicit
 type casts are required.
 
+Type declarations like 'type mytype = int' introduce a distinct type, which
+emits warnings if automatic conversion from 'int' is used, e.g.
+::
+
+    type IOMask = int32
+    IOMaskFlags = enum<IOMask>
+        read = 0x1,
+        write = 0x2,
+        append = 0x4,
+    end_enum
+
+    var m: IOMask = 3  # generated warning
 
