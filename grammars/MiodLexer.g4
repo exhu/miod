@@ -65,6 +65,7 @@ WITH: 'with';
 END_WITH: 'end_with';
 OPEN_BRACE: '(';
 CLOSE_BRACE: ')';
+ARRAY: 'array';
 ARRAY_BEG: '[';
 ARRAY_END: ']';
 MEMBER_ACCESS: '.';
@@ -76,6 +77,7 @@ CAST_INSTANCE: 'cast_inst'; // checked cast, null if not that class
 PRIVATE: 'private';
 PROTECTED: 'protected';
 PUBLIC: 'public';
+NEW: 'new';
 
 
 // literals

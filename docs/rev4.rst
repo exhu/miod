@@ -250,8 +250,15 @@ is Java and no reference-counting is used.
 'const' vs 'let'
 ----------------
 
-A *const* declares a value which is placed on use, *let* declares a read-only
-variable.
+A *const* declares a value which can be placed verbatim at the places it's
+used (e.g. for integer literals), *let* declares a read-only variable with
+allocated storage.
+
+A *const*, *var* value must be evaluated during compilation if it is
+global. *const* in procedure body must also be evaluatable during compilation.
+Only embedded operators/procs are allowed for *const*.
+
+*let* is not allowed in the global scope for it makes no sense here.
 
 
 'Finally' without a 'try'?
