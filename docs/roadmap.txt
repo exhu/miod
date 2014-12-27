@@ -4,7 +4,7 @@ Version 1 features
 - procs with local vars
 - visibility levels (public, protected, private)
 - structs
-- unions
+- unions via opaque
 - global vars
 - cprocs (@_cattr)
 - static packages
