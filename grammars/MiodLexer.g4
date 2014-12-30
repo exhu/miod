@@ -15,7 +15,9 @@ JOIN_LINE: '\\' NEWLINE -> skip;
 
 
 // keywords
-CONST: 'const';
+//CONST: 'const';
+//LET: 'let';
+FINAL: 'final';
 VAR: 'var';
 PROC: 'proc';
 EXTERN: 'extern';
@@ -50,7 +52,6 @@ NULL: 'null';
 TRUE: 'true';
 FALSE: 'false';
 ALIAS: 'alias';
-LET: 'let';
 FINALLY: 'finally'; // code block run at leaving scope
 END_FINALLY: 'end_finally';
 STRUCT: 'struct';
@@ -78,6 +79,8 @@ PRIVATE: 'private';
 PROTECTED: 'protected';
 PUBLIC: 'public';
 NEW: 'new';
+OVERRIDE: 'override';
+VIRTUAL: 'virtual';
 
 
 // literals

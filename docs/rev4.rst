@@ -246,9 +246,17 @@ supported too. All fields are initialized to zeroes.
 Destructors are not guaranteed to execute as well, i.e. if target language
 is Java and no reference-counting is used.
 
+'final'
+-------
 
-'const' vs 'let'
-----------------
+'final' modifier declares a variable as a constant. If used with a method
+or class, it forbids derived classes and/or methods.
+
+'const' vs 'let' -- deprecated
+------------------------------
+
+Former idea was to implement them as constant modifiers. Now they are
+not used. Use 'final' instead.
 
 A *const* declares a value which can be placed verbatim at the places it's
 used (e.g. for integer literals), *let* declares a read-only variable with
@@ -261,7 +269,7 @@ Only embedded operators/procs are allowed for *const*.
 *let* is not allowed in the global scope for it makes no sense here.
 
 
-'Finally' without a 'try'?
+'finally' without a 'try'?
 --------------------------
 
 Although there's no *try* keyword and exceptions support, there is a
