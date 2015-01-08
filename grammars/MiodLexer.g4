@@ -81,6 +81,7 @@ PUBLIC: 'public';
 NEW: 'new';
 OVERRIDE: 'override';
 VIRTUAL: 'virtual';
+ABSTRACT: 'abstract';
 
 
 // literals
