@@ -66,9 +66,9 @@ arrayVariant: type = QUALIF_NAME    # unknownSizeArray
 varDecl: VAR;
 
 procVarDecl: varDecl
-    | letDecl;
+    | finalDecl;
 
-letDecl: LET;
+finalDecl: FINAL;
 
 procDecl: PROC;
 

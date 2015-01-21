@@ -15,8 +15,7 @@ JOIN_LINE: '\\' NEWLINE -> skip;
 
 
 // keywords
-//CONST: 'const';
-//LET: 'let';
+CONST: 'const';
 FINAL: 'final';
 VAR: 'var';
 PROC: 'proc';

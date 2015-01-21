@@ -249,24 +249,14 @@ is Java and no reference-counting is used.
 'final'
 -------
 
-'final' modifier declares a variable as a constant. If used with a method
-or class, it forbids derived classes and/or methods.
+'final' used with a method or class forbids derived classes and/or methods.
 
-'const' vs 'let' -- deprecated
-------------------------------
+'const'
+-------
 
-Former idea was to implement them as constant modifiers. Now they are
-not used. Use 'final' instead.
-
-A *const* declares a value which can be placed verbatim at the places it's
-used (e.g. for integer literals), *let* declares a read-only variable with
-allocated storage.
-
-A *const*, *var* value must be evaluated during compilation if it is
-global. *const* in procedure body must also be evaluatable during compilation.
-Only embedded operators/procs are allowed for *const*.
-
-*let* is not allowed in the global scope for it makes no sense here.
+Declares a variable as immutable. For simple types it can even place
+values verbatim at places where the constant is used (compiler implementation
+specific).
 
 
 'finally' without a 'try'?
