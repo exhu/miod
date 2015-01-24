@@ -72,6 +72,8 @@ MEMBER_ACCESS: '.';
 FOR: 'for';
 IN: 'in';
 END_FOR: 'end_for';
+WHILE: 'while';
+END_WHILE: 'end_while';
 CAST: 'cast'; // checked only in debug
 CAST_INSTANCE: 'cast_inst'; // checked cast, null if not that class
 PRIVATE: 'private';

@@ -83,10 +83,13 @@ includeDecl: INCLUDE STRING;
 // endStmt: NEWLINE | EOF;
 
 
-forEachLoop: FOR varNames IN expr blockStmts? END_FOR;
-forLoop: FOR OPEN_BRACE varAssigns SEMICOLON loopActs SEMICOLON boolExpr CLOSE_BRACE blockStmts? END_FOR;
+forEachLoop: FOR OPEN_BRACE varNames IN expr CLOSE_BRACE blockStmts? END_FOR;
+//forLoop: FOR OPEN_BRACE varAssigns SEMICOLON loopActs SEMICOLON
+//    boolExpr CLOSE_BRACE blockStmts? END_FOR;
 
-loopActs: ;
+whileLoop: WHILE OPEN_BRACE boolExpr CLOSE_BRACE blockStmts? END_WHILE;
+
+//loopActs: ;
 boolExpr: ;
 
 varNames: BARE_NAME (COMMA BARE_NAME)*;
@@ -98,9 +101,9 @@ varDeclPart: BARE_NAME | varAssign | varInitAssign;
 
 localDecl: VAR | CONST varDeclPart (COMMA varDeclPart)*;
 
+blockStmts: blockStmt+;
 blockStmt: localDecl;
 
-blockStmts: blockStmt+;
 
 
 literal: NULL

@@ -486,3 +486,23 @@ emits warnings if automatic conversion from 'int' is used, e.g.
 
     var m: IOMask = 3  # generated warning
 
+
+Loops and Iterators
+-------------------
+
+'for' '(' item[, index]? in collection ')' statements 'end_for'
+
+For general collections one should use the following *iterator pattern*.
+An iterator is a class with a proc 'next' of boolean return value,
+proc 'item' of element type. Optionally there can be a 'reset' proc to
+reiterate after applying modifications to the collection.
+
+An iterator is initialized to invalid (-1) item, so that 'next' must be called
+before the first element is available in 'item'.
+::
+
+    while(it.next())
+        print(it.item())
+    end_while
+
+
