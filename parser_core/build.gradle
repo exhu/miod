@@ -1,4 +1,4 @@
-// todo
+
 apply plugin: 'java'
 
 // ../javalibs/*jar -- deps
@@ -20,8 +20,7 @@ dependencies {
 
 
 task genParser(type: JavaExec) {
-    //println 'todo: generate using antlr'
-    // TODO antlr classpath and possible java exec
+    // generate using antlr'
 
     def genout = "src/main/java/org/miod/generated/"
     def lexer = file("../grammars/MiodLexer.g4")
