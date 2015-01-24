@@ -281,6 +281,13 @@ enclosing scope::
     end
 
 
+'private', 'protected', 'public'
+--------------------------------
+
+*Private* symbols are accessible only from the same compilation unit.
+*Protected* symbols are visible to the units within the same level (dot-path).
+*Public* symbols can be used from everywhere. 
+
 Standard library
 ----------------
 

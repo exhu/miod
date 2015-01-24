@@ -19,8 +19,8 @@ staticIf:
     //| 
     STATIC_IF constExpr THEN globalStmt* (ELSE globalStmt*)? ENDIF;
 
-globalDecl: constDecl
-    | varDecl
+globalDecl: globalConstDecl
+    | globalVarDecl
     | procDecl
     | typeDecl
     | importDecl
@@ -30,8 +30,8 @@ globalDecl: constDecl
 
 visibilityStmt: PRIVATE | PROTECTED | PUBLIC;
 
-constDecl: CONST constAssign (COMMA constAssign)*;
-
+globalConstDecl: CONST constAssign (COMMA constAssign)*;
+globalVarDecl: VAR constAssign (COMMA constAssign)*;
 constAssign: BARE_NAME (COLON typeSpec)? ASSIGN constExpr;
 
 expr: literal
@@ -89,13 +89,18 @@ forLoop: FOR OPEN_BRACE varAssigns SEMICOLON loopActs SEMICOLON boolExpr CLOSE_B
 loopActs: ;
 boolExpr: ;
 
-varNames: BARE_NAME (',' BARE_NAME)*;
-varAssigns: varAssign | varInitAssign (',' varAssign | varInitAssign)*;
+varNames: BARE_NAME (COMMA BARE_NAME)*;
+varAssigns: varAssign | varInitAssign (COMMA varAssign | varInitAssign)*;
 varAssign: BARE_NAME ASSIGN expr;
 varInitAssign: BARE_NAME COLON typeSpec ASSIGN expr;
 
+varDeclPart: BARE_NAME | varAssign | varInitAssign;
 
-blockStmts:;
+localDecl: VAR | CONST varDeclPart (COMMA varDeclPart)*;
+
+blockStmt: localDecl;
+
+blockStmts: blockStmt+;
 
 
 literal: NULL
