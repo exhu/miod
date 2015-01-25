@@ -39,6 +39,8 @@ expr: literal
     | dictValue
     | arrayValue
     | structValue
+    | boolExpr
+    | arithmExpr
     ;
 
 // dictionary initialization value part
@@ -78,31 +80,44 @@ importDecl: IMPORT name=QUALIF_NAME;
 
 includeDecl: INCLUDE STRING;
 
-//docComments: DOC_COMMENT+;
-
-// endStmt: NEWLINE | EOF;
-
 
 forEachLoop: FOR OPEN_BRACE varNames IN expr CLOSE_BRACE blockStmts? END_FOR;
-//forLoop: FOR OPEN_BRACE varAssigns SEMICOLON loopActs SEMICOLON
-//    boolExpr CLOSE_BRACE blockStmts? END_FOR;
+varNames: BARE_NAME (COMMA BARE_NAME)*;
 
 whileLoop: WHILE OPEN_BRACE boolExpr CLOSE_BRACE blockStmts? END_WHILE;
 
-//loopActs: ;
-boolExpr: ;
+boolExpr: QUALIF_NAME
+    | TRUE
+    | FALSE
+    | procCall
+    | NOT boolExpr
+    | AND boolExpr
+    | OR boolExpr
+    | EQUALS // TODO rewrite as boolExpr EQUALS boolExpr
+    | NOT_EQ
+    | LESS
+    | GREATER
+    | LESS_EQ
+    | GREATER_EQ;
 
-varNames: BARE_NAME (COMMA BARE_NAME)*;
-varAssigns: varAssign | varInitAssign (COMMA varAssign | varInitAssign)*;
+procCall: ;
+
+arithmExpr: ;
+
+// subrules for variable/const decl:
 varAssign: BARE_NAME ASSIGN expr;
 varInitAssign: BARE_NAME COLON typeSpec ASSIGN expr;
 
 varDeclPart: BARE_NAME | varAssign | varInitAssign;
 
+// varialbe/const declaration:
 localDecl: VAR | CONST varDeclPart (COMMA varDeclPart)*;
 
 blockStmts: blockStmt+;
-blockStmt: localDecl;
+blockStmt: localDecl
+    | BREAK
+    | CONTINUE
+    | RETURN;
 
 
 

@@ -19,6 +19,7 @@ CONST: 'const';
 FINAL: 'final';
 VAR: 'var';
 PROC: 'proc';
+RETURN: 'return';
 EXTERN: 'extern';
 END_PROC: 'end';
 IMPORT: 'import';
@@ -44,6 +45,10 @@ AND: 'and';
 XOR: '^'; // only binary
 EQUALS: '==';
 NOT_EQ: '!=';
+LESS: '<';
+GREATER: '>';
+LESS_EQ: '<=';
+GREATER_EQ: '>=';
 ASSIGN: '=';
 SHL: 'shl';
 SHR: 'shr';
@@ -74,6 +79,8 @@ IN: 'in';
 END_FOR: 'end_for';
 WHILE: 'while';
 END_WHILE: 'end_while';
+BREAK: 'break';
+CONTINUE: 'continue';
 CAST: 'cast'; // checked only in debug
 CAST_INSTANCE: 'cast_inst'; // checked cast, null if not that class
 PRIVATE: 'private';
