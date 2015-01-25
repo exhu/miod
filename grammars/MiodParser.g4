@@ -35,7 +35,7 @@ globalVarDecl: VAR constAssign (COMMA constAssign)*;
 constAssign: BARE_NAME (COLON typeSpec)? ASSIGN constExpr;
 
 expr: literal
-    | QUALIF_NAME
+    | memberAccess
     | dictValue
     | arrayValue
     | structValue
@@ -86,23 +86,31 @@ varNames: BARE_NAME (COMMA BARE_NAME)*;
 
 whileLoop: WHILE OPEN_BRACE boolExpr CLOSE_BRACE blockStmts? END_WHILE;
 
-boolExpr: QUALIF_NAME
+boolExpr: boolVal boolRest?;
+
+boolRest: EQUALS boolExpr
+    | NOT_EQ boolExpr
+    | LESS boolExpr
+    | GREATER boolExpr
+    | LESS_EQ boolExpr
+    | GREATER_EQ boolExpr;
+
+boolVal: memberAccess
     | TRUE
     | FALSE
     | procCall
     | NOT boolExpr
     | AND boolExpr
     | OR boolExpr
-    | EQUALS // TODO rewrite as boolExpr EQUALS boolExpr
-    | NOT_EQ
-    | LESS
-    | GREATER
-    | LESS_EQ
-    | GREATER_EQ;
+    ;
 
-procCall: ;
+memberAccess: QUALIF_NAME (MEMBER_ACCESS memberAccess)?;
 
-arithmExpr: ;
+procCall: memberAccess OPEN_BRACE procCallArgs? CLOSE_BRACE;
+
+procCallArgs: expr (COMMA expr)*;
+
+arithmExpr: MUL;
 
 // subrules for variable/const decl:
 varAssign: BARE_NAME ASSIGN expr;
