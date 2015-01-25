@@ -1,6 +1,10 @@
 parser grammar MiodParser;
 options {tokenVocab = MiodLexer; }
 
+// TODO remove global/local const/var rules
+// todo fix associativity
+
+
 compUnit: unitHeader unitBody?;
 unitHeader: annotation? UNIT name=QUALIF_NAME;
 
@@ -8,16 +12,16 @@ annotation: ANNOTATE structValue?;
 
 unitBody: globalStmt+;
 
-globalStmt: staticIf
+globalStmt: globalStaticIf
     | globalDecl
     ;
 
 constExpr: expr; // to mark semantic difference at certain places
 
-staticIf:
+globalStaticIf:
     //| STATIC_IF THEN  {notifyErrorListeners("const expr expected for static_if");}
     //| 
-    STATIC_IF constExpr THEN globalStmt* (ELSE globalStmt*)? ENDIF;
+    STATIC_IF boolExpr THEN globalStmt* (ELSE globalStmt*)? END_IF;
 
 globalDecl: globalConstDecl
     | globalVarDecl
@@ -41,7 +45,18 @@ expr: literal
     | structValue
     | boolExpr
     | arithmExpr
+    | procCall
     ;
+
+
+arithmAtom: literal | memberAccess | procCall;
+    
+arithmExpr: MINUS arithmExpr 
+    | arithmAtom ((PLUS|MINUS|MUL|DIV|MOD|BNOT|BOR|BAND|XOR|SHL|SHR)
+        arithmExpr)?
+    
+    ;
+
 
 // dictionary initialization value part
 keyValue: expr COLON expr;
@@ -96,8 +111,7 @@ boolRest: EQUALS boolExpr
     | GREATER_EQ boolExpr;
 
 boolVal: memberAccess
-    | TRUE
-    | FALSE
+    | literal
     | procCall
     | NOT boolExpr
     | AND boolExpr
@@ -110,7 +124,6 @@ procCall: memberAccess OPEN_BRACE procCallArgs? CLOSE_BRACE;
 
 procCallArgs: expr (COMMA expr)*;
 
-arithmExpr: MUL;
 
 // subrules for variable/const decl:
 varAssign: BARE_NAME ASSIGN expr;
@@ -125,9 +138,22 @@ blockStmts: blockStmt+;
 blockStmt: localDecl
     | BREAK
     | CONTINUE
-    | RETURN;
+    | RETURN
+    | forEachLoop
+    | whileLoop
+    | procCall
+    | assignment
+    | finallyBlock
+    | ifStatement
+    | staticIfStatement
+    ;
 
+assignment: memberAccess ASSIGN expr;
 
+finallyBlock: FINALLY blockStmts END_FINALLY;
+
+ifStatement: IF boolExpr THEN blockStmts? (ELSE blockStmts?)? END_IF;
+staticIfStatement: STATIC_IF boolExpr THEN blockStmts? (ELSE blockStmts?)? END_IF;
 
 literal: NULL
     | INTEGER

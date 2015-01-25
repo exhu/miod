@@ -29,7 +29,7 @@ STATIC_IF: 'static_if';
 IF: 'if';
 THEN: 'then';
 ELSE: 'else';
-ENDIF: 'end_if';
+END_IF: 'end_if';
 UNIT: 'unit';
 PLUS: '+';
 MINUS: '-';
