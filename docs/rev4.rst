@@ -506,3 +506,20 @@ before the first element is available in 'item'.
     end_while
 
 
+
+'alias' keyword
+---------------
+
+Can be used with types and fully-qualified names as a shortcut. However it is
+not a plain substitution, the introduced alternative name is bound to the
+scope where it is defined.
+
+::
+    
+    unit org.prog.consts
+    alias int = int32 # every 'int' will be replaced by 'int32'
+    alias consts = org.prog.consts # this makes a 'consts.usualFlag' possible
+    const emptyFlag = 0, usualFlag = 3
+    
+
+
