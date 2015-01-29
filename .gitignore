@@ -15,3 +15,9 @@
 /testc1/TestC1Def.tokens
 /testc1/src/testc1/TestC1Def.g
 /testc1/src/testc1/TestC1Def.java
+/parser_core/.nb-gradle/private/
+/parser_core/.gradle
+/parser_core/src/main/java/org/miod/generated/*java
+/parser_core/src/main/java/org/miod/generated/*tokens
+
+

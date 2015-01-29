@@ -90,6 +90,7 @@ NEW: 'new';
 OVERRIDE: 'override';
 VIRTUAL: 'virtual';
 ABSTRACT: 'abstract';
+ENUM: 'enum';
 
 
 // literals
