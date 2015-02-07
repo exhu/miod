@@ -1,2 +1,3 @@
-Core AST builder (lexer, parser), reusable for compiler and code analysis.
+lexer_parser = generated antlr lexer and parser
+miod_parser = Core AST builder reusable for compiler and code analysis.
 
