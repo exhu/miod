@@ -6,16 +6,20 @@ apply plugin: 'java'
 
 def antlrJar = '../../javalibs/antlr-4.4-complete.jar'
 
+jar.enabled = false
 
+/*
 repositories {
     flatDir {
         dirs '../../javalibs'
     }
 }
+*/
 
 dependencies {
     // compile name:'antlr-4.4-complete'
     compile files(antlrJar)
+    //runtime files(antlrJar)
 }
 
 def genSourcesDir = file("$buildDir/generated-src/org/miod/parser/generated")
