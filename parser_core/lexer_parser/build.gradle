@@ -4,22 +4,19 @@ apply plugin: 'java'
 // ../javalibs/*jar -- deps
 // ../grammars/*g4 - grammars
 
-def antlrJar = '../../javalibs/antlr-4.4-complete.jar'
+//def antlrJar = '../../javalibs/antlr-4.4-complete.jar'
 
 jar.enabled = false
 
-/*
 repositories {
     flatDir {
         dirs '../../javalibs'
     }
 }
-*/
 
 dependencies {
-    // compile name:'antlr-4.4-complete'
-    compile files(antlrJar)
-    //runtime files(antlrJar)
+    compile 'antlr:antlr:4.4:complete'
+    runtime 'antlr:antlr:4.4:complete'
 }
 
 def genSourcesDir = file("$buildDir/generated-src/org/miod/parser/generated")
@@ -29,7 +26,6 @@ task generateSources(type: JavaExec) {
     outputs.dir outputDir
     doFirst {
         outputDir.exists() || outputDir.mkdirs()
-        
     }
     // generate using antlr'
 
@@ -37,7 +33,7 @@ task generateSources(type: JavaExec) {
     def lexer = file("grammars/MiodLexer.g4")
     def parser = file("grammars/MiodParser.g4")
 
-    classpath antlrJar
+    classpath configurations.runtime.asPath //antlrJar
     main 'org.antlr.v4.Tool'
     args "-package", "org.miod.parser.generated", "-o", "$genout", "$lexer", "$parser"
 }
