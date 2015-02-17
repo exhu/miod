@@ -15,27 +15,26 @@ repositories {
 }
 
 dependencies {
-    compile 'antlr:antlr:4.4:complete'
-    runtime 'antlr:antlr:4.4:complete'
+    compile 'antlr:antlr:4.+:complete'
+    runtime 'antlr:antlr:4.+:complete'
 }
 
 def genSourcesDir = file("$buildDir/generated-src/org/miod/parser/generated")
 
 task generateSources(type: JavaExec) {
-    def outputDir = genSourcesDir
-    outputs.dir outputDir
+    def lexer = file("grammars/MiodLexer.g4")
+    def parser = file("grammars/MiodParser.g4")
+    inputs.files(lexer, parser)
+    outputs.dir genSourcesDir
     doFirst {
-        outputDir.exists() || outputDir.mkdirs()
+        genSourcesDir.exists() || genSourcesDir.mkdirs()
     }
     // generate using antlr'
 
-    def genout = outputDir
-    def lexer = file("grammars/MiodLexer.g4")
-    def parser = file("grammars/MiodParser.g4")
-
     classpath configurations.runtime.asPath //antlrJar
     main 'org.antlr.v4.Tool'
-    args "-package", "org.miod.parser.generated", "-o", "$genout", "$lexer", "$parser"
+    args "-package", "org.miod.parser.generated", "-o", "$genSourcesDir",
+        "$lexer", "$parser"
 }
 
 compileJava.dependsOn generateSources
