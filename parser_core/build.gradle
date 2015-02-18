@@ -2,14 +2,19 @@ apply plugin: 'java'
 
 evaluationDependsOn 'lexer_parser'
 
+repositories {
+    flatDir {
+        dirs '../../javalibs'
+    }
+}
+
 dependencies {
     compile project(':lexer_parser')
-    //compile project(':parser_core:miod_parser')
+    testCompile 'testng:testng:6.+'
 }
 
 //jar(type:Jar, dependsOn: ':lexer_parser:compileJava') { 
 jar {
     dependsOn ':lexer_parser:compileJava'
-    //println project(':lexer_parser').tasks
     from project(':lexer_parser').sourceSets.main.output
 }
