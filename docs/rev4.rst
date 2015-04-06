@@ -521,6 +521,34 @@ before the first element is available in 'item'.
     end_while
 
 
+GCC -O1 perfectly optimizes struct with item(), next() when they are static,
+so creating a proc which returns a structure and has next/item methods
+equals to for(int a = 0; a < 16; a+=2). This way we can write:
+::
+
+    type IrangeLoop = struct
+        counter, step, max: int
+
+        proc next(): bool, inline
+            var r = counter < max
+            if r then 
+                counter += step
+            end_of
+            return r
+        end_struct
+
+        proc item(): int, inline
+            return counter
+        end_proc
+
+    proc irange(int from, int to, int step): IrangeLoop
+        var lp: IrangeLoop
+        lp.counter = from - step;
+        lp.step = step
+        lp.max = to
+        return lp
+    end_proc
+
 
 'alias' keyword
 ---------------
@@ -533,7 +561,7 @@ scope where it is defined.
     
     unit org::prog::consts
     alias int = int32 # every 'int' will be replaced by 'int32'
-    alias consts = org::prog::consts # this makes a 'consts.usualFlag' possible
+    alias consts = org::prog::consts # this makes a 'consts::usualFlag' possible
     const emptyFlag = 0, usualFlag = 3
     
 
