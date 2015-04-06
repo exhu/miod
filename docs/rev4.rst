@@ -523,3 +523,9 @@ scope where it is defined.
     
 
 
+Error handling
+--------------
+
+Traditional exceptions are not implemented in the language. A procedure which
+can return invalid data must support returning error info via an argument.
+If argument is null then program must terminate displaying appropriate message.
