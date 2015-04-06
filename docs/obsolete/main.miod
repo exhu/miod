@@ -1,12 +1,9 @@
 unit myprog::hello
 import c::stdio
-import myprog::rect
 
 alias stdio = c::stdio
 
 alias log = stdio::printf
-alias rect = myprog::rect
-alias Rect = rect::Rect
 
 const
     scrRect: Rect = {x: 0, y:0, w: 640, h: 480}
@@ -28,16 +25,21 @@ long comments
 # hidden 'length' parameter is passed with arrays
 proc some_ar(a: array<int>)
     for v,i in a do
-        log("item value = %i, at %i\n", v, i)
+        print("item value = %i, at %i\n", v, i)
     end_for
 end
 
+# proposed for future:
+proc some_buf(b: ptr<int>, len: cardinal)
+    var ab = cast<ptr<array<int,len>>(b) 
+end
 
 var
     dynAr: DynArray<Pair>
     nw: ref<scrRect>
     arrr: array<int, 3> # static array, length can be obtained by length(arrr)
     arauto = [1,2,3] # static array
+    p_ar: ptr<array<int, MAX_CARDINAL>>
 
 type
     Pair = struct
@@ -45,6 +47,7 @@ type
     end_struct
 
     FILE = cstruct
+    PFILE = ptr<FILE>
 
     Updateable = interface
         proc update()
@@ -54,7 +57,7 @@ type
     ## implemented. Structs support inheritence but no virtuals.
     Rect = struct(Updateable)
         x,y,w,h,x2,y2: int
-        proc update(), override
+        proc update()
             # local constant
             let a = x+w
             x2 = x+w
@@ -70,6 +73,11 @@ type
             y += r.y
         end
     end_struct
+
+    MyUnion = union
+        dw: uint32
+        w1, w2: uint16
+    end_union
 
     sql = annotation
         table: string
@@ -183,22 +191,17 @@ type method_ptr = proc(my: obj), class
 extern proc printf(fmt: cstring, args: cvarargs), cdecl
 
 proc format(fmt: String, args: array<Object>): String
-    for(a,i in args)
+    for a,i in args do
         
 
     end_for
 
-    # for(a: int = 0, b = 3; a+= b; a != 3) is written as
+    for(a: int = 0, b = 3; a+= b; a != 3)
 
-    block
-        var a = 0, b = 3
-        while(a != 3)
-          a+=b      
-        end_while
-    end_block
+    end_for
 end
 
-proc mod(a: int, b: var int)
+proc mod(a: int, var b:int)
     b = a+1
 end
 

@@ -360,6 +360,10 @@ cast<typename>(a)               Converts type, if typename == class, then
                                 descendant of 'typename'. May crash in release.
 cast_inst<class>(a)             Checks if 'a' is 'class' descendant, returns
                                 null otherwise.
+
+var int                         Argument passed by reference, plain pointer in
+                                C, cannot be stored as class/struct field or
+                                variable, constant.
 =============================  ==============================================
 
 
@@ -403,6 +407,8 @@ proc(), class                   Interface instance with instance field,
 literal<nstring|nwstring>(l)     String "l"
 weak<typename>                  WeakRef<> in debug
 weak_ref<typename>              WeakRef<> in debug/release
+var int                         Argument passed by reference, 
+                                boxed value (anonymous class)
 =============================  =============================================
 
 
@@ -444,6 +450,8 @@ proc(), class                   Struct { void (\*proc)(), void * inst }
 literal<nstring|nwstring>(l)    char* | wchar_t*
 weak<typename>                  weak reference with checks in debug
 weak_ref<typename>              weak reference with checks in debug/release
+var int                         Argument passed by reference, plain pointer in
+                                C.
 =============================  =============================================
 
 
@@ -523,9 +531,9 @@ scope where it is defined.
 
 ::
     
-    unit org.prog.consts
+    unit org::prog::consts
     alias int = int32 # every 'int' will be replaced by 'int32'
-    alias consts = org.prog.consts # this makes a 'consts.usualFlag' possible
+    alias consts = org::prog::consts # this makes a 'consts.usualFlag' possible
     const emptyFlag = 0, usualFlag = 3
     
 
@@ -536,3 +544,16 @@ Error handling
 Traditional exceptions are not implemented in the language. A procedure which
 can return invalid data must support returning error info via an argument.
 If argument is null then program must terminate displaying appropriate message.
+
+If a value/non-nullable type is used to pass the storage for the error info
+then one should create two functions, e.g.
+
+::
+
+    # function sets 'valid' to true on success
+    proc parseNumber(s: string, valid: var bool): int
+
+    # function aborts program execution on wrong number format in the string
+    proc parseNumberAbort(s: string): int
+
+

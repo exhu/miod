@@ -22,7 +22,8 @@ PROC: 'proc';
 RETURN: 'return';
 EXTERN: 'extern';
 END_PROC: 'end';
-IMPORT: 'import';
+IMPORT: 'import'; // items are accessible via fully qualified name only
+IMPORT_ALL: 'import_all'; // injects into global namespace
 INCLUDE: 'include';
 TYPE: 'type';
 STATIC_IF: 'static_if';
@@ -91,6 +92,9 @@ OVERRIDE: 'override';
 VIRTUAL: 'virtual';
 ABSTRACT: 'abstract';
 ENUM: 'enum';
+WEAK: 'weak';
+CLASS_HELPER: 'class_helper';
+STRUCT_HELPER: 'struct_helper';
 
 
 // literals
