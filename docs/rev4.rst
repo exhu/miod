@@ -206,16 +206,23 @@ Application/package directory layout
     - 'myapp.mapp' or 'mypkg.mpkg'
 
 
-Application definition file (mapp)
-----------------------------------
-
-TBD
-
-
 Package definition file (mpkg)
 ------------------------------
 
+Specifies version.
+Enumerates the packages it depends on.
+Specifies optional find_package() etc. cmake directives if uses native C
+libraries, or specifies JNI libraries.
 TBD
+
+Application definition file (mapp)
+----------------------------------
+
+The same as for mpkg but also can specify executable mode for Windows,
+gui or console.
+
+TBD
+
 
 
 'With' statement
