@@ -2,6 +2,8 @@
 Miod Programming Language Revision 4
 ====================================
 
+.. contents:: Table of Contents
+
 Intro
 -----
 
