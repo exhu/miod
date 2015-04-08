@@ -22,8 +22,20 @@ Difference between *alias* and *type* for 'opaque'::
     alias Bbc = opaque # the same as 'opaque' everywhere
 
 
+See also 'codegen.rst'
+
 FFI for C target
 ----------------
+
+Callbacks for C are declared using *@_cattr* for types and implementation.
+Headers and sources can be specified in one of the cattr annotations using
+*header* and optionally *source* keys.
+
+C procs are declared using *extern proc*.
+
+
+Byte buffer example
+*******************
 
 How to access a byte buffer for C target:
 
@@ -47,8 +59,8 @@ How to access a byte buffer for C target:
         
 
 
-C annotations
-*************
+C annotations explained
+***********************
 
 @_cattr{headers:["<stdint.h>", "a.h", "b.h", sources:["mycallbacks.c", "aa.c"]}
 before *unit* statement.
@@ -70,5 +82,16 @@ A user must define a typedef for types that are used as pointers, e.g. FILE* ::
         File = opaque
 
     extern proc fopen(fn: cstring, mode: cstring): File
+
+
+
+FFI for Java target
+-------------------
+
+
+Callbacks for java are declared using *extern* interfaces.
+
+Static procs are declared as *extern proc* with *@_jattr{name: ""}* with fully
+qualified name specified in the annotation.
 
 

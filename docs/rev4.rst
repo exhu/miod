@@ -26,39 +26,7 @@ Union, pointers are not available, but can be accessed using "opaque" type.
 extern proc, extern class, extern struct --- native partially "opaque"
 declarations. Extern class is only available for Java target.
 
-How to access a byte buffer for C target:
-
-1) Miod declarations::
-
-        type Buf = opaque
-        extern proc get_byte(b: Buf, ofs: int): byte
-        extern proc set_byte(b: Buf, ofs: int, v: byte)
-
-
-2) C impl::
-
-        typedef char* Buf;
-
-        inline uchar get_byte(Buf b, int ofs) {
-            return b[ofs];
-        }
-        inline void set_byte(Buf b, int ofs, uchar b) {
-            b[ofs] = b;
-        }
-        
-
-
-Annotations for classes:
-    - *nortti* - do not store class name etc., makes dynamic checked casts
-impossible (C optimization)
-    - *props* - export properties as published (C+Java optimization)
-
-
-Difference between *alias* and *type*::
-
-    type Abc = opaque # requires direct cast to other opaq derivatives
-    alias Bbc = opaque # the same as 'opaque' everywhere
-
+See "ffi.rst".
 
 
 Reference types
@@ -145,41 +113,13 @@ it will be implemented in an only *all-or-none* principle for debugging
 purpose.
 
 
-Java target mappings
---------------------
-
-Top level procs and globals (vars, consts) are put into
-*full_package_name.Globals* java class.
-
-Classes, structs etc. are put into *full_package_name.ClassName*.
-
-Additional private runtime information can be put into *full_package_name.MiodRtti* class.
-
-Callbacks for java are declared using *extern* interfaces.
-
-Static procs are declared as *extern proc* with *@_jattr{name: ""}* with fully
-qualified name specified in the annotation.
-
-
-C target mappings
------------------
-
-Modules/units are compiled into *full_package_name.c/h*, where only public
-members are defined as *extern* in the header file.
-
-Callbacks for C are declared using *@_cattr* for types and implementation.
-Headers and sources can be specified in one of the cattr annotations using
-*header* and optionally *source* keys.
-
-C procs are declared using *extern proc*.
-
-
 Packages
 --------
 
 There are several meanings to the word *package* in the Miod context:
 
-    1) dot-separated paths to modules;
+    1) deprecated dot-separated paths to modules, actually better call it 
+        *fully qualified unit name*;
 
     2) a compiled set of data and binary modules:
 
@@ -196,8 +136,18 @@ then one must provide used packages via command line arguments or
 comments/uses clause (TBD).
 
 
+Compiled and sources packages
+*****************************
+
+Compiled packages contain a static and/or shared libraries and cmake
+version, targets etc. scripts for find_package() to work and preprocessed
+Miod sources, depraved of implementation details (or a parse tree).
+
+Source package is just a package definition file with sources.
+
+
 Application/package directory layout
-------------------------------------
+************************************
 ::
 
     - 'myapp' or 'mypkg' (DIR)
@@ -209,7 +159,7 @@ Application/package directory layout
 
 
 Package definition file (mpkg)
-------------------------------
+******************************
 
 Specifies version.
 Enumerates the packages it depends on.
@@ -218,7 +168,7 @@ libraries, or specifies JNI libraries.
 TBD
 
 Application definition file (mapp)
-----------------------------------
+**********************************
 
 The same as for mpkg but also can specify executable mode for Windows,
 gui or console.
