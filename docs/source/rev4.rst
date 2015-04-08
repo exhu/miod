@@ -26,8 +26,7 @@ Union, pointers are not available, but can be accessed using "opaque" type.
 extern proc, extern class, extern struct --- native partially "opaque"
 declarations. Extern class is only available for Java target.
 
-See "ffi.rst".
-
+See :doc:`ffi`.
 
 Reference types
 ---------------
