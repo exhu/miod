@@ -19,7 +19,7 @@ CMake
 
 Compiler produces CMakeLists.txt for compilation, linking, installing.
 
-If a package is being build then targets, version etc. cmake files are 
+If a package is being built then targets, version etc. cmake files are 
 generated to be used with find_package().
 
 Code generated from source packages is put into package named subdirectories
@@ -41,6 +41,8 @@ So the source tree looks like this:
                 |   CMakeLists.txt -- generated file defines a static library
                 |   miod__system__base.c  -- generated miod::system::base unit
                 |   miod__system__io.c -- generated miod::system::io unit
+                |   interop.c -- copied original C source for FFI, specified
+                                 in @_cattr{sources: "interop.c"}
 
 
 
