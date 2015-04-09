@@ -18,10 +18,6 @@ Contents:
    codegen
    implementation
 
-TODO revise implementation, codegen and ffi.
-TODO remove tocs from files.
-   
-
 
 Indices and tables
 ==================

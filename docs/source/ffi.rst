@@ -2,8 +2,6 @@
 Foreign Function Interface
 ==========================
 
-.. contents:: Table of Contents
-
 Introduction
 ------------
 
@@ -22,7 +20,7 @@ Difference between *alias* and *type* for 'opaque'::
     alias Bbc = opaque # the same as 'opaque' everywhere
 
 
-See also 'codegen.rst'
+See also :doc:`codegen`
 
 FFI for C target
 ----------------

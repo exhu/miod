@@ -1,6 +1,21 @@
 Units and packages
 ==================
 
+A Miod application is the final product to be used as a standalone executable
+or a set of executables (one per source file), a static or shared library
+for using in C/C++ products, plugins etc. So it's a set of binary targets.
+
+A Miod package is a development component that can be of two types:
+
+    a) it is a set of binary data and source files to be used by a Miod
+        application during the build process.
+
+    b) it is a set of binary data and compiled binaries (static library or
+        shared library) with preparsed sources.
+
+In future there can also be a dynamic set feature support -- a shared library 
+that contains several independent packages. This is perfect for a big runtime
+library.
 
 Directory layout
 ----------------
@@ -21,10 +36,9 @@ abc.mpkg::
     package abc
     version 1.0
     description "some generic package"
-    # all files from abc dir are exported by default
-    export abc.multipl.consts
-    export abc.mu.*
-    exclude abc.intern
+    # all source files from abc dir are exported by default
+    # hide symbols when building shared
+    hide abc::intern
     # associated package data files can be accessed by application build code
     data "l10n/*"
 
@@ -34,18 +48,19 @@ Application definition
 
 my_prog.mapp::
 
-    application
+    # application
     # directory to copy package associated data files:
     # will put to "pkgdata/abc/l10n/en.strings" etc.
     package_data "pkgdata"
-    # link with dynamic libraries (package sets)
-    dynamic_sets:
-        rtl
-        gui
+    target_app(main.miod):
+        # link with dynamic libraries (package sets)
+        dynamic_sets:
+            rtl
+            gui
 
 
-Dynamic precompiled packages
-----------------------------
+Dynamic precompiled packages (dynamic sets)
+-------------------------------------------
 
 rtl.mdyn::
 

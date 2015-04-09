@@ -14,7 +14,7 @@ Scope type:
     - enum (?)
     - class
 
-Dotted name resolution:
+Colon name resolution:
     
     1) split by dot
     2) descend from top scope by name
@@ -36,9 +36,9 @@ Globals are prefixed with:
 C target
 ~~~~~~~~
 The globals are prefixed with full package
-name with dots replaced with underscores and a generic prefix, e.g.:
+name with colons replaced with underscores and a generic prefix, e.g.:
     
-    - pkgname_subpkg_MdTypeName
+    - pkgname__subdir__MdTypeName
 
 For @_cattr procs the name is given as in the annotation.
 
@@ -51,7 +51,7 @@ All generated code is put into "md" package.
 Identifiers
 ~~~~~~~~~~~
 
-*Qualified* -- dot-separated ('::') fully qualified, used as type names,
+*Qualified* -- colon-separated ('::') fully qualified, used as type names,
 module names, in expressions.
 
 *Clean IDs* -- identifiers without dots, used in var, const, proc, type

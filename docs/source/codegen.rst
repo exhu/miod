@@ -2,6 +2,16 @@
 Code generation details
 =======================
 
+Miod application can consist of several binary targets, i.e. it can be
+an embeddable application/static/shared library, a command line executable,
+a gui application or a set of them, one main miod source file for each.
+
+
+Compiler framework must support custom project generation tools. The primary
+one to support is CMake, but there should be possibility to implement
+e.g. ninja project file generation and pkg-config facilities.
+
+
 Full unit name *myprog::utils::moduleA* is translated into 
 *myprog__utils__moduleA*.
 
@@ -11,6 +21,7 @@ C target mappings
 
 Modules/units are compiled into *full_unit_name.c/h*, where only public
 @_cattr procs and types are defined as *extern* in the header file.
+
 If no exported callbacks/types are defined for usage from C, then no header
 file is created.
 
