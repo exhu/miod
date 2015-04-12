@@ -202,6 +202,40 @@ supported too. All fields are initialized to zeroes.
 Destructors are not guaranteed to execute as well, i.e. if target language
 is Java and no reference-counting is used.
 
+Method *finalize* is called as the destructor, it is defined as virtual 
+in base Object class.
+
+Generic Classes
+***************
+
+Generic classes are those which have parametrized types, but the types must
+be another classes only. It's a kind of syntactic sugar (as in Java) rather
+than C++ templates. For templates-like behaviour see `Generic Units`_.
+
+::
+
+    type Pair = class<K extends Copyable,V extends Copyable and Comparable>
+        extends Object
+        implements Copyable, Comparable
+
+        key: K
+        value: V
+
+        public
+        proc makeCopy(): Pair<K,V>, override
+            var o = new(Pair<K,V>)
+            o.k = k.makeCopy()
+            o.v = v.makeCopy()
+        end_proc
+
+        public
+        proc compareTo(o: Pair<K,V>): int, override
+            var vc = cast<Comparable>(v)
+            var vt = cast<Comparable>(o.v)
+            return vc.compareTo(vt)
+        end_proc
+    end_class
+
 'final'
 -------
 
