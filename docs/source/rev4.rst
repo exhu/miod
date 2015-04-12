@@ -26,6 +26,45 @@ declarations. Extern class is only available for Java target.
 
 See :doc:`ffi`.
 
+
+Program structure
+-----------------
+
+A program is a set of compilation units. Units are placed into directories
+and their name must contain subdirectory and file names separated by '::', 
+e.g.::
+    
+    myprog/main.miod  = unit myprog::main
+    myprog/utils/utils.miod = unit myprog::utils::main
+
+
+The first statement in the unit must be word *unit* with fully qualified
+unit name. Preceding annotations/comments are allowed as well.
+
+Imported units are specified after the *unit* statement with the *import*
+statement. Imported symbols can be refered via a fully qualified name, to
+import *all symbols* of a specified unit into the global scope one needs to
+use *import_all* statement::
+    
+    import rtl::io, rtl::os
+    import_all math, math::vectors
+
+Units from other packages are found only if the packages are specified in
+the program/application/package definition file. See `Packages`_.
+
+Statements are separated by white space, e.g. spaces, line ends, tabs...
+
+Program entry point is the proc 'main' in the first specified unit.
+
+All unit definitions obey current visibility rule -- *private*, *protected*,
+*public* -- specified by the respective statements.
+
+The rest of the unit is the types, conts, aliases, procs block.
+
+The unit can be an ordinary compilation unit, a generic unit, and a generic
+unit's implementation. See `Generic Units`_.
+
+
 Reference types
 ---------------
 
@@ -115,8 +154,8 @@ Packages
 
 There are several meanings to the word *package* in the Miod context:
 
-    1) deprecated dot-separated paths to modules, actually better call it 
-        *fully qualified unit name*;
+    1) deprecated dot-separated (actually colon-separated) paths to modules,
+        better call it a *fully qualified unit name*;
 
     2) a compiled set of data and binary modules:
 
@@ -202,8 +241,10 @@ enclosing scope::
 --------------------------------
 
 *Private* symbols are accessible only from the same compilation unit.
-*Protected* symbols are visible to the units within the same level (dot-path).
+*Protected* symbols are visible to the units within the same level (::-path).
 *Public* symbols can be used from everywhere. 
+
+Default symbol visibility is *private*.
 
 Standard library
 ----------------
@@ -525,5 +566,30 @@ into a separate proc:
             c.exec(err) and
             d.exec(err)
     end_proc
+
+
+Generic Units
+-------------
+
+A generic unit cannot be compiled, it is used as a template.
+
+::
+    
+    generic unit base_vector4
+    type VectorUnit = generic
+
+    type Vector4 = struct
+        x,y,z,w: VectorUnit
+
+One needs to write an implementation unit to generate code which uses the
+specified types::
+
+    unit vector4 
+    type VectorUnit = float
+    implement base_vector4
+
+The *implement* statement imports a generic unit into the global scope
+and uses defined types to resolve the generic ones.
+
 
 

@@ -95,6 +95,12 @@ ENUM: 'enum';
 WEAK: 'weak';
 CLASS_HELPER: 'class_helper';
 STRUCT_HELPER: 'struct_helper';
+GENERIC: 'generic';
+IMPLEMENT: 'implement';
+CLASS: 'class';
+END_CLASS: 'end_class';
+EXTENDS: 'extends';
+IMPLEMENTS: 'implements';
 
 
 // literals
