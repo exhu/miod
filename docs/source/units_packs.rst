@@ -17,8 +17,29 @@ In future there can also be a dynamic set feature support -- a shared library
 that contains several independent packages. This is perfect for a big runtime
 library.
 
+
+
 Directory layout
 ----------------
+
+Package definition file (mpkg)
+******************************
+
+Specifies version.
+Enumerates the packages it depends on.
+Specifies optional find_package() etc. cmake directives if uses native C
+libraries, or specifies JNI libraries.
+TBD
+
+
+Application definition file (mapp)
+**********************************
+
+The same as for mpkg but also can specify executable mode for Windows,
+gui or console.
+
+TBD
+
 directory::
 
     - abc (DIR)
@@ -41,6 +62,7 @@ abc.mpkg::
     hide abc::intern
     # associated package data files can be accessed by application build code
     data "l10n/*"
+    c_package(get_text, 1.3) # cmake/pkg-config requirement
 
 
 Application definition

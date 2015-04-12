@@ -132,46 +132,7 @@ file. If there's not any application definition file with the app sources
 then one must provide used packages via command line arguments or
 comments/uses clause (TBD).
 
-
-Compiled and sources packages
-*****************************
-
-Compiled packages contain a static and/or shared libraries and cmake
-version, targets etc. scripts for find_package() to work and preprocessed
-Miod sources, depraved of implementation details (or a parse tree).
-
-Source package is just a package definition file with sources.
-
-
-Application/package directory layout
-************************************
-::
-
-    - 'myapp' or 'mypkg' (DIR)
-        |   main.miod
-        |   l10n (DIR)
-            |   en.strings
-
-    - 'myapp.mapp' or 'mypkg.mpkg'
-
-
-Package definition file (mpkg)
-******************************
-
-Specifies version.
-Enumerates the packages it depends on.
-Specifies optional find_package() etc. cmake directives if uses native C
-libraries, or specifies JNI libraries.
-TBD
-
-Application definition file (mapp)
-**********************************
-
-The same as for mpkg but also can specify executable mode for Windows,
-gui or console.
-
-TBD
-
+See :doc:`units_packs`
 
 
 'With' statement
@@ -408,24 +369,24 @@ Debug/Release differences
 -------------------------
 
 +-------------------------+--------------------+----------------------------+
-|Options                  |   Release          |      Debug                 |
+| Options                 |   Release          |      Debug                 |
 +=========================+====================+============================+
-|guard weak pointers      |                    |       +                    |
-|treating as weakref      |                    |                            |
+| guard weak pointers     |                    |       +                    |
+| treating as weakref     |                    |                            |
 +-------------------------+--------------------+----------------------------+
-|guard weak pointers to   |                    |       +                    |
-|method callbacks         |                    |                            |
-|(as weakref)             |                    |                            |
+| guard weak pointers to  |                    |       +                    |
+| method callbacks        |                    |                            |
+| (as weakref)            |                    |                            |
 +-------------------------+--------------------+----------------------------+
-|generate rtti type info  |                    |       +                    |
-|for “nortti” types for   |                    |                            |
-|dynamic typecasts        |                    |                            |
+| generate rtti type info |                    |       +                    |
+| for “nortti” types for  |                    |                            |
+| dynamic typecasts       |                    |                            |
 +-------------------------+--------------------+----------------------------+
-|pass arguments as weak   |       +            |       +                    |
-|pointers                 |                    |                            |
+| pass arguments as weak  |       +            |       +                    |
+| pointers                |                    |                            |
 +-------------------------+--------------------+----------------------------+
-|pass arguments as        |   Non-default      |       Non-default          |
-|strong pointers          |                    |                            |
+| pass arguments as       |   Non-default      |       Non-default          |
+| strong pointers         |                    |                            |
 +-------------------------+--------------------+----------------------------+
 
 
