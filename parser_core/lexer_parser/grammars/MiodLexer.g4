@@ -108,7 +108,8 @@ fragment ESC: '\\"' | '\\\\';
 fragment ESC_CHAR: '\\\'' | '\\\\';
 STRING: '"' (ESC|~('\r'|'\n'))*? '"';
 RAW_STRING: '"""' .*? '"""';
-// must evaluate to single code point, i.e. 1 byte for ASCII,
+// must evaluate to single code unit enough to store the code point, 
+// i.e. 1 byte for ASCII,
 // 2 byte for widechar etc.
 CHAR_STR: '\'' (ESC_CHAR|~('\r'|'\n'))*? '\'';
 
@@ -118,11 +119,11 @@ fragment OCTAL: [0-7_];
 fragment BIN: [01_];
 fragment ID: [a-zA-Z_]+[0-9a-zA-Z]*;
 
-INT_OCTAL: '-'? '0o' OCTAL+;
-INT_HEX: '-'? '0x' HEX+;
-INT_BIN: '-'? '0b' BIN+;
+INT_OCTAL: '-'? '0o' OCTAL+ 'U';
+INT_HEX: '-'? '0x' HEX+ 'U';
+INT_BIN: '-'? '0b' BIN+ 'U';
 FLOAT: '-'? ((DIGIT+ '.' DIGIT*) | (DIGIT* '.' DIGIT+)) ([eE][+\-]DIGIT+)? 'f'?;
-INTEGER: '-'? DIGIT+;
+INTEGER: '-'? DIGIT+ 'U';
 
 QUALIF_NAME: ID ('::' ID)*;
 BARE_NAME: ID;

@@ -249,6 +249,25 @@ values verbatim at places where the constant is used (compiler implementation
 specific).
 
 
+Literals
+--------
+
+**Integer** literals are calculated as int32 or int64 -- whatever fits, however
+'U' suffix can be added to force uint32 and uint64.
+
+**Float** literals are double precision if 'f' suffix is not specified. 'f' stands
+for float32.
+
+*cast* expressions reintepret bits and don't do real conversion. For checked
+conversions use standrad library functions like *ceil*, *floor*, *trunc*,
+*round* for floats.
+
+**String** literals are converted from UTF-8 to underlying storage by the
+compiler.
+
+**Char** literal must evaluate to a single code unit, i.e. a Unicode code
+point that fits a single code unit.
+
 'finally' without a 'try'?
 --------------------------
 
