@@ -5,19 +5,50 @@ A Miod application is the final product to be used as a standalone executable
 or a set of executables (one per source file), a static or shared library
 for using in C/C++ products, plugins etc. So it's a set of binary targets.
 
-A Miod package is a development component that can be of two types:
+A Miod package is a development or runtime component that can be of the
+following types:
 
-    a) it is a set of binary data and source files to be used by a Miod
-        application during the build process.
+    a) **source package**, it is a set of binary data and source
+    files to be used by a Miod application during the build process,
+    the data files to be copied when building the installable application.
 
-    b) it is a set of binary data and compiled binaries (static library or
-        shared library) with preparsed sources.
+    b) **runtime package**, it is a set of binary data and compiled binaries
+    (shared libraries) -- the resources are not compiled to the application.
+
+    c) **runtime development package** -- contains preprocessed sources,
+    depends on the **runtime package**.
+
+    d) **development package** -- binary data, static libraries, preprocessed
+    sources. The data is copied when build the installable app.
 
 In future there can also be a dynamic set feature support -- a shared library 
 that contains several independent packages. This is perfect for a big runtime
 library.
 
+The package definition file specifies binary targets and dependencies. It
+lists shared/common dependencies and data, and dependencies per target.
 
+A development package usually contains a default target to build a static
+or shared library and a **tests** target, which builds an executable and links
+to some unit-testing framework.
+
+First Miod versions will support source packages only.
+
+Build Modes
+-----------
+
+There can be
+
+    a) local build
+        The build is run in-place, package data and dependencies are not
+        copied.
+
+    b) installable build
+        All dependencies are copied and the build will run correctly only
+        after installation.
+
+A resource module is generated during build which maps package data directories
+to global ones.
 
 Directory layout
 ----------------
@@ -25,19 +56,10 @@ Directory layout
 Package definition file (mpkg)
 ******************************
 
-Specifies version.
+Specifies version, targets.
 Enumerates the packages it depends on.
 Specifies optional find_package() etc. cmake directives if uses native C
 libraries, or specifies JNI libraries.
-TBD
-
-
-Application definition file (mapp)
-**********************************
-
-The same as for mpkg but also can specify executable mode for Windows,
-gui or console.
-
 TBD
 
 directory::
@@ -68,6 +90,8 @@ abc.mpkg::
 Application definition
 ----------------------
 
+TODO obsolete
+
 my_prog.mapp::
 
     # application
@@ -83,6 +107,8 @@ my_prog.mapp::
 
 Dynamic precompiled packages (dynamic sets)
 -------------------------------------------
+
+TODO obsolete
 
 rtl.mdyn::
 
