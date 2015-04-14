@@ -34,6 +34,8 @@ to some unit-testing framework.
 
 First Miod versions will support source packages only.
 
+For resources paths see :doc:`codegen`.
+
 Build Modes
 -----------
 

@@ -57,6 +57,25 @@ So the source tree looks like this:
 
 
 
+Entry Point and Resources
+*************************
+
+Global function **MiodInit** is generated which initializes runtime and
+calls program entry proc.
+
+There're classes PackageDataSource and PackageDataManager which manage finding
+and loading package resources. Several PackageDataSource's are created to map
+local or global paths to packages.
+
+Paths for source packages
+*************************
+
+Local builds from *source packages* (see :doc:`units_packs`) register absolute
+paths, so the program is not relocateable.
+
+Installable builds from *source packages* register relative paths (relative
+to the binary executable being built).
+
 Java target mappings
 --------------------
 
