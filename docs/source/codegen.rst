@@ -63,7 +63,7 @@ Entry Point and Resources
 Global function **MiodInit** is generated which initializes runtime and
 calls program entry proc.
 
-There're classes PackageDataSource and PackageDataManager which manage finding
+There're classes PackageDataSource and PackageDataLocator which manage finding
 and loading package resources. Several PackageDataSource's are created to map
 local or global paths to packages.
 
