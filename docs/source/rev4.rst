@@ -214,7 +214,7 @@ than C++ templates. For templates-like behaviour see `Generic Units`_.
 
 ::
 
-    type Pair = class<K extends Copyable,V extends Copyable and Comparable>
+    type Pair = final class<K(Copyable),V(Copyable,Comparable)>
         extends Object
         implements Copyable, Comparable
 
