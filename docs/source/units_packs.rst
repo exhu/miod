@@ -18,8 +18,8 @@ following types:
     c) **runtime development package** -- contains preprocessed sources,
     depends on the **runtime package**.
 
-    d) **development package** -- binary data, static libraries, preprocessed
-    sources. The data is copied when build the installable app.
+    d) **development embeddable package** -- binary data, static libraries,
+    preprocessed sources. The data is copied when build the installable app.
 
 In future there can also be a dynamic set feature support -- a shared library 
 that contains several independent packages. This is perfect for a big runtime
