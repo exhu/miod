@@ -14,6 +14,7 @@ Compilation context
 Operation modes
 ---------------
 
+Simultaneous::
     - compile
     - print dependencies for build tools
     - output documentation
