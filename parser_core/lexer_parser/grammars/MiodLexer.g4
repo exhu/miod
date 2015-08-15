@@ -99,8 +99,8 @@ GENERIC: 'generic';
 IMPLEMENT: 'implement';
 CLASS: 'class';
 END_CLASS: 'end_class';
-EXTENDS: 'extends';
-IMPLEMENTS: 'implements';
+//EXTENDS: 'extends';
+//IMPLEMENTS: 'implements';
 
 
 // literals
