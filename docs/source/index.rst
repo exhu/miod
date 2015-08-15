@@ -11,6 +11,7 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
+   miod_build
    compiler
    rev4
    units_packs
