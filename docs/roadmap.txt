@@ -1,5 +1,8 @@
 Version 1 features
 
+- base_class for extendable classes, deprecate "final" keyword,
+include "virtual" keyword
+
 - constants with literals
 - procs with local vars
 - visibility levels (public, protected, private)
