@@ -21,3 +21,5 @@
 /parser_core/src/main/java/org/miod/generated/*tokens
 
 
+/parser_core/build/
+/parser_core/.nb-gradle/
