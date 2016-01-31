@@ -205,6 +205,9 @@ is Java and no reference-counting is used.
 Method *finalize* is called as the destructor, it is defined as virtual 
 in base Object class.
 
+Classes are *final*, i.e. non-extendable. To declare an extendable class
+one needs to use *base_class* keyword.
+
 Generic Classes
 ***************
 
@@ -214,7 +217,7 @@ than C++ templates. For templates-like behaviour see `Generic Units`_.
 
 ::
 
-    type Pair = final class<K(Copyable),V(Copyable,Comparable)>
+    type Pair = class<K(Copyable),V(Copyable,Comparable)>
         extends Object
         implements Copyable, Comparable
 
@@ -236,10 +239,6 @@ than C++ templates. For templates-like behaviour see `Generic Units`_.
         end_proc
     end_class
 
-'final'
--------
-
-'final' used with a method or class forbids derived classes and/or methods.
 
 'const'
 -------
