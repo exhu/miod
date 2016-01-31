@@ -1,0 +1,63 @@
+unit callbacks
+type
+    Handler =
+    interface
+        proc action()
+    end_interface
+
+    Window =
+    base_class
+        protected
+
+        on_close_handler: proc(), class
+        on_close_interface: weak<Handler>
+    end_class
+
+    MainWindow = 
+    class(Window)
+        proc init()
+            on_close_handler_holder = new(OnCloseHandler).init(this)
+            on_close_interface = on_close_handler_holder
+        end_proc
+
+        private
+
+        proc on_close()
+            # do smth
+        end_proc
+
+        on_close_handler_holder: OnCloseHandler
+    end_class
+
+private
+
+type
+    OnCloseHandler =
+    class(Handler)
+        w: MainWindow
+        proc init(c: MainWindow)
+            w = c
+        end_proc
+
+        proc action(), override
+            w.on_close()
+        end_proc
+    end_class
+
+
+public
+
+type MainWindow2 = 
+    class(Window)
+        proc init()
+            on_close_handler = on_close
+        end_proc
+
+        private
+
+        proc on_close()
+            # do smth
+        end_proc
+
+    end_class
+

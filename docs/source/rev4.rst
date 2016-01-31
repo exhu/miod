@@ -298,6 +298,9 @@ enclosing scope::
 
 Default symbol visibility is *private*.
 
+Private and protected class members are accessible from any class within the
+same compilation unit.
+
 Standard library
 ----------------
 
