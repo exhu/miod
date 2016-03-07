@@ -19,6 +19,7 @@ Contents:
    ffi
    codegen
    implementation
+   c_oop
 
 
 Indices and tables

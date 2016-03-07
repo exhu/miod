@@ -15,6 +15,7 @@ e.g. ninja project file generation and pkg-config facilities.
 Full unit name *myprog::utils::moduleA* is translated into 
 *myprog__utils__moduleA*.
 
+Build tool is not part of the compiler.
 
 C target mappings
 -----------------
@@ -25,10 +26,13 @@ Modules/units are compiled into *full_unit_name.c/h*, where only public
 If no exported callbacks/types are defined for usage from C, then no header
 file is created.
 
-CMake
-*****
+For classes and interfaces implementation see :doc:`c_oop`.
 
-Compiler produces CMakeLists.txt for compilation, linking, installing.
+CMake generator
+***************
+
+Compiler can export information necessary to generate CMakeLists.txt for
+compilation, linking, installing.
 
 If a package is being built then targets, version etc. cmake files are 
 generated to be used with find_package().
