@@ -34,11 +34,79 @@ So this is very simple::
     - vtable is duplicated for each descendant class
     - cast to/from super class requires no pointer manipulation
 
+For every extended class there's a copy of vtables for the super classes if
+there are any overriden methods of the base class, otherwise the vtable of the
+super class is reused via pointer.
+
 Interfaces
 ----------
 
 Where a class instance pointer is equal for the base and extended classes
 the interface pointer differs.
+
+To solve the problem two solutions described below. The first one was chosen
+for its simplicity and for being slightly faster in a benchmark.
+
+An interface instance pointer stores not only a pointer to the vtable but
+a *this* pointer for the class instance as well. Thus each interface pointer
+becomes two times bigger than a usual class instance pointer::
+    
+    struct InterfacePtr {
+        InterfaceVTable *vtable;
+        void *this;
+    };
+
+Interfaces that extend/share another interfaces contain a pointer to the super
+interface in their vtable::
+
+    struct MyInterfaceVTable {
+        struct BaseObjectInterface *super;
+        int (*MyMethod)(void *this);
+    };
+
+So every interface has a static *vtable* which can be referenced by the
+subinterfaces via their vtable.
+
+For every class there's a vtable for every interface it implements::
+
+    struct MyClassVTable {
+        BaseObjectInterfaceVtable *vtable1;
+        SuperClass1 *vtable2;
+    };
+
+The class hierarchy is known at compile time, so interface vtable pointers
+are not duplicated for classes which already have such pointers in super classes'
+vtables or interfaces::
+
+    class BaseObject implements BaseObjectInterface;
+    interface MyInterface extends BaseObjectInterface and ToStringInterface;
+    class MyObject extends BaseObject implements BaseObjectInterface and MyInterface;
+
+    struct BaseObjectInterfaceVtable {
+        int (*hash)(void *this);
+    };
+
+    struct ToStringVtable {
+        BaseObjectInterfaceVtable *super;
+        char* (*ToString)(void *this);
+    };
+
+    struct BaseObjectVtable {
+        BaseObjectInterfaceVtable *super;
+    };
+
+    struct MyInterfaceVtable {
+        BaseObjectInterfaceVtable *super1;
+        ToStringVtable *super2;
+    };
+
+    struct MyObjectVtable { // no BaseObjectInterface vtable because it's defined in BaseObject
+        BaseObjectVTable *super1;
+        MyInterfaceVTable *super2;
+    };
+
+
+The following solution was abandoned. 
 
 When a class implements an interface the former acquires additional vtable entries
 mirroring the new overriden methods and a vtable for the interface itself.
@@ -84,5 +152,4 @@ This requires two vtables, the one within the class hierarchy (implemented inter
 virtual methods of the class) and the other one for interfaces. So the interfaces
 vtable containts pointers to *thunk* proxies which convert *this* pointer and pass over to the instance's methods.
 
-Another approach -- an interface instance stores not only a pointer to the vtable but a *this* pointer as well.
 
