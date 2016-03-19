@@ -352,7 +352,7 @@ array<int, 120>
 String                          Immutable string class with
                                 hash code support
 proc()
-proc(), class                   Instance pointer is guarded as
+method()                        Instance pointer is guarded as
                                 weakref in debug builds!
 
 float                           alias for float32
