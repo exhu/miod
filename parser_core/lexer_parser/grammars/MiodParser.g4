@@ -7,7 +7,9 @@ options {tokenVocab = MiodLexer; }
 
 
 compUnit: unitHeader unitBody?;
-unitHeader: annotation? UNIT name=QUALIF_NAME;
+unitHeader: annotation? UNIT qualifName;
+
+qualifName: QUALIF_NAME | BARE_NAME;
 
 annotation: ANNOTATE structValue?;
 
@@ -20,36 +22,51 @@ globalStmt: globalStaticIf
 constExpr: expr; // to mark semantic difference at certain places
 
 globalStaticIf:
-    //| STATIC_IF THEN  {notifyErrorListeners("const expr expected for static_if");}
-    //| 
-    STATIC_IF boolExpr THEN globalStmt* (ELSE globalStmt*)? END_IF;
-
-globalDecl: globalConstDecl
-    | globalVarDecl
-    | procDecl
-    | typeDecl
-    | importDecl
-    | includeDecl
-    | visibilityStmt
+    STATIC_IF boolExpr THEN globalStmt* (ELSE globalStmt*)? END_IF
     ;
 
-visibilityStmt: PRIVATE | PROTECTED | PUBLIC;
+globalDecl: globalConstDecl
+    | procDecl
+    | typeDecl
+    | visibilityStmt
+    | globalVarDecl
+    | importDecl
+//    | includeDecl
+    ;
 
 globalConstDecl: CONST constAssign (COMMA constAssign)*;
+visibilityStmt: PRIVATE | PROTECTED | PUBLIC;
 globalVarDecl: VAR constAssign (COMMA constAssign)*;
-constAssign: BARE_NAME (COLON typeSpec)? ASSIGN constExpr;
 
+constAssign: BARE_NAME (COLON typeSpec)? ASSIGN constExpr;
+// TODO reqursive rules are to be here
 expr: literal
+    | qualifName
     | memberAccess
+    | procCall
+    | boolExpr
+    | arithmExpr
     | dictValue
     | arrayValue
     | structValue
-    | boolExpr
-    | arithmExpr
-    | procCall
     ;
 
 
+literal: NULL
+    | INTEGER
+    | INT_OCTAL 
+    | INT_HEX
+    | INT_BIN
+    | FLOAT
+    | STRING
+    | RAW_STRING
+    | CHAR_STR
+    | TRUE
+    | FALSE
+    ;
+
+
+////////// TODO rework everything below ///////////
 arithmAtom: literal | memberAccess | procCall;
     
 arithmExpr: MINUS arithmExpr 
@@ -92,7 +109,7 @@ procDecl: PROC;
 
 typeDecl: TYPE;
 
-importDecl: IMPORT name=QUALIF_NAME;
+importDecl: IMPORT name=qualifName;
 
 includeDecl: INCLUDE STRING;
 
@@ -156,17 +173,5 @@ finallyBlock: FINALLY blockStmts END_FINALLY;
 ifStatement: IF boolExpr THEN blockStmts? (ELSE blockStmts?)? END_IF;
 staticIfStatement: STATIC_IF boolExpr THEN blockStmts? (ELSE blockStmts?)? END_IF;
 
-literal: NULL
-    | INTEGER
-    | INT_OCTAL 
-    | INT_HEX
-    | INT_BIN
-    | FLOAT
-    | STRING
-    | RAW_STRING
-    | CHAR_STR
-    | TRUE
-    | FALSE
-    ;
 
 

@@ -125,7 +125,7 @@ INT_BIN: '-'? '0b' BIN+ 'U';
 FLOAT: '-'? ((DIGIT+ '.' DIGIT*) | (DIGIT* '.' DIGIT+)) ([eE][+\-]DIGIT+)? 'f'?;
 INTEGER: '-'? DIGIT+ 'U';
 
-QUALIF_NAME: ID ('::' ID)*;
+QUALIF_NAME: ID ('::' ID)+;
 BARE_NAME: ID;
 // IDs
 
