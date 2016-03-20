@@ -29,16 +29,24 @@ globalDecl: globalConstDecl
     | procDecl
     | typeDecl
     | visibilityStmt
-    | globalVarDecl
+    | varDecl
     | importDecl
 //    | includeDecl
     ;
 
 globalConstDecl: CONST constAssign (COMMA constAssign)*;
-visibilityStmt: PRIVATE | PROTECTED | PUBLIC;
-globalVarDecl: VAR constAssign (COMMA constAssign)*;
-
 constAssign: BARE_NAME (COLON typeSpec)? ASSIGN constExpr;
+
+visibilityStmt: PRIVATE | PROTECTED | PUBLIC;
+
+varDecl: VAR varItem (COMMA varItem)*;
+varItem: varsAndType
+    | varTypeAssign
+    ;
+varsAndType: BARE_NAME (COMMA BARE_NAME)* COLON typeSpec;
+varTypeAssign: BARE_NAME (COLON typeSpec)? ASSIGN expr;
+
+
 // TODO reqursive rules are to be here
 expr: literal
     | qualifName
