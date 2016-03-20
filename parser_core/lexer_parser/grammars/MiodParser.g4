@@ -1,25 +1,24 @@
 parser grammar MiodParser;
-options {tokenVocab = MiodLexer; }
-
-// TODO remove global/local const/var rules
-// todo fix associativity
-// TODO
-
+options {tokenVocab = MiodLexer;}
 
 compUnit: unitHeader unitBody?;
-unitHeader: annotation* UNIT QUALIF_NAME;
+unitHeader: annotation* UNIT qualifNameOnly;
 
-qualifName: QUALIF_NAME | BARE_NAME;
+bareName: ID | SETTER | GETTER;
+qualifName: bareName (NAMESPACE_SEP bareName)*;
+qualifNameOnly: bareName (NAMESPACE_SEP bareName)+;
 
+// Must check for predefined annotations like @_property(set=method, get=method |
+// readonly=true | writeonly=true, fake=true )
 annotation: ANNOTATE qualifName annotationDict?;
-annotationDict: OPEN_CURLY BARE_NAME COLON expr (COMMA BARE_NAME COLON expr)* CLOSE_CURLY;
+annotationDict: OPEN_CURLY bareName COLON constExpr (COMMA bareName COLON constExpr)* CLOSE_CURLY;
 
-unitBody: globalStmt+;
-
+unitBody: importDecl* globalStmt+;
 globalStmt: globalStaticIf
     | globalDecl
     ;
 
+importDecl: IMPORT qualifNameOnly;
 constExpr: expr; // to mark semantic difference at certain places
 
 globalStaticIf:
@@ -31,12 +30,13 @@ globalDecl: globalConstDecl
     | typeDecl
     | visibilityStmt
     | varDecl
-    | importDecl
 //    | includeDecl
     ;
 
+includeDecl: INCLUDE STRING;
+
 globalConstDecl: CONST constAssign (COMMA constAssign)*;
-constAssign: BARE_NAME (COLON typeSpec)? ASSIGN constExpr;
+constAssign: bareName (COLON typeSpec)? ASSIGN constExpr;
 
 visibilityStmt: PRIVATE | PROTECTED | PUBLIC;
 
@@ -44,19 +44,20 @@ varDecl: VAR varItem (COMMA varItem)*;
 varItem: varsAndType
     | varTypeAssign
     ;
-varsAndType: BARE_NAME (COMMA BARE_NAME)* COLON typeSpec;
-varTypeAssign: BARE_NAME (COLON typeSpec)? ASSIGN expr;
+varsAndType: bareName (COMMA bareName)* COLON typeSpec;
+varTypeAssign: bareName (COLON typeSpec)? ASSIGN expr;
 
 
 typeArgsOpen: TYPE_ARGS_OPEN;
 typeArgsClose: GREATER;
 
-// TODO reqursive rules are to be here
+// Reqursive rules are to be here.
+// If current scope is global then fails for procedure/method calls and property access
 expr: literal #exprLiteral
     | NEW OPEN_PAREN typeSpec CLOSE_PAREN #exprNew
     | CAST typeArgsOpen typeSpec typeArgsClose OPEN_PAREN expr CLOSE_PAREN #exprCast
     | qualifName (typeArgsOpen qualifName (COMMA qualifName)* typeArgsClose)? #exprQualifName
-    | expr MEMBER_ACCESS BARE_NAME #exprMemberAccess
+    | expr MEMBER_ACCESS bareName #exprMemberAccess
     | expr OPEN_BRACKET expr CLOSE_BRACKET #exprIndex
     | expr OPEN_PAREN (expr (COMMA expr)*)? CLOSE_PAREN #exprCall
     | OPEN_CURLY expr COLON expr (COMMA expr COLON expr)* CLOSE_CURLY #exprDictStruct
@@ -98,6 +99,11 @@ literal: NULL
     ;
 
 
+// Check for double getters/setters
+propertyDecl: PROPERTY bareName COLON typeSpec (EQUALS OPEN_CURLY 
+    propSetterGetter (COMMA propSetterGetter)? CLOSE_CURLY)?;
+propSetterGetter: (SETTER|GETTER) EQUALS bareName;
+
 ////////// TODO rework everything below ///////////
 
 typeSpec: QUALIF_NAME
@@ -117,17 +123,14 @@ procVarDecl: varDecl
 
 finalDecl: FINAL;
 
-procDecl: PROC;
+procDecl: annotation* PROC;
 
 typeDecl: TYPE;
 
-importDecl: IMPORT name=qualifName;
-
-includeDecl: INCLUDE STRING;
 
 
 forEachLoop: FOR OPEN_BRACE varNames IN expr CLOSE_BRACE blockStmts? END_FOR;
-varNames: BARE_NAME (COMMA BARE_NAME)*;
+varNames: bareName (COMMA bareName)*;
 
 whileLoop: WHILE OPEN_BRACE boolExpr CLOSE_BRACE blockStmts? END_WHILE;
 
@@ -156,10 +159,10 @@ procCallArgs: expr (COMMA expr)*;
 
 
 // subrules for variable/const decl:
-varAssign: BARE_NAME ASSIGN expr;
-varInitAssign: BARE_NAME COLON typeSpec ASSIGN expr;
+varAssign: bareName ASSIGN expr;
+varInitAssign: bareName COLON typeSpec ASSIGN expr;
 
-varDeclPart: BARE_NAME | varAssign | varInitAssign;
+varDeclPart: bareName | varAssign | varInitAssign;
 
 // varialbe/const declaration:
 localDecl: VAR | CONST varDeclPart (COMMA varDeclPart)*;
@@ -184,6 +187,5 @@ finallyBlock: FINALLY blockStmts END_FINALLY;
 
 ifStatement: IF boolExpr THEN blockStmts? (ELSE blockStmts?)? END_IF;
 staticIfStatement: STATIC_IF boolExpr THEN blockStmts? (ELSE blockStmts?)? END_IF;
-
 
 

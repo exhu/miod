@@ -99,8 +99,15 @@ STRUCT_HELPER: 'struct_helper';
 GENERIC: 'generic';
 IMPLEMENT: 'implement';
 CLASS: 'class';
+INTERFACE: 'interface';
 BASE_CLASS: 'base_class';
 END_CLASS: 'end_class';
+PROPERTY: 'property';
+//READONLY: 'readonly';
+//WRITEONLY: 'writeonly';
+SETTER: 'setter';
+GETTER: 'getter';
+NAMESPACE_SEP: '::';
 //EXTENDS: 'extends';
 //IMPLEMENTS: 'implements';
 // Map$<String, Integer> -- integer map generic type
@@ -131,9 +138,6 @@ INT_BIN: '-'? '0b' BIN+ 'U'?;
 FLOAT: '-'? ((DIGIT+ '.' DIGIT*) | (DIGIT* '.' DIGIT+)) ([eE][+\-]DIGIT+)? 'f'?;
 INTEGER: '-'? DIGIT+ 'U'?;
 
-QUALIF_NAME: ID ('::' ID)+;
-BARE_NAME: ID;
-// IDs
 
 //////
 
