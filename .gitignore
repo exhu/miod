@@ -23,3 +23,5 @@
 
 /parser_core/build/
 /parser_core/.nb-gradle/
+/.nb-gradle/
+/parser_core/lexer_parser/build/

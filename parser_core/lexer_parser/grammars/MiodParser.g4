@@ -7,11 +7,12 @@ options {tokenVocab = MiodLexer; }
 
 
 compUnit: unitHeader unitBody?;
-unitHeader: annotation? UNIT qualifName;
+unitHeader: annotation* UNIT QUALIF_NAME;
 
 qualifName: QUALIF_NAME | BARE_NAME;
 
-annotation: ANNOTATE structValue?;
+annotation: ANNOTATE qualifName annotationDict?;
+annotationDict: OPEN_CURLY BARE_NAME COLON expr (COMMA BARE_NAME COLON expr)* CLOSE_CURLY;
 
 unitBody: globalStmt+;
 
@@ -47,18 +48,41 @@ varsAndType: BARE_NAME (COMMA BARE_NAME)* COLON typeSpec;
 varTypeAssign: BARE_NAME (COLON typeSpec)? ASSIGN expr;
 
 
-// TODO reqursive rules are to be here
-expr: literal
-    | qualifName
-    | memberAccess
-    | procCall
-    | boolExpr
-    | arithmExpr
-    | dictValue
-    | arrayValue
-    | structValue
-    ;
+typeArgsOpen: TYPE_ARGS_OPEN;
+typeArgsClose: GREATER;
 
+// TODO reqursive rules are to be here
+expr: literal #exprLiteral
+    | NEW OPEN_PAREN typeSpec CLOSE_PAREN #exprNew
+    | CAST typeArgsOpen typeSpec typeArgsClose OPEN_PAREN expr CLOSE_PAREN #exprCast
+    | qualifName (typeArgsOpen qualifName (COMMA qualifName)* typeArgsClose)? #exprQualifName
+    | expr MEMBER_ACCESS BARE_NAME #exprMemberAccess
+    | expr OPEN_BRACKET expr CLOSE_BRACKET #exprIndex
+    | expr OPEN_PAREN (expr (COMMA expr)*)? CLOSE_PAREN #exprCall
+    | OPEN_CURLY expr COLON expr (COMMA expr COLON expr)* CLOSE_CURLY #exprDictStruct
+    | OPEN_BRACKET expr (COMMA expr)* CLOSE_BRACKET #exprArray
+    | MINUS expr #exprNeg
+    | BNOT expr #exprBNot
+    | expr MUL expr #exprMul
+    | expr DIV expr #exprDiv
+    | expr MOD expr #exprMod
+    | expr PLUS expr #exprPlus
+    | expr MINUS expr #exprMinus
+    | expr BOR expr #exprBOr
+    | expr BAND expr #exprBAnd
+    | expr XOR expr #exprXor
+    | expr SHL expr #exprShl
+    | expr SHR expr #exprShr
+    | NOT expr #exprNot
+    | expr GREATER expr #exprGreater
+    | expr LESS expr #exprLess
+    | expr GREATER_EQ expr #exprGreaterEq
+    | expr LESS_EQ expr #exprLessEq
+    | expr EQUALS expr #exprEquals
+    | expr NOT_EQ expr #exprNotEq
+    | expr AND expr #exprAnd
+    | expr OR expr #exprOr
+    ;
 
 literal: NULL
     | INTEGER
@@ -75,30 +99,11 @@ literal: NULL
 
 
 ////////// TODO rework everything below ///////////
-arithmAtom: literal | memberAccess | procCall;
-    
-arithmExpr: MINUS arithmExpr 
-    | arithmAtom ((PLUS|MINUS|MUL|DIV|MOD|BNOT|BOR|BAND|XOR|SHL|SHR)
-        arithmExpr)?
-    
-    ;
-
-
-// dictionary initialization value part
-keyValue: expr COLON expr;
-dictValue: DICT_BEG keyValue (COMMA keyValue)* DICT_END;
-
-// structure initialization value part
-structFieldValue: BARE_NAME COLON expr;
-structValue: DICT_BEG (structFieldValue (COMMA structFieldValue)*)? DICT_END;
-
-// array initialization value part
-arrayValue: ARRAY_BEG arrayValues  ARRAY_END;
-arrayValues: value1 = expr (COMMA value2 = expr)*
-;
 
 typeSpec: QUALIF_NAME
     | arrayType;
+
+// generic type: Map$<String,Map$<Integer,String>>
 
 // array type part
 arrayType: ARRAY ARRAY_BEG arrayVariant ARRAY_END;
@@ -106,7 +111,6 @@ arrayVariant: type = QUALIF_NAME    # unknownSizeArray
     | type = QUALIF_NAME COMMA size = expr # sizedArray
     ;
 
-varDecl: VAR;
 
 procVarDecl: varDecl
     | finalDecl;

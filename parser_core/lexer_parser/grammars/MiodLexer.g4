@@ -19,6 +19,7 @@ CONST: 'const';
 FINAL: 'final';
 VAR: 'var';
 PROC: 'proc';
+METHOD: 'method';
 RETURN: 'return';
 EXTERN: 'extern';
 END_PROC: 'end';
@@ -62,18 +63,18 @@ END_FINALLY: 'end_finally';
 STRUCT: 'struct';
 END_STRUCT: 'end_struct';
 ANNOTATE: '@';
-DICT_BEG: '{';
-DICT_END: '}';
+OPEN_CURLY: '{';
+CLOSE_CURLY: '}';
 COLON: ':';
 SEMICOLON: ';';
 COMMA: ',';
 WITH: 'with';
 END_WITH: 'end_with';
-OPEN_BRACE: '(';
-CLOSE_BRACE: ')';
+OPEN_PAREN: '(';
+CLOSE_PAREN: ')';
 ARRAY: 'array';
-ARRAY_BEG: '[';
-ARRAY_END: ']';
+OPEN_BRACKET: '[';
+CLOSE_BRACKET: ']';
 MEMBER_ACCESS: '.';
 FOR: 'for';
 IN: 'in';
@@ -98,9 +99,14 @@ STRUCT_HELPER: 'struct_helper';
 GENERIC: 'generic';
 IMPLEMENT: 'implement';
 CLASS: 'class';
+BASE_CLASS: 'base_class';
 END_CLASS: 'end_class';
 //EXTENDS: 'extends';
 //IMPLEMENTS: 'implements';
+// Map$<String, Integer> -- integer map generic type
+TYPE_ARGS_OPEN: '$<';
+//TYPE_ARGS_CLOSE: GREATER;
+
 
 
 // literals
@@ -119,11 +125,11 @@ fragment OCTAL: [0-7_];
 fragment BIN: [01_];
 fragment ID: [a-zA-Z_]+[0-9a-zA-Z]*;
 
-INT_OCTAL: '-'? '0o' OCTAL+ 'U';
-INT_HEX: '-'? '0x' HEX+ 'U';
-INT_BIN: '-'? '0b' BIN+ 'U';
+INT_OCTAL: '-'? '0o' OCTAL+ 'U'?;
+INT_HEX: '-'? '0x' HEX+ 'U'?;
+INT_BIN: '-'? '0b' BIN+ 'U'?;
 FLOAT: '-'? ((DIGIT+ '.' DIGIT*) | (DIGIT* '.' DIGIT+)) ([eE][+\-]DIGIT+)? 'f'?;
-INTEGER: '-'? DIGIT+ 'U';
+INTEGER: '-'? DIGIT+ 'U'?;
 
 QUALIF_NAME: ID ('::' ID)+;
 BARE_NAME: ID;
