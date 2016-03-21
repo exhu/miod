@@ -16,7 +16,7 @@ JOIN_LINE: '\\' NEWLINE -> skip;
 
 // keywords
 CONST: 'const';
-FINAL: 'final';
+//FINAL: 'final';
 VAR: 'var';
 PROC: 'proc';
 METHOD: 'method';

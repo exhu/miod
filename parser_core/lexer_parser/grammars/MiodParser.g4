@@ -8,17 +8,16 @@ bareName: ID | SETTER | GETTER;
 qualifName: bareName (NAMESPACE_SEP bareName)*;
 qualifNameOnly: bareName (NAMESPACE_SEP bareName)+;
 
-// Must check for predefined annotations like @_property(set=method, get=method |
-// readonly=true | writeonly=true, fake=true )
+// Must check for predefined annotations like @_rtti
 annotation: ANNOTATE qualifName annotationDict?;
 annotationDict: OPEN_CURLY bareName COLON constExpr (COMMA bareName COLON constExpr)* CLOSE_CURLY;
 
 unitBody: importDecl* globalStmt+;
+importDecl: (IMPORT|IMPORT_ALL) qualifNameOnly;
 globalStmt: globalStaticIf
     | globalDecl
     ;
 
-importDecl: IMPORT qualifNameOnly;
 constExpr: expr; // to mark semantic difference at certain places
 
 globalStaticIf:
@@ -46,7 +45,6 @@ varItem: varsAndType
     ;
 varsAndType: bareName (COMMA bareName)* COLON typeSpec;
 varTypeAssign: bareName (COLON typeSpec)? ASSIGN expr;
-
 
 typeArgsOpen: TYPE_ARGS_OPEN;
 typeArgsClose: GREATER;
