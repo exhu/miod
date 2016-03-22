@@ -19,7 +19,7 @@ globalStmt: globalStaticIf
     ;
 
 constExpr: expr; // to mark semantic difference at certain places
-boolExpr: expr; // to mark expected bool type
+boolExpr: constExpr; // to mark expected bool type
 
 // TODO semantic phase must evaluate expressions to calculate static_if
 
@@ -52,7 +52,7 @@ varTypeAssign: bareName (COLON typeSpec)? ASSIGN expr;
 typeArgsOpen: TYPE_ARGS_OPEN;
 typeArgsClose: GREATER;
 
-// Reqursive rules are to be here.
+// Recursive rules are to be here.
 // If current scope is global then fails for procedure/method calls and property access
 expr: literal #exprLiteral
     | NEW OPEN_PAREN typeSpec CLOSE_PAREN #exprNew
