@@ -130,7 +130,7 @@ fragment HEX: [a-fA-F0-9_];
 fragment DIGIT: [0-9_];
 fragment OCTAL: [0-7_];
 fragment BIN: [01_];
-fragment ID: [a-zA-Z_]+[0-9a-zA-Z]*;
+ID: [a-zA-Z_]+[0-9a-zA-Z]*;
 
 INT_OCTAL: '-'? '0o' OCTAL+ 'U'?;
 INT_HEX: '-'? '0x' HEX+ 'U'?;

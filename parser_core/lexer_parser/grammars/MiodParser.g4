@@ -19,6 +19,9 @@ globalStmt: globalStaticIf
     ;
 
 constExpr: expr; // to mark semantic difference at certain places
+boolExpr: expr; // to mark expected bool type
+
+// TODO semantic phase must evaluate expressions to calculate static_if
 
 globalStaticIf:
     STATIC_IF boolExpr THEN globalStmt* (ELSE globalStmt*)? END_IF
@@ -32,7 +35,7 @@ globalDecl: globalConstDecl
 //    | includeDecl
     ;
 
-includeDecl: INCLUDE STRING;
+//includeDecl: INCLUDE STRING;
 
 globalConstDecl: CONST constAssign (COMMA constAssign)*;
 constAssign: bareName (COLON typeSpec)? ASSIGN constExpr;
@@ -104,22 +107,19 @@ propSetterGetter: (SETTER|GETTER) EQUALS bareName;
 
 ////////// TODO rework everything below ///////////
 
-typeSpec: QUALIF_NAME
+typeSpec: qualifName
     | arrayType;
 
 // generic type: Map$<String,Map$<Integer,String>>
 
 // array type part
-arrayType: ARRAY ARRAY_BEG arrayVariant ARRAY_END;
-arrayVariant: type = QUALIF_NAME    # unknownSizeArray
-    | type = QUALIF_NAME COMMA size = expr # sizedArray
+arrayType: ARRAY OPEN_BRACKET arrayVariant CLOSE_BRACKET;
+arrayVariant: type = qualifName    # unknownSizeArray
+    | type = qualifName COMMA size = expr # sizedArray
     ;
 
 
-procVarDecl: varDecl
-    | finalDecl;
-
-finalDecl: FINAL;
+procVarDecl: varDecl;
 
 procDecl: annotation* PROC;
 
@@ -127,31 +127,14 @@ typeDecl: TYPE;
 
 
 
-forEachLoop: FOR OPEN_BRACE varNames IN expr CLOSE_BRACE blockStmts? END_FOR;
+forEachLoop: FOR OPEN_PAREN varNames IN expr CLOSE_PAREN blockStmts? END_FOR;
 varNames: bareName (COMMA bareName)*;
 
-whileLoop: WHILE OPEN_BRACE boolExpr CLOSE_BRACE blockStmts? END_WHILE;
+whileLoop: WHILE OPEN_PAREN boolExpr CLOSE_PAREN blockStmts? END_WHILE;
 
-boolExpr: boolVal boolRest?;
+memberAccess: qualifName (MEMBER_ACCESS memberAccess)?;
 
-boolRest: EQUALS boolExpr
-    | NOT_EQ boolExpr
-    | LESS boolExpr
-    | GREATER boolExpr
-    | LESS_EQ boolExpr
-    | GREATER_EQ boolExpr;
-
-boolVal: memberAccess
-    | literal
-    | procCall
-    | NOT boolExpr
-    | AND boolExpr
-    | OR boolExpr
-    ;
-
-memberAccess: QUALIF_NAME (MEMBER_ACCESS memberAccess)?;
-
-procCall: memberAccess OPEN_BRACE procCallArgs? CLOSE_BRACE;
+procCall: memberAccess OPEN_PAREN procCallArgs? CLOSE_PAREN;
 
 procCallArgs: expr (COMMA expr)*;
 
