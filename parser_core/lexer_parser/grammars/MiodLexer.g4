@@ -3,7 +3,7 @@ lexer grammar MiodLexer;
 fragment NL: ('\r'? '\n');
 // comments
 
-DOC_COMMENT: '##' .*? (NEWLINE|EOF) -> channel(HIDDEN);
+DOC_COMMENT: '##' .*? (NEWLINE|EOF) -> channel(2);
 COMMENT: '#' .*? (NEWLINE|EOF) -> channel(HIDDEN);
 
 NEWLINE: NL -> channel(HIDDEN);

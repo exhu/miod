@@ -1,0 +1,32 @@
+Global scope
+    - compiler defined globals
+    - -Dmyvar=myvalue defines for static_if
+
+Other scopes:
+- unit
+    - static_if
+    - proc
+        - args
+            - static_if
+            - with
+            - finally
+            - for
+            - while
+            - if
+
+    - class
+        - static_if
+        - method (see proc)
+    - struct
+        - static_if
+    - enum
+
+Pass 1:
+    - build and populate scopes with 'unknown' type for expr types of vars
+
+Pass 2:
+    - evaluate expressions
+    - fill in scope types, not known on pass 1
+    - skip handlers for nodes under static_if
+
+Pass 3:
