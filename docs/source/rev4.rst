@@ -347,8 +347,9 @@ opaque                          Used to simplify bindings, e.g.
                                 annotations.
 int
 long
-array$<int>                      Passed by reference to functions
-array$<int, 120>
+array$<int>                     Passed by reference to functions,
+                                backed by system Array class.
+array$<int, 120>                
 String                          Immutable string class with
                                 hash code support
 proc()
@@ -402,8 +403,8 @@ enum$<nwstring>                  String
 opaque                          class instance or plain type
 int                             int
 long                            long
-array$<int>                      array object, cloned or set on assignment
-array$<int, 120>                 array object, cloned or set on assignment
+array$<int>                      array object, reference object
+array$<int, 120>                 array object 
 String                          maps to String object, plus additional
                                 functions, like fromUtf8, toUtf8 etc.
 proc()                          Interface instance, which calls appropriate 
@@ -448,8 +449,8 @@ enum$<nwstring>                  wchar_t*
 opaque                          pointer to struct instance or plain type
 int                             int
 long                            long long
-array$<int>                      Struct { int * ptr, int sz }
-array$<int, 120>                 int arr[120], const int arr_sz = 120
+array$<int>                      backed by Array class, 
+array$<int, 120>                 statically allocated Array class 
 String                          maps to char*, plus lengths, utf8 functions.
 proc()                          plain function pointer
 method()                        Struct { void (\*proc)(), void * inst }

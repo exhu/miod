@@ -115,6 +115,9 @@ EXTENDS: 'extends';
 IMPLEMENTS: 'implements';
 // Map$<String, Integer> -- integer map generic type
 TYPE_ARGS_OPEN: '$<';
+LITERAL: 'literal';
+NSTRING: 'nstring';
+NWSTRING: 'nwstring';
 
 
 

@@ -2,7 +2,7 @@ parser grammar MiodParser;
 options {tokenVocab = MiodLexer;}
 
 compUnit: unitHeader unitBody?;
-unitHeader: annotation* GENERIC? UNIT qualifNameOnly;
+unitHeader: annotations? GENERIC? UNIT qualifNameOnly;
 
 bareName: ID | SETTER | GETTER;
 qualifName: bareName (NAMESPACE_SEP bareName)*;
@@ -11,6 +11,8 @@ qualifNameOnly: bareName (NAMESPACE_SEP bareName)+;
 // Must check for predefined annotations like @_rtti
 annotation: ANNOTATE qualifName annotationDict?;
 annotationDict: OPEN_CURLY bareName COLON constExpr (COMMA bareName COLON constExpr)* CLOSE_CURLY;
+
+annotations: annotation+;
 
 unitBody: importDecl* globalStmt+;
 importDecl: (IMPORT|IMPORT_ALL) qualifNameOnly;
@@ -89,6 +91,7 @@ expr: literal #exprLiteral
     | expr NOT_EQ expr #exprNotEq
     | expr AND expr #exprAnd
     | expr OR expr #exprOr
+    | LITERAL (typeArgsOpen (NSTRING|NWSTRING) typeArgsClose)? OPEN_PAREN expr CLOSE_PAREN #exprLiteralOper
     ;
 
 literal: NULL
@@ -104,11 +107,6 @@ literal: NULL
     | FALSE
     ;
 
-
-// Check for double getters/setters in semantic pass!
-propertyDecl: PROPERTY bareName COLON typeSpec (EQUALS OPEN_CURLY 
-    propSetterGetter (COMMA propSetterGetter)? CLOSE_CURLY)?;
-propSetterGetter: (SETTER|GETTER) EQUALS bareName;
 
 
 typeSpec: qualifName #typeSpecName
@@ -132,8 +130,9 @@ arrayVariant: qualifName # unknownSizeArray
     | typeSpec COMMA expr # sizedArray
     ;
 
-procMethodDecl: annotation* (PROC|METHOD) OPEN_PAREN procArgsDecl CLOSE_PAREN
-    statement* END_PROC;
+procMethodDecl: annotations? (EXTERN|INLINE)?
+    (PROC|((ABSTRACT|VIRTUAL|OVERRIDE)? METHOD))
+    OPEN_PAREN procArgsDecl CLOSE_PAREN (SEMICOLON|(statement* END_PROC));
 
 statement: RETURN expr? #statementReturn
     | constDecl #statementConstDecl
@@ -165,16 +164,38 @@ ifStatement: IF boolExpr THEN statement* (ELIF boolExpr THEN statement*)*
 
 
 aliasDecl: ALIAS bareName ASSIGN qualifName;
-typeDecl: TYPE bareName ASSIGN (GENERIC|qualifName|arrayType|enumDecl|structDecl|classDecl);
+typeDecl: TYPE bareName ASSIGN
+    (GENERIC|qualifName|arrayType|enumDecl|structDecl|classDecl);
 
-enumDecl: ENUM (typeArgsOpen typeSpec typeArgsClose)? (bareName (ASSIGN constExpr)?)+ END_ENUM
+enumDecl: annotations? ENUM (typeArgsOpen typeSpec typeArgsClose)?
+    (bareName (ASSIGN constExpr)?)+ END_ENUM
 ;
 
-structDecl:
+structDecl: annotations? EXTERN? STRUCT structBodyStmt* END_STRUCT
 ;
 
-classDecl: visibilityStmt
-    |
+structOrClassField: bareName (COMMA bareName)* COLON typeSpec;
+
+structBodyStmt: structOrClassField
+    | STATIC_IF boolExpr THEN structBodyStmt* (ELSE structBodyStmt*)? END_IF
     ;
 
+classDecl: annotations? EXTERN? ((ABSTRACT? BASE_CLASS)|CLASS)
+    EXTENDS qualifName 
+    IMPLEMENTS qualifName (COMMA qualifName)*
+    classBodyStmt*
+    END_CLASS
+    ;
+
+classBodyStmt: visibilityStmt
+    | annotations? propertyDecl
+    | structOrClassField
+    | procMethodDecl
+    | STATIC_IF boolExpr THEN classBodyStmt* (ELSE classBodyStmt*)? END_IF
+    ;
+
+// Check for double getters/setters in semantic pass!
+propertyDecl: PROPERTY bareName COLON typeSpec (EQUALS OPEN_CURLY 
+    propSetterGetter (COMMA propSetterGetter)? CLOSE_CURLY)?;
+propSetterGetter: (SETTER|GETTER) EQUALS bareName;
 
