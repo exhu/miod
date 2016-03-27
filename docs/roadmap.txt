@@ -1,3 +1,20 @@
+TODO:
+
+- evaluate expressions during second (semantic) pass both type and values
+to calculate static_if's
+
+- check for predefined annotations, unknown annotations trigger error
+
+- track scopes when parsing declarations, no procedure calls are possible
+when defining globals constants/vars
+
+- check for double getters and setters for properties
+
+- check for unnecessary body for abstract methods, external procs and omission
+otherwise
+
+
+
 Version 1 features
 
 - base_class for extendable classes, deprecate "final" keyword,
