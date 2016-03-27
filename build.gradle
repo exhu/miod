@@ -1,0 +1,12 @@
+subprojects {
+    apply plugin: 'java'
+    repositories {
+        flatDir {
+            dirs "$rootDir/javalibs"
+        }
+        mavenCentral()
+        //maven {
+        //    url "http://repo1.maven.org/maven2"
+        //}
+    }
+}

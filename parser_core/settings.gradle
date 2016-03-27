@@ -1,3 +1,0 @@
-include 'lexer_parser'
-include 'miod_parser'
-
