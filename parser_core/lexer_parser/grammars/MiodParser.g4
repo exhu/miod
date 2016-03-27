@@ -21,14 +21,14 @@ globalStmt: globalStaticIf
 constExpr: expr; // to mark semantic difference at certain places
 boolExpr: constExpr; // to mark expected bool type
 
-// TODO semantic phase must evaluate expressions to calculate static_if
+// Semantic phase must evaluate expressions to calculate static_if
 
 globalStaticIf:
     STATIC_IF boolExpr THEN globalStmt* (ELSE globalStmt*)? END_IF
     ;
 
-globalDecl: globalConstDecl
-    | procDecl
+globalDecl: constDecl
+    | procMethodDecl
     | typeDecl
     | visibilityStmt
     | varDecl
@@ -37,7 +37,7 @@ globalDecl: globalConstDecl
 
 //includeDecl: INCLUDE STRING;
 
-globalConstDecl: CONST constAssign (COMMA constAssign)*;
+constDecl: CONST constAssign (COMMA constAssign)*;
 constAssign: bareName (COLON typeSpec)? ASSIGN constExpr;
 
 visibilityStmt: PRIVATE | PROTECTED | PUBLIC;
@@ -100,7 +100,7 @@ literal: NULL
     ;
 
 
-// Check for double getters/setters
+// Check for double getters/setters in semantic pass!
 propertyDecl: PROPERTY bareName COLON typeSpec (EQUALS OPEN_CURLY 
     propSetterGetter (COMMA propSetterGetter)? CLOSE_CURLY)?;
 propSetterGetter: (SETTER|GETTER) EQUALS bareName;
@@ -109,71 +109,56 @@ propSetterGetter: (SETTER|GETTER) EQUALS bareName;
 typeSpec: qualifName #typeSpecName
     | genericTypeSpec #typeSpecGenericArgs
     | (PROC|METHOD) OPEN_PAREN procArgsDecl? CLOSE_PAREN #typeSpecProcMethod
-    | arrayType;
+    | arrayType #typeSpecArray
+    ;
 
 
 // generic type: Map$<String,Map$<Integer,String>>
-genericTypeSpec: qualifName TYPE_ARGS_OPEN typeSpec (COMMA typeSpec)* TYPE_ARGS_CLOSE ;
+genericTypeSpec: qualifName typeArgsOpen typeSpec (COMMA typeSpec)* typeArgsClose ;
 
-procArgsDecl: bareName COLON VAR? typeSpec (COMMA bareName COLON VAR? typeSpec)*
-;
+procArgsDecl: procArgDecl (COMMA procArgDecl)*;
+
+
+procArgDecl: bareName (COMMA bareName)* COLON VAR? typeSpec;
 
 // array type part
 arrayType: ARRAY OPEN_BRACKET arrayVariant CLOSE_BRACKET;
-arrayVariant: type = qualifName    # unknownSizeArray
-    | type = qualifName COMMA size = expr # sizedArray
+arrayVariant: qualifName # unknownSizeArray
+    | typeSpec COMMA expr # sizedArray
     ;
+
+procMethodDecl: annotation* (PROC|METHOD) OPEN_PAREN procArgsDecl CLOSE_PAREN
+    statement* END_PROC;
+
+statement: RETURN expr? #statementReturn
+    | constDecl #statementConstDecl
+    | varDecl #statementVarDecl
+    | staticIf #statementStaticIf
+    | expr OPEN_PAREN (expr (COMMA expr)*)? CLOSE_PAREN #statementCall
+    | FINALLY statement* END_FINALLY #statementFinally
+    | BREAK #statementBreak
+    | CONTINUE #statementContinue
+    | forEachLoop #statementForEach
+    | whileLoop #statementWhile
+    | expr ASSIGN expr #statementAssign
+    | ifStatement #statementIf
+    ;
+
+staticIf:
+    STATIC_IF boolExpr THEN statement* (ELSE statement*)? END_IF
+    ;
+
+forEachLoop: FOR OPEN_PAREN varNames IN expr CLOSE_PAREN statement* END_FOR;
+varNames: bareName (COMMA bareName)*;
+
+whileLoop: WHILE OPEN_PAREN boolExpr CLOSE_PAREN statement* END_WHILE;
+
+ifStatement: IF boolExpr THEN statement* (ELIF boolExpr THEN statement*)*
+    (ELSE statement*)? END_IF;
 
 
 ////////// TODO rework everything below ///////////
-procVarDecl: varDecl;
-
-procDecl: annotation* PROC;
-
 typeDecl: TYPE;
 
-
-
-forEachLoop: FOR OPEN_PAREN varNames IN expr CLOSE_PAREN blockStmts? END_FOR;
-varNames: bareName (COMMA bareName)*;
-
-whileLoop: WHILE OPEN_PAREN boolExpr CLOSE_PAREN blockStmts? END_WHILE;
-
-memberAccess: qualifName (MEMBER_ACCESS memberAccess)?;
-
-procCall: memberAccess OPEN_PAREN procCallArgs? CLOSE_PAREN;
-
-procCallArgs: expr (COMMA expr)*;
-
-
-// subrules for variable/const decl:
-varAssign: bareName ASSIGN expr;
-varInitAssign: bareName COLON typeSpec ASSIGN expr;
-
-varDeclPart: bareName | varAssign | varInitAssign;
-
-// varialbe/const declaration:
-localDecl: VAR | CONST varDeclPart (COMMA varDeclPart)*;
-
-blockStmts: blockStmt+;
-blockStmt: localDecl
-    | BREAK
-    | CONTINUE
-    | RETURN
-    | forEachLoop
-    | whileLoop
-    | procCall
-    | assignment
-    | finallyBlock
-    | ifStatement
-    | staticIfStatement
-    ;
-
-assignment: memberAccess ASSIGN expr;
-
-finallyBlock: FINALLY blockStmts END_FINALLY;
-
-ifStatement: IF boolExpr THEN blockStmts? (ELSE blockStmts?)? END_IF;
-staticIfStatement: STATIC_IF boolExpr THEN blockStmts? (ELSE blockStmts?)? END_IF;
 
 

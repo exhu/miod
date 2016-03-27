@@ -20,6 +20,7 @@ CONST: 'const';
 VAR: 'var';
 PROC: 'proc';
 METHOD: 'method';
+INLINE: 'inline';
 RETURN: 'return';
 EXTERN: 'extern';
 END_PROC: 'end';
@@ -31,6 +32,7 @@ STATIC_IF: 'static_if';
 IF: 'if';
 THEN: 'then';
 ELSE: 'else';
+ELIF: 'elif';
 END_IF: 'end_if';
 UNIT: 'unit';
 PLUS: '+';
@@ -112,7 +114,6 @@ EXTENDS: 'extends';
 IMPLEMENTS: 'implements';
 // Map$<String, Integer> -- integer map generic type
 TYPE_ARGS_OPEN: '$<';
-//TYPE_ARGS_CLOSE: GREATER;
 
 
 
