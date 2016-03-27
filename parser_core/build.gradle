@@ -1,6 +1,6 @@
 apply plugin: 'java'
 
-evaluationDependsOn 'lexer_parser'
+evaluationDependsOn ':lexer_parser'
 
 dependencies {
     compile project(':lexer_parser')    
