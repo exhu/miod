@@ -2,7 +2,7 @@ parser grammar MiodParser;
 options {tokenVocab = MiodLexer;}
 
 compUnit: unitHeader unitBody?;
-unitHeader: annotation* UNIT qualifNameOnly;
+unitHeader: annotation* GENERIC? UNIT qualifNameOnly;
 
 bareName: ID | SETTER | GETTER;
 qualifName: bareName (NAMESPACE_SEP bareName)*;
@@ -16,6 +16,7 @@ unitBody: importDecl* globalStmt+;
 importDecl: (IMPORT|IMPORT_ALL) qualifNameOnly;
 globalStmt: globalStaticIf
     | globalDecl
+    | implementStmt
     ;
 
 constExpr: expr; // to mark semantic difference at certain places
@@ -27,11 +28,15 @@ globalStaticIf:
     STATIC_IF boolExpr THEN globalStmt* (ELSE globalStmt*)? END_IF
     ;
 
+implementStmt: IMPLEMENT qualifNameOnly WITH (qualifName ASSIGN typeSpec)* END_WITH;
+
+
 globalDecl: constDecl
     | procMethodDecl
     | typeDecl
     | visibilityStmt
     | varDecl
+    | aliasDecl
 //    | includeDecl
     ;
 
@@ -140,8 +145,10 @@ statement: RETURN expr? #statementReturn
     | CONTINUE #statementContinue
     | forEachLoop #statementForEach
     | whileLoop #statementWhile
+    // semantic check for lvalue, e.g. id, memberAccess, index
     | expr ASSIGN expr #statementAssign
     | ifStatement #statementIf
+    | WITH qualifName (COMMA qualifName)* statement+ END_WITH #statementWith
     ;
 
 staticIf:
@@ -157,8 +164,17 @@ ifStatement: IF boolExpr THEN statement* (ELIF boolExpr THEN statement*)*
     (ELSE statement*)? END_IF;
 
 
-////////// TODO rework everything below ///////////
-typeDecl: TYPE;
+aliasDecl: ALIAS bareName ASSIGN qualifName;
+typeDecl: TYPE bareName ASSIGN (GENERIC|qualifName|arrayType|enumDecl|structDecl|classDecl);
 
+enumDecl: ENUM (typeArgsOpen typeSpec typeArgsClose)? (bareName (ASSIGN constExpr)?)+ END_ENUM
+;
+
+structDecl:
+;
+
+classDecl: visibilityStmt
+    |
+    ;
 
 

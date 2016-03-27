@@ -95,6 +95,7 @@ OVERRIDE: 'override';
 VIRTUAL: 'virtual';
 ABSTRACT: 'abstract';
 ENUM: 'enum';
+END_ENUM: 'end_enum';
 WEAK: 'weak';
 CLASS_HELPER: 'class_helper';
 STRUCT_HELPER: 'struct_helper';
