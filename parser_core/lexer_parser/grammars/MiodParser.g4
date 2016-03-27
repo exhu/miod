@@ -105,12 +105,18 @@ propertyDecl: PROPERTY bareName COLON typeSpec (EQUALS OPEN_CURLY
     propSetterGetter (COMMA propSetterGetter)? CLOSE_CURLY)?;
 propSetterGetter: (SETTER|GETTER) EQUALS bareName;
 
-////////// TODO rework everything below ///////////
 
-typeSpec: qualifName
+typeSpec: qualifName #typeSpecName
+    | genericTypeSpec #typeSpecGenericArgs
+    | (PROC|METHOD) OPEN_PAREN procArgsDecl? CLOSE_PAREN #typeSpecProcMethod
     | arrayType;
 
+
 // generic type: Map$<String,Map$<Integer,String>>
+genericTypeSpec: qualifName TYPE_ARGS_OPEN typeSpec (COMMA typeSpec)* TYPE_ARGS_CLOSE ;
+
+procArgsDecl: bareName COLON VAR? typeSpec (COMMA bareName COLON VAR? typeSpec)*
+;
 
 // array type part
 arrayType: ARRAY OPEN_BRACKET arrayVariant CLOSE_BRACKET;
@@ -119,6 +125,7 @@ arrayVariant: type = qualifName    # unknownSizeArray
     ;
 
 
+////////// TODO rework everything below ///////////
 procVarDecl: varDecl;
 
 procDecl: annotation* PROC;

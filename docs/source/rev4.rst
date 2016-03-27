@@ -338,8 +338,8 @@ nwstring                        Immutable!
 cardinal
 range type
 enum
-enum<nstring>
-enum<nwstring>
+enum$<nstring>
+enum$<nwstring>
 
 opaque                          Used to simplify bindings, e.g.
                                 to describe type that is available
@@ -347,8 +347,8 @@ opaque                          Used to simplify bindings, e.g.
                                 annotations.
 int
 long
-array<int>                      Passed by reference to functions
-array<int, 120>
+array$<int>                      Passed by reference to functions
+array$<int, 120>
 String                          Immutable string class with
                                 hash code support
 proc()
@@ -357,14 +357,14 @@ method()                        Instance pointer is guarded as
 
 float                           alias for float32
 double                          alias for float64
-literal<nstring|nwstring>(l)    Returns identifier (unit, class, var,
+literal$<nstring|nwstring>(l)    Returns identifier (unit, class, var,
                                 type, enum etc.) name as string
-weak<typename>                  Plain object instance pointer type in release
-weak_ref<typename>              WeakRef<> in debug/release
-cast<typename>(a)               Converts type, if typename == class, then
+weak$<typename>                  Plain object instance pointer type in release
+weak_ref$<typename>              WeakRef<> in debug/release
+cast$<typename>(a)               Converts type, if typename == class, then
                                 returns null in debug mode if 'a' is not a
                                 descendant of 'typename'. May crash in release.
-cast_inst<class>(a)             Checks if 'a' is 'class' descendant, returns
+cast_check$<class>(a)             Checks if 'a' is 'class' descendant, returns
                                 null otherwise.
 
 var int                         Argument passed by reference, plain pointer in
@@ -397,22 +397,22 @@ nwstring                        String
 cardinal                        int, checked for under/overflow
 range type                      int, bounds are checked
 enum                            int
-enum<nstring>                   String
-enum<nwstring>                  String
+enum$<nstring>                   String
+enum$<nwstring>                  String
 opaque                          class instance or plain type
 int                             int
 long                            long
-array<int>                      array object, cloned or set on assignment
-array<int, 120>                 array object, cloned or set on assignment
+array$<int>                      array object, cloned or set on assignment
+array$<int, 120>                 array object, cloned or set on assignment
 String                          maps to String object, plus additional
                                 functions, like fromUtf8, toUtf8 etc.
 proc()                          Interface instance, which calls appropriate 
                                 proc.
-proc(), class                   Interface instance with instance field,
+method()                        Interface instance with instance field,
                                 which calls appropriate proc on instance.
-literal<nstring|nwstring>(l)     String "l"
-weak<typename>                  WeakRef<> in debug
-weak_ref<typename>              WeakRef<> in debug/release
+literal$<nstring|nwstring>(l)     String "l"
+weak$<typename>                  WeakRef<> in debug
+weak_ref$<typename>              WeakRef<> in debug/release
 var int                         Argument passed by reference, 
                                 boxed value (anonymous class)
 =============================  =============================================
@@ -443,19 +443,19 @@ nwstring                        wchat_t*
 cardinal                        int, checked for under/overflow
 range type                      int, bounds checked
 enum                            int
-enum<nstring>                   char*
-enum<nwstring>                  wchar_t*
+enum$<nstring>                   char*
+enum$<nwstring>                  wchar_t*
 opaque                          pointer to struct instance or plain type
 int                             int
 long                            long long
-array<int>                      Struct { int * ptr, int sz }
-array<int, 120>                 int arr[120], const int arr_sz = 120
+array$<int>                      Struct { int * ptr, int sz }
+array$<int, 120>                 int arr[120], const int arr_sz = 120
 String                          maps to char*, plus lengths, utf8 functions.
 proc()                          plain function pointer
-proc(), class                   Struct { void (\*proc)(), void * inst }
-literal<nstring|nwstring>(l)    char* | wchar_t*
-weak<typename>                  weak reference with checks in debug
-weak_ref<typename>              weak reference with checks in debug/release
+method()                        Struct { void (\*proc)(), void * inst }
+literal$<nstring|nwstring>(l)    char* | wchar_t*
+weak$<typename>                  weak reference with checks in debug
+weak_ref$<typename>              weak reference with checks in debug/release
 var int                         Argument passed by reference, plain pointer in
                                 C.
 =============================  =============================================
@@ -499,7 +499,7 @@ emits warnings if automatic conversion from 'int' is used, e.g.
 ::
 
     type IOMask = int32
-    IOMaskFlags = enum<IOMask>
+    IOMaskFlags = enum$<IOMask>
         read = 0x1,
         write = 0x2,
         append = 0x4,
@@ -630,7 +630,7 @@ A generic unit cannot be compiled, it is used as a template.
 
 ::
     
-    generic unit base_vector4
+    generic unit mypkg::base_vector4
     type VectorUnit = generic
 
     type Vector4 = struct
@@ -639,9 +639,10 @@ A generic unit cannot be compiled, it is used as a template.
 One needs to write an implementation unit to generate code which uses the
 specified types::
 
-    unit vector4 
-    type VectorUnit = float
-    implement base_vector4
+    unit mypkg::vector4 
+    implement mypkg::base_vector4 with
+        VectorUnit = float
+    end_with
 
 The *implement* statement imports a generic unit into the global scope
 and uses defined types to resolve the generic ones.

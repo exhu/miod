@@ -108,8 +108,8 @@ PROPERTY: 'property';
 SETTER: 'setter';
 GETTER: 'getter';
 NAMESPACE_SEP: '::';
-//EXTENDS: 'extends';
-//IMPLEMENTS: 'implements';
+EXTENDS: 'extends';
+IMPLEMENTS: 'implements';
 // Map$<String, Integer> -- integer map generic type
 TYPE_ARGS_OPEN: '$<';
 //TYPE_ARGS_CLOSE: GREATER;
