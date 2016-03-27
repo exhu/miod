@@ -27,8 +27,10 @@ boolExpr: constExpr; // to mark expected bool type
 // Semantic phase must evaluate expressions to calculate static_if
 
 globalStaticIf:
-    STATIC_IF boolExpr THEN globalStmt* (ELSE globalStmt*)? END_IF
+    STATIC_IF boolExpr THEN (trueStmts = globalStatements)? (ELSE (falseStmts = globalStatements)?)? END_IF
     ;
+
+globalStatements: globalStmt+;
 
 implementStmt: IMPLEMENT qualifNameOnly WITH (qualifName ASSIGN typeSpec)* END_WITH;
 
