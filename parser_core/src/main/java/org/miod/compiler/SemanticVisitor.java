@@ -15,8 +15,10 @@ import org.miod.parser.generated.MiodParserBaseVisitor;
 public class SemanticVisitor extends MiodParserBaseVisitor<Object>{
 
     @Override
-    public Object visitGlobalStaticIf(MiodParser.GlobalStaticIfContext ctx) {        
-        return super.visitGlobalStaticIf(ctx); //To change body of generated methods, choose Tools | Templates.
+    public Object visitGlobalStaticIf(MiodParser.GlobalStaticIfContext ctx) {
+        Object res = visit(ctx.boolExpr());
+        // TODO if true, visit(ctx.trueStmts), else ctx.falseStmts
+        return res;
     }
     
 }

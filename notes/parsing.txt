@@ -1,3 +1,18 @@
+Root scope
+    - parent = null
+    - symbols:
+        - predefined
+        - definitions passed via command line args
+
+Units map[full_name, Unit]
+    - Unit
+        - Scope
+            - proc, struct, block scopes...
+
+'import' statement checks Units map and does not reparse already parsed/being
+parsed units.
+
+-=-=-=-==--
 Global scope
     - compiler defined globals
     - -Dmyvar=myvalue defines for static_if
