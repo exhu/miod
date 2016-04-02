@@ -12,5 +12,5 @@ public final class SymItem {
     public String name;
     public SymKind kind;
     public SymLocation location;
-    public TypeSymbol type;    
+    public TypeSymbol type;
 }
