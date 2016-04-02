@@ -118,6 +118,7 @@ TYPE_ARGS_OPEN: '$<';
 LITERAL: 'literal';
 NSTRING: 'nstring';
 NWSTRING: 'nwstring';
+BASE: 'base';
 
 
 
