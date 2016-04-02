@@ -15,6 +15,7 @@ import org.miod.program.errors.SymbolRedefinitionError;
 public abstract class BaseSymbolTable implements SymbolTable {
     private Map<String, SymItem> items = new HashMap<>();
     protected SymbolTable parent;
+    public static final String NAMESPACE_SEP = "::";
     
     BaseSymbolTable(SymbolTable parent) {
         this.parent = parent;
@@ -38,7 +39,11 @@ public abstract class BaseSymbolTable implements SymbolTable {
     public SymItem resolve(String id) {
         // TODO use parent
         // TODO split by "::" and try to resolve
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (id.startsWith(NAMESPACE_SEP)) {
+            if (parent != null)
+                return parent.resolve(id.substring(NAMESPACE_SEP.length()));
+        }
+        return null;
     }
     
     
