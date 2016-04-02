@@ -5,8 +5,10 @@ compUnit: unitHeader unitBody?;
 unitHeader: annotations? GENERIC? UNIT qualifNameOnly;
 
 bareName: ID | SETTER | GETTER;
-qualifName: bareName (NAMESPACE_SEP bareName)*;
-qualifNameOnly: bareName (NAMESPACE_SEP bareName)+;
+qualifName: NAMESPACE_SEP? qualifNameTxt;
+qualifNameTxt: bareName (NAMESPACE_SEP bareName)*;
+qualifNameOnly: NAMESPACE_SEP? qualifNameOnlyTxt;
+qualifNameOnlyTxt: bareName (NAMESPACE_SEP bareName)+;
 
 // Must check for predefined annotations like @_rtti
 annotation: ANNOTATE qualifName annotationDict?;

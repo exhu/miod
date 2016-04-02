@@ -2,17 +2,19 @@
     Copyright 2016 Yury Benesh
     see COPYING.txt
  */
-package org.miod.parser;
+package org.miod.program;
 
 /** Symbol table types.
  *
  * @author yur
  */
-public enum SymbolKind {
+public enum SymKind {
     Unit,
     Type,
     Alias,
     Var,
     Const,
-    Annotation
+    Annotation,
+    Proc,
+    Method
 }

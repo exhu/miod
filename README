@@ -9,6 +9,7 @@ code.
 lexer_parser -- generated lexer and parser
 parser_core -- language parser and compiler core with tests
 miodc -- compiler/translator to C
+miod_refactor -- refactoring, editor support tool
 
 See "javalibs" directory for dependencies.
 Build using Gradle.

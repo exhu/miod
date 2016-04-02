@@ -2,7 +2,7 @@
     Copyright 2016 Yury Benesh
     see COPYING.txt
  */
-package org.miod.parser;
+package org.miod.program;
 
 import java.util.List;
 
