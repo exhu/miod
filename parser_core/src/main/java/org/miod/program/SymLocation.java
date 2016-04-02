@@ -9,6 +9,13 @@ package org.miod.program;
  * @author yur
  */
 public final class SymLocation {
-    String filename;
-    int line, column;
+    public final CompilationUnit unit;
+    public final int line, column;
+    
+    public SymLocation(CompilationUnit unit, int line, int col) {
+        this.unit = unit;
+        this.line = line;
+        this.column = col;
+    }
+    
 }

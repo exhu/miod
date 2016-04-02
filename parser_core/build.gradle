@@ -11,6 +11,10 @@ dependencies {
     //testRuntime fileTree(dir:'templates', include:'*.st*')
 }
 
+compileJava {
+    //options.compilerArgs += "-Xlint:deprecation"
+}
+
 //jar(type:Jar, dependsOn: ':lexer_parser:compileJava') { 
 jar {
     dependsOn ':lexer_parser:compileJava'

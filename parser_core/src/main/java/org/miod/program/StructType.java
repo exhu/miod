@@ -4,15 +4,12 @@
  */
 package org.miod.program;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  *
  * @author yur
  */
-public class StructType extends BaseSymbolTable implements TypeSymbol {
-    StructType(SymbolTable parent) {
+public final class StructType extends SymbolWithSymTable {
+    public StructType(SymbolTable parent) {
         super(parent);
     }
     

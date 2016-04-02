@@ -8,6 +8,12 @@ package org.miod.program;
  *
  * @author yur
  */
-public interface TypeSymbol {
+public abstract class TypeSymbol {
+    public boolean isAliasedType() {
+        return false;
+    }
     
+    public boolean isSymbolTable() {
+        return false;
+    }    
 }
