@@ -1,3 +1,20 @@
+First pass:
+    - populate symbol table
+    - evaluate declaration expressions for consts
+    - visit only static_if branch that solves to 'true'
+
+Second pass:
+    - refine symbol table
+    - evaluate all expressions
+    - semantic check
+
+Third pass implementation may vary:
+    - generate C/C++ code
+    - generate Java code
+    - generate docs
+    
+
+-=-=-=-=-
 Root scope
     - parent = null
     - symbols:

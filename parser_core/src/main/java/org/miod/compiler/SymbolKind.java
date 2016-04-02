@@ -1,3 +1,7 @@
+/*
+    Copyright 2016 Yury Benesh
+    see COPYING.txt
+ */
 package org.miod.compiler;
 
 /** Symbol table types.
