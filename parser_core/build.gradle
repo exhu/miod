@@ -21,7 +21,7 @@ jar {
     //from project(':lexer_parser').sourceSets.main.output
 }
 
-/*
+
 test {
     useTestNG()
     include 'org/miod/tests/**'
@@ -29,4 +29,4 @@ test {
     //outputs.upToDateWhen { false }
 
 }
-*/
+
