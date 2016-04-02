@@ -12,7 +12,6 @@ Third pass implementation may vary:
     - generate C/C++ code
     - generate Java code
     - generate docs
-    
 
 -=-=-=-=-
 Root scope
@@ -32,7 +31,9 @@ parsed units.
 -=-=-=-==--
 Global scope
     - compiler defined globals
-    - -Dmyvar=myvalue defines for static_if
+    - -Dmyvar=myvalue defines for static_if -- this feature is not of top
+    priority, better to use mypkg::config units with global constants,
+    e.g. mypkg/config.miod.template which user copies and modifies.
 
 Other scopes:
 - unit
