@@ -26,8 +26,8 @@ public abstract class SymbolWithSymTable extends TypeSymbol implements SymbolTab
     }
     
     @Override
-    public void put(String id, SymItem item) {
-        symTable.put(id, item);
+    public void put(SymItem item) {
+        symTable.put(item);
     }
     
     @Override

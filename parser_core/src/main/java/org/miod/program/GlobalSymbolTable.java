@@ -13,17 +13,31 @@ import java.util.ListIterator;
  * @author yur
  */
 public final class GlobalSymbolTable extends BaseSymbolTable {
-    private List<SymItem> imports = new ArrayList<>();
-    private final String unitName;
+    static private class Imported {
+        public final boolean fullNamesOnly;
+        public final GlobalSymbolTable table;
+        public Imported(GlobalSymbolTable table, boolean fullNamesOnly) {
+            this.fullNamesOnly = fullNamesOnly;
+            this.table = table;
+        }
+    }
+    private List<Imported> imports = new ArrayList<>();
+    public final String unitName;
+    
     
     public GlobalSymbolTable(String unitName) {
         super(null);
         this.unitName = unitName;
+        put(new SymItem());
+    }
+    
+    public void addImport(GlobalSymbolTable item, boolean fullNamesOnly) {
+        imports.add(new Imported(item, fullNamesOnly));
     }
     
     @Override
     public SymItem resolve(String id) {
-        SymItem item = super.resolve(id);                
+        SymItem item = super.resolve(id);
         if (item == null) {
             if (id.startsWith(unitName)) {
                 // look no further
@@ -36,12 +50,13 @@ public final class GlobalSymbolTable extends BaseSymbolTable {
     
     private SymItem resolveFromImports(String id) {
         // resolve from last import to first
-        ListIterator<SymItem> i = imports.listIterator(imports.size());
+        ListIterator<Imported> i = imports.listIterator(imports.size());
         while(i.hasPrevious()) {
-            SymItem imported = i.previous();
-            SymItem resolved = ((SymbolWithSymTable)(imported.type)).resolve(id);
-            if (resolved != null)
-                return resolved;
+            Imported item = i.previous();
+            if (item.fullNamesOnly == false || item.fullNamesOnly && id.startsWith(item.table.unitName)) {                     SymItem resolved = item.table.resolve(id);
+                if (resolved != null)
+                    return resolved;
+            }
         }
         return null;
     }

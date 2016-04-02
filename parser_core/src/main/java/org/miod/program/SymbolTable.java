@@ -13,6 +13,6 @@ public interface SymbolTable {
     /// "::ID" skips first match and goes higher to the parent
     SymItem resolve(String id);
     
-    void put(String id, SymItem item);
+    void put(SymItem item);
     SymItem get(String id);
 }

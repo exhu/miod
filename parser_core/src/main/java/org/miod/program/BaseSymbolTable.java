@@ -27,9 +27,9 @@ public class BaseSymbolTable implements SymbolTable {
     }
 
     @Override
-    final public void put(String id, SymItem item) {
-        if (get(id) == null) {
-            items.put(id, item);
+    final public void put(SymItem item) {
+        if (get(item.name) == null) {
+            items.put(item.name, item);
         } else {
             throw new SymbolRedefinitionError(item);
         }

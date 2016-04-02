@@ -17,6 +17,8 @@ annotationDict: OPEN_CURLY bareName COLON constExpr (COMMA bareName COLON constE
 annotations: annotation+;
 
 unitBody: importDecl* globalStmt+;
+// IMPORT imports units, so that public symbols can be addressed as myunit::procName
+// IMPORT_ALL imports unit public symbols into global namespace
 importDecl: (IMPORT|IMPORT_ALL) qualifNameOnly;
 globalStmt: globalStaticIf
     | globalDecl
