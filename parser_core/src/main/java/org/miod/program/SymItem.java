@@ -16,10 +16,12 @@ public final class SymItem {
     final public SymLocation location;
     /// type can by null!
     public TypeSymbol type;
+    final public SymVisibility visibility;
     
-    public SymItem(String name, SymKind kind, SymLocation location) {
+    public SymItem(String name, SymKind kind, SymVisibility visibility, SymLocation location) {
         this.name = name;
         this.kind = kind;
         this.location = location;
+        this.visibility = visibility;
     }
 }

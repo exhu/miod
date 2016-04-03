@@ -21,6 +21,6 @@ public class CompilationUnit {
     public CompilationUnit(String name, int line, int col, String filename) {
         this.filename = filename;
         symTable = new GlobalSymbolTable(name);
-        symTable.put(new SymItem(name, SymKind.Unit, new SymLocation(this, line, col)));
+        symTable.put(new SymItem(name, SymKind.Unit, SymVisibility.Private, new SymLocation(this, line, col)));
     }    
 }

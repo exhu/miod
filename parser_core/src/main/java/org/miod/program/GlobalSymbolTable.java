@@ -23,11 +23,20 @@ public final class GlobalSymbolTable extends BaseSymbolTable {
     }
     private List<Imported> imports = new ArrayList<>();
     public final String unitName;
+    public final String parentNamespace;
     
     
     public GlobalSymbolTable(String unitName) {
         super(null);
         this.unitName = unitName;
+        this.parentNamespace = getParentNamespace(unitName);
+    }
+    
+    final public static String getParentNamespace(String unitName) {        
+        final int subIndex = unitName.lastIndexOf(NAMESPACE_SEP);
+        if (subIndex > 0)
+            return unitName.substring(0, subIndex);
+        return "";
     }
     
     final public void addImport(GlobalSymbolTable item, boolean fullNamesOnly) {
@@ -56,12 +65,17 @@ public final class GlobalSymbolTable extends BaseSymbolTable {
     
     private SymItem resolveFromImports(String id) {
         // resolve from last import to first
+        // ignore "private" symbols
+        // check for same package and ignore "protected"
         ListIterator<Imported> i = imports.listIterator(imports.size());
         while(i.hasPrevious()) {
             Imported item = i.previous();
             if (item.fullNamesOnly == false || item.fullNamesOnly && id.startsWith(item.table.unitName)) {
                 SymItem resolved = item.table.resolveImmediateOnly(id);
-                if (resolved != null)
+                if (resolved != null && 
+                        (resolved.visibility == SymVisibility.Public ||
+                        (resolved.visibility == SymVisibility.Protected && 
+                        item.table.parentNamespace.equals(parentNamespace))))
                     return resolved;
             }
         }

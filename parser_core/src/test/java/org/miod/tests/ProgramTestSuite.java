@@ -4,6 +4,7 @@ import java.nio.file.FileSystems;
 import org.miod.program.GlobalSymbolTable;
 import org.miod.program.SymItem;
 import org.miod.program.SymKind;
+import org.miod.program.SymVisibility;
 
 import org.testng.annotations.Test;
 import static org.testng.Assert.*;
@@ -23,11 +24,11 @@ public class ProgramTestSuite {
         myTab1.addImport(myTab2, true);
         myTab2.addImport(systemTab, false);
         myTab2.addImport(myTab3, false);
-        SymItem sym1 = new SymItem("sym1", SymKind.Var, null);
+        SymItem sym1 = new SymItem("sym1", SymKind.Var, SymVisibility.Public, null);
         // the same name, to check name collision
-        SymItem sym2 = new SymItem("sym1", SymKind.Var, null);
-        SymItem sym3 = new SymItem("sym3", SymKind.Var, null);
-        SymItem symSystem = new SymItem("system", SymKind.Var, null);
+        SymItem sym2 = new SymItem("sym1", SymKind.Var, SymVisibility.Public, null);
+        SymItem sym3 = new SymItem("sym3", SymKind.Var, SymVisibility.Public, null);
+        SymItem symSystem = new SymItem("system", SymKind.Var, SymVisibility.Public, null);
         systemTab.put(symSystem);
         myTab1.put(sym1);
         myTab2.put(sym2);
@@ -41,5 +42,9 @@ public class ProgramTestSuite {
         assertNotNull(myTab1.resolve(unitMy2Name + "::sym1"));
         assertNotNull(myTab2.resolve("system"));
         assertNotNull(myTab2.resolve("System::system"));
+        assertEquals(GlobalSymbolTable.getParentNamespace("pak::sub::unit"),
+                "pak::sub");
+        assertEquals(GlobalSymbolTable.getParentNamespace("System"),
+                "");
     }
 }
