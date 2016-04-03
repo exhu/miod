@@ -332,14 +332,14 @@ float64
 nchar                          only first 127 ASCII codes as
                                literals are allowed
 nstring                         Immutable!
-nwchar                         only first 127 ASCII codes as
+nwchar                         REMOVED! only first 127 ASCII codes as
                                literals are allowed
-nwstring                        Immutable!
+nwstring                        REMOVED! Immutable!
 cardinal
-range type
+range type                      REMOVED!
 enum
-enum$<nstring>
-enum$<nwstring>
+enum$<nstring>                  REMOVED!
+enum$<nwstring>                 REMOVED!
 
 opaque                          Used to simplify bindings, e.g.
                                 to describe type that is available
