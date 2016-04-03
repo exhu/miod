@@ -11,7 +11,7 @@ import static org.testng.Assert.*;
 
 public class ProgramTestSuite {
     @Test
-    public void globalSymbolTable() throws IOException {
+    public void globalSymbolTable() {
         final String unitSystemName = "System";
         final String unitMyName = "my::My";
         final String unitMy2Name = "my::My2";
