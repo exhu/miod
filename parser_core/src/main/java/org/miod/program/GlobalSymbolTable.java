@@ -28,7 +28,6 @@ public final class GlobalSymbolTable extends BaseSymbolTable {
     public GlobalSymbolTable(String unitName) {
         super(null);
         this.unitName = unitName;
-        put(new SymItem());
     }
     
     public void addImport(GlobalSymbolTable item, boolean fullNamesOnly) {

@@ -17,9 +17,12 @@ public class CompilationUnit {
     
     /// both import_all and import myunit::myProc etc.
     final private Set<CompilationUnit> importedUnits = new HashSet<>();
+    final private GlobalSymbolTable symTable;
 
-    public CompilationUnit(String filename, String name) {
+    public CompilationUnit(String filename, String name, int line, int col) {
         this.filename = filename;
         this.name = name;
+        symTable = new GlobalSymbolTable(name);
+        symTable.put(new SymItem(name, SymKind.Unit, new SymLocation(this, line, col)));
     }    
 }

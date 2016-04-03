@@ -4,6 +4,7 @@
  */
 package org.miod.program;
 
+import org.miod.program.types.AliasedType;
 import java.util.HashMap;
 import java.util.Map;
 import org.miod.program.errors.SymbolRedefinitionError;

@@ -4,13 +4,21 @@
  */
 package org.miod.program;
 
+import org.miod.program.types.TypeSymbol;
+
 /**
  *
  * @author yur
  */
 public final class SymItem {
-    public String name;
-    public SymKind kind;
-    public SymLocation location;
+    final public String name;
+    final public SymKind kind;
+    final public SymLocation location;
     public TypeSymbol type;
+    
+    public SymItem(String name, SymKind kind, SymLocation location) {
+        this.name = name;
+        this.kind = kind;
+        this.location = location;
+    }
 }

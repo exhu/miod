@@ -4,6 +4,8 @@
  */
 package org.miod.program;
 
+import org.miod.program.types.TypeSymbol;
+
 /**
  *
  * @author yur
@@ -11,7 +13,7 @@ package org.miod.program;
 public abstract class SymbolWithSymTable extends TypeSymbol implements SymbolTable {
     private final BaseSymbolTable symTable;
     
-    SymbolWithSymTable(SymbolTable parent) {
+    public SymbolWithSymTable(SymbolTable parent) {
         symTable = new BaseSymbolTable(parent);
     }
     

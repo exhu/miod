@@ -18,6 +18,8 @@ public class ProgramTestSuite {
         myTab.addImport(systemTab, false);
         myTab.addImport(myTab2, true);
         
+        //systemTab.put(new SymItem());
+        
         
     }
 }

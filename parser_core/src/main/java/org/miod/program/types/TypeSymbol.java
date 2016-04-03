@@ -2,7 +2,7 @@
     Copyright 2016 Yury Benesh
     see COPYING.txt
  */
-package org.miod.program;
+package org.miod.program.types;
 
 /** Base class for structs, classes, arrays...
  *
