@@ -14,6 +14,7 @@ public final class SymItem {
     final public String name;
     final public SymKind kind;
     final public SymLocation location;
+    /// type can by null!
     public TypeSymbol type;
     
     public SymItem(String name, SymKind kind, SymLocation location) {

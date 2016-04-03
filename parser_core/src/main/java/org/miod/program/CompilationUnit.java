@@ -13,15 +13,13 @@ import java.util.Set;
  */
 public class CompilationUnit {
     public final String filename;
-    public final String name;
     
     /// both import_all and import myunit::myProc etc.
-    final private Set<CompilationUnit> importedUnits = new HashSet<>();
-    final private GlobalSymbolTable symTable;
+    final public Set<CompilationUnit> importedUnits = new HashSet<>();
+    final public GlobalSymbolTable symTable;
 
-    public CompilationUnit(String filename, String name, int line, int col) {
+    public CompilationUnit(String name, int line, int col, String filename) {
         this.filename = filename;
-        this.name = name;
         symTable = new GlobalSymbolTable(name);
         symTable.put(new SymItem(name, SymKind.Unit, new SymLocation(this, line, col)));
     }    

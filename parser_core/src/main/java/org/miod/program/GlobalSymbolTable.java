@@ -30,19 +30,26 @@ public final class GlobalSymbolTable extends BaseSymbolTable {
         this.unitName = unitName;
     }
     
-    public void addImport(GlobalSymbolTable item, boolean fullNamesOnly) {
+    final public void addImport(GlobalSymbolTable item, boolean fullNamesOnly) {
         imports.add(new Imported(item, fullNamesOnly));
     }
     
     @Override
-    public SymItem resolve(String id) {
+    final public SymItem resolve(String id) {
+        SymItem item = resolveImmediateOnly(id);
+        if (item == null) {
+            return resolveFromImports(id);
+        }
+        return item;
+    }
+    
+    public final SymItem resolveImmediateOnly(String id) {
         SymItem item = super.resolve(id);
         if (item == null) {
             if (id.startsWith(unitName)) {
                 // look no further
                 return get(id.substring(unitName.length() + NAMESPACE_SEP.length()));
             }            
-            return resolveFromImports(id);
         }
         return item;
     }
@@ -52,7 +59,8 @@ public final class GlobalSymbolTable extends BaseSymbolTable {
         ListIterator<Imported> i = imports.listIterator(imports.size());
         while(i.hasPrevious()) {
             Imported item = i.previous();
-            if (item.fullNamesOnly == false || item.fullNamesOnly && id.startsWith(item.table.unitName)) {                     SymItem resolved = item.table.resolve(id);
+            if (item.fullNamesOnly == false || item.fullNamesOnly && id.startsWith(item.table.unitName)) {
+                SymItem resolved = item.table.resolveImmediateOnly(id);
                 if (resolved != null)
                     return resolved;
             }

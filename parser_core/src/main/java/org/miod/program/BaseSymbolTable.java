@@ -37,7 +37,7 @@ public class BaseSymbolTable implements SymbolTable {
     }
     
     final protected SymItem resolveAlias(SymItem item) {
-        if (item.type.isAliasedType())
+        if (item.type != null && item.type.isAliasedType())
             return ((AliasedType)item.type).getFinalSymbol();
         return item;
     }
@@ -60,7 +60,7 @@ public class BaseSymbolTable implements SymbolTable {
                 SymItem subItem = get(id.substring(0, sub));
                 if (subItem != null) {
                     subItem = resolveAlias(subItem);
-                    if (subItem.type.isSymbolTable()) {
+                    if (subItem.type != null && subItem.type.isSymbolTable()) {
                         SymbolWithSymTable subTable = (SymbolWithSymTable)subItem.type;
                         item = subTable.resolve(id.substring(sub+NAMESPACE_SEP.length()));
                     }
@@ -73,8 +73,4 @@ public class BaseSymbolTable implements SymbolTable {
         }
         return item;
     }
-    
-    
-    
-    
 }
