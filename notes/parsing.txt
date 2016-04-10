@@ -26,7 +26,7 @@ Units map[full_name, Unit]
             - proc, struct, block scopes...
 
 'import' statement checks Units map and does not reparse already parsed/being
-parsed units.
+parsed units, adds SymItem with unit name.
 
 -=-=-=-==--
 Global scope
@@ -63,3 +63,35 @@ Pass 2:
     - skip handlers for nodes under static_if
 
 Pass 3:
+
+
+
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+progam = CompilationUnit
+    - CompilationUnit
+        - filename
+        - globalSymTable
+        - imports
+            - CompilationUnit[]
+
+    - BaseSymTable
+        - items
+            - SymItem[]
+        - parent
+            - SymTable
+
+    - GlobalSymTable : BaseSymTable
+        - unitName
+        - namespace
+        - imports
+            - globalSymTable[]
+
+    - SymItem
+        - location
+            - CompilationUnit
+
+Cycles:
+    - CompilationUnit -> BaseSymTable->SymItem->SymLocation-><
+    - BaseSymTable -> parent -><
+

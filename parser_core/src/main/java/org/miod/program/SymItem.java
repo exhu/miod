@@ -14,7 +14,7 @@ public final class SymItem {
     final public String name;
     final public SymKind kind;
     final public SymLocation location;
-    /// type can by null!
+    /// type can by null for first pass!
     public TypeSymbol type;
     final public SymVisibility visibility;
     

@@ -9,7 +9,7 @@ package org.miod.program;
  * @author yur
  */
 public enum SymKind {
-    Unit,
+    Unit, // for imports
     Type,
     Alias,
     Var,

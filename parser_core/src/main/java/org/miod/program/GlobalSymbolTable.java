@@ -39,6 +39,7 @@ public final class GlobalSymbolTable extends BaseSymbolTable {
         return "";
     }
     
+    /// adds import into resolution paths, not into symbol table!
     final public void addImport(GlobalSymbolTable item, boolean fullNamesOnly) {
         imports.add(new Imported(item, fullNamesOnly));
     }
@@ -52,6 +53,7 @@ public final class GlobalSymbolTable extends BaseSymbolTable {
         return item;
     }
     
+    /// Does not look into imports
     public final SymItem resolveImmediateOnly(String id) {
         SymItem item = super.resolve(id);
         if (item == null) {
