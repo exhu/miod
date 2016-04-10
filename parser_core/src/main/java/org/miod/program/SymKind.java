@@ -14,7 +14,7 @@ public enum SymKind {
     Alias,
     Var,
     Const,
-    Annotation,
+    //Annotation, -- annotations are parsed and applied to the annotated item
     Proc,
     Method
 }
