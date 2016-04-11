@@ -91,6 +91,10 @@ progam = CompilationUnit
         - location
             - CompilationUnit
 
+    - ProcTypeWithBody
+        - finals
+        - blocks
+
 Cycles:
     - CompilationUnit -> BaseSymTable->SymItem->SymLocation-><
     - BaseSymTable -> parent -><

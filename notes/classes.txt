@@ -1,0 +1,44 @@
+Notes on classes implementation
+===============================
+
+Pointer -- a value that can refer to both interface (virtual table)
+and class instance.
+
+Instance pointers can be implemented in two ways, via a plain platform-size
+pointer (e.g. void*), or via a pair of pointers (e.g. void *interface_vtbl, void *this).
+
+Single pointer implementation
+-----------------------------
+
+Pointer value encodes both instance pointer and pointer to virtual table via
+pointing to a struct { void *parent_vtable, int parent_fields... 
+void *vtable, int fields... }.
+
+Such technique requires *this* pointer adjustment before passing to implemented
+methods. 
+
+Pros:
+    - simple implementation, i.e. using good old pointers
+    - references occupy platform pointer size bytes only
+
+Cons:
+    - double indirection to call virtual methods:
+        pointer->vtable->mymethod
+    - instance data requires additional vtable fields for every ancestor class
+    and implemented interface
+    - thunk methods to marshall *this* pointer
+
+
+Double pointer implementation
+-----------------------------
+
+Each instance pointer contains a pointer to vtable and pure *this* pointer, i.e.
+struct { void *this, void *vtable }
+
+
+Pros:
+    - simple to call virtuals, no pointer conversion
+    - simple to implement virtual tables
+
+Cons:
+    - *this* occupies to machine words
