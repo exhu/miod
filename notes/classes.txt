@@ -41,4 +41,4 @@ Pros:
     - simple to implement virtual tables
 
 Cons:
-    - *this* occupies to machine words
+    - *this* occupies two machine words

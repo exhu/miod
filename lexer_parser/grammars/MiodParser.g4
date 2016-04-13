@@ -178,7 +178,9 @@ enumDecl: annotations? ENUM (typeArgsOpen typeSpec typeArgsClose)?
     (bareName (ASSIGN constExpr)?)+ END_ENUM
 ;
 
-structDecl: annotations? EXTERN? STRUCT structBodyStmt* END_STRUCT
+structDecl: annotations? EXTERN? STRUCT
+    (IMPLEMENTS qualifName (COMMA qualifName)*)?
+    structBodyStmt* END_STRUCT
 ;
 
 structOrClassField: bareName (COMMA bareName)* COLON typeSpec;
@@ -188,8 +190,8 @@ structBodyStmt: structOrClassField
     ;
 
 classDecl: annotations? EXTERN? ((ABSTRACT? BASE_CLASS)|CLASS)
-    EXTENDS qualifName 
-    IMPLEMENTS qualifName (COMMA qualifName)*
+    (EXTENDS qualifName)?
+    (IMPLEMENTS qualifName (COMMA qualifName)*)?
     classBodyStmt*
     END_CLASS
     ;
