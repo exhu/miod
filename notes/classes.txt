@@ -29,6 +29,50 @@ Cons:
     - thunk methods to marshall *this* pointer
 
 
+Details:
+
+- pointers to class instance are simple
+- pointers to interfaces require processing:
+    - a) the values points to struct { void *vtable; } and requires thunks
+    - b) duplicated *this*, i.e. struct { void *vtable; void *this }
+
+The latter variant seems to be the better one performance-wise.
+
+Example implementation:
+
+class Base { int counter; virtual done() }
+class Desc(Base, Add, Sub) { int somedata; virtual apply() }
+interface Add { int add(int a) }
+interface Sub { int sub(int a) }
+
+struct Base {
+    void *vtable;
+    int counter;
+};
+
+struct BaseVtbl {
+    void (*done)();
+};
+
+struct DescVtbl {
+    BaseVtbl base;
+    void (*apply)();
+};
+
+struct InterfaceData {
+    void *vtable;
+    void *this;
+};
+
+struct Desc {
+    struct Base base;
+    int somedata;
+    // interfaces
+    InterfaceData add;
+    InterfaceData sub;
+}
+
+
 Double pointer implementation
 -----------------------------
 
@@ -41,4 +85,11 @@ Pros:
     - simple to implement virtual tables
 
 Cons:
-    - *this* occupies two machine words
+    - *this* occupies two machine words (ancestor implementations need pointer
+    to vtable)
+
+-=-=-=--=-=--=-=-
+
+
+
+
