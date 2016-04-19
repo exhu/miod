@@ -139,7 +139,7 @@ arrayVariant: qualifName # unknownSizeArray
 
 procMethodDecl: annotations? (EXTERN|INLINE)?
     (PROC|((ABSTRACT|VIRTUAL|OVERRIDE)? METHOD))
-    OPEN_PAREN procArgsDecl CLOSE_PAREN (SEMICOLON|(statement* END_PROC));
+    OPEN_PAREN procArgsDecl CLOSE_PAREN statement* END_PROC;
 
 statement: RETURN expr? #statementReturn
     | constDecl #statementConstDecl
@@ -155,6 +155,7 @@ statement: RETURN expr? #statementReturn
     | expr ASSIGN expr #statementAssign
     | ifStatement #statementIf
     | WITH qualifName (COMMA qualifName)* statement+ END_WITH #statementWith
+    | SEMICOLON #emptyStatement
     ;
 
 staticIf:
