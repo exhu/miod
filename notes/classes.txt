@@ -1,3 +1,13 @@
+Notes on struct implementation
+==============================
+
+When structure variable get assigned and gets out of scope, a special
+finalization procedure must be called, which decrements refs for class instance
+pointers.
+
+Both structs and classes can have a finalization method.
+
+
 Notes on classes implementation
 ===============================
 

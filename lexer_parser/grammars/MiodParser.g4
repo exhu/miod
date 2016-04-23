@@ -141,6 +141,10 @@ procMethodDecl: annotations? (EXTERN|INLINE)?
     (PROC|((ABSTRACT|VIRTUAL|OVERRIDE)? METHOD))
     OPEN_PAREN procArgsDecl CLOSE_PAREN statement* END_PROC;
 
+procMethodStructDecl: annotations? (EXTERN|INLINE)?
+    (PROC|METHOD)
+    OPEN_PAREN procArgsDecl CLOSE_PAREN statement* END_PROC;
+
 statement: RETURN expr? #statementReturn
     | constDecl #statementConstDecl
     | varDecl #statementVarDecl
@@ -187,6 +191,7 @@ structDecl: annotations? EXTERN? STRUCT
 structOrClassField: bareName (COMMA bareName)* COLON typeSpec;
 
 structBodyStmt: structOrClassField
+    | procMethodStructDecl
     | STATIC_IF boolExpr THEN structBodyStmt* (ELSE structBodyStmt*)? END_IF
     ;
 
