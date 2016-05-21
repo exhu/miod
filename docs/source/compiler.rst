@@ -2,6 +2,17 @@
 Compiler kernel
 =======================
 
+Parser
+------
+
+org.miod.parser -- here parser code goes, which uses generated parser
+
+org.miod.program -- here goes program information collected during the parsing
+   - CompilationUnit -- this is the main class here.
+
+
+
+
 Compilation context
 -------------------
 

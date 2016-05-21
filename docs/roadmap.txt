@@ -1,5 +1,9 @@
 TODO:
 
+- rethink types storage (e.g. MethodWithBody), prefer Enum with Data, rather
+  than classes per type
+
+
 - evaluate expressions during second (semantic) pass both type and values
 to calculate static_if's
 
