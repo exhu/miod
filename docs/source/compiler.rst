@@ -6,9 +6,10 @@ Parser
 ------
 
 org.miod.parser -- here parser code goes, which uses generated parser
+    - ParserContext -- maintains global defines, package paths etc.
 
 org.miod.program -- here goes program information collected during the parsing
-   - CompilationUnit -- this is the main class here.
+    - CompilationUnit -- this is the main class here.
 
 
 

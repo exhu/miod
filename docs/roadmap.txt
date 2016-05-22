@@ -21,9 +21,6 @@ otherwise
 
 Version 1 features
 
-- base_class for extendable classes, deprecate "final" keyword,
-include "virtual" keyword
-- int32 analogue to System.identityHashCode(Object)
 - constants with literals
 - procs with local vars
 - visibility levels (public, protected, private)
@@ -36,6 +33,10 @@ include "virtual" keyword
 
 Version 2
 
+- int32 analogue to System.identityHashCode(Object)
+- base_class for extendable classes, deprecate "final" keyword,
+include "virtual" keyword
+- interfaces
 - cmake integration
 
 Version 3

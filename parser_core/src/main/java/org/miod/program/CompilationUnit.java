@@ -28,9 +28,9 @@ public final class CompilationUnit {
     /// Adds import into dependencies, symbol table
     public CompilationUnit addImport(String name, int line, int col,
             SymVisibility visibility,
-            String filename, boolean fullNames) {
-        CompilationUnit newUnit = new CompilationUnit(name, line, col, filename);
-        SymLocation location = new SymLocation(this, line, col);
+            String filename, boolean fullNames, CompilationUnit newUnit) {
+        //CompilationUnit newUnit = new CompilationUnit(name, line, col, filename);
+        //SymLocation location = new SymLocation(this, line, col);
         //SymItem item = new SymItem(name, SymKind.Unit, visibility, location);
         //symTable.put(item);
         symTable.addImport(newUnit.symTable, fullNames);
