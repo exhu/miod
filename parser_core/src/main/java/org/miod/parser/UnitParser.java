@@ -8,6 +8,10 @@ package org.miod.parser;
  *
  * @author yur
  */
-public class UnitParser {    
+public final class UnitParser {    
+    public UnitParser(ParserContext ctx) {
+        this.context = ctx;        
+    }
     
+    private ParserContext context;    
 }

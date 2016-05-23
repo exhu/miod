@@ -1,0 +1,5 @@
+/*
+    Copyright 2016 Yury Benesh
+    see COPYING.txt
+ */
+
