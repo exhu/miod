@@ -11,6 +11,13 @@ import org.miod.program.SymLocation;
  * @author yur
  */
 public interface ErrorListener {
-    boolean onUnknownVariable(String name, SymLocation loc);
     
+    void onError(CompilerError e);
+    void onWarning(CompilerWarning w);
+    /*
+    void onUnknownIdentifier(String name, SymLocation loc);
+    void onTypeMismatch(SymLocation loc);
+    void onRedeclaration(String name, SymLocation loc);
+    void onSyntaxError(String msg);
+    */
 }

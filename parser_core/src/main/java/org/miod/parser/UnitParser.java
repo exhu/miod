@@ -21,5 +21,6 @@ public final class UnitParser {
         return null;
     }
     
-    private ParserContext context;    
+    private ParserContext context;
+    private boolean terminateOnFirstError = false;
 }
