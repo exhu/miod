@@ -4,7 +4,8 @@
  */
 package org.miod.parser;
 
-import org.miod.program.SymLocation;
+import org.miod.program.errors.CompilerError;
+import org.miod.program.errors.CompilerWarning;
 
 /** Methods return true to continue parsing.
  *
