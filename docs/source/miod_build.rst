@@ -30,3 +30,11 @@ Independent mode::
 
 
 
+Standard library is written in C and Miod. C sources are put side by side
+with the unit which uses them, and specified with @_compile annotation.
+This C sources are copied to application build directory during the compilation
+process. So for every application the system library is recompiled. This
+is necessary for the first versions of the language until it gets stabilized,
+and it is essential for platforms with complicated build systems and cross-
+compiling like Android.
+
