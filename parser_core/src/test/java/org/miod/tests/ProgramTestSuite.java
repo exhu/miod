@@ -1,6 +1,4 @@
 package org.miod.tests;
-import java.io.IOException;
-import java.nio.file.FileSystems;
 import org.miod.program.GlobalSymbolTable;
 import org.miod.program.SymItem;
 import org.miod.program.SymKind;
