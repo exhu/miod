@@ -33,7 +33,7 @@ public final class ParserContext {
     }
     
     public CompilationUnit parseUnit(String fn) {
-        Path path = FileSystems.getDefault().getPath(fn);
+        Path unitPath = FileSystems.getDefault().getPath(fn);
 
         /*
          try (BufferedReader reader = Files.newBufferedReader(f,

@@ -10,8 +10,9 @@ import org.miod.program.SymItem;
  *
  * @author yur
  */
-public final class SymbolRedefinitionError extends RuntimeException {
+public final class SymbolRedefinitionError extends CompilerError {
     public SymbolRedefinitionError(SymItem sym) {
+        // TODO error message
         super(sym.toString());
     }
 }

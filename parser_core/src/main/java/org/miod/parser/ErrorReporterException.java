@@ -3,15 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.miod.program.errors;
+package org.miod.parser;
 
-/**
+/** Thrown to interrupt parsing.
  *
  * @author yur
  */
-public abstract class CompilerWarning {
-    protected String text;
-    public CompilerWarning(String msg) {
-        this.text = msg;
-    }
+public final class ErrorReporterException extends RuntimeException {
+
 }
