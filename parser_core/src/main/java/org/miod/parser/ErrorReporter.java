@@ -1,8 +1,8 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+    Copyright 2016 Yury Benesh
+    see COPYING.txt
  */
+
 package org.miod.parser;
 
 import java.util.ArrayList;
@@ -25,10 +25,12 @@ public final class ErrorReporter implements ErrorListener {
 
     @Override
     public void onError(CompilerError e) {
-        // TODO
+        errors.add(e);
+        if (stopAtFirstError)
+            throw new ErrorReporterException();
     }
     @Override
     public void onWarning(CompilerWarning w) {
-        // TODO
+        warnings.add(w);
     }
 }
