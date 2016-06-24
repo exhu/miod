@@ -7,7 +7,7 @@ package org.miod.parser;
 import java.nio.file.Path;
 import org.miod.program.CompilationUnit;
 
-/**
+/** Useless? ParserContext is used to parse
  *
  * @author yur
  */

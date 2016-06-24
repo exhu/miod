@@ -31,9 +31,12 @@ public final class ParserContext {
     public ParserContext(List<String> packagePaths) {
         this.packagePaths.addAll(packagePaths);
     }
-    
-    public CompilationUnit parseUnit(String fn) {
-        Path unitPath = FileSystems.getDefault().getPath(fn);
+
+    // TODO move to UnitParser?
+    /// unitName = import directive argument e.g. miod::system
+    public CompilationUnit parseUnit(String unitName) {
+        // TODO unitName to relative path
+        Path unitPath = FileSystems.getDefault().getPath(unitName);
 
         /*
          try (BufferedReader reader = Files.newBufferedReader(f,
