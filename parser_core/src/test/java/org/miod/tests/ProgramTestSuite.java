@@ -1,4 +1,5 @@
 package org.miod.tests;
+import org.miod.parser.ErrorReporter;
 import org.miod.program.GlobalSymbolTable;
 import org.miod.program.SymItem;
 import org.miod.program.SymKind;
@@ -10,14 +11,16 @@ import static org.testng.Assert.*;
 public class ProgramTestSuite {
     @Test
     public void globalSymbolTable() {
+        ErrorReporter reporter = new ErrorReporter();
         final String unitSystemName = "System";
         final String unitMyName = "my::My";
         final String unitMy2Name = "my::My2";
         final String unitMy3Name = "my::My3";
-        GlobalSymbolTable systemTab = new GlobalSymbolTable(unitSystemName);
-        GlobalSymbolTable myTab1 = new GlobalSymbolTable(unitMyName);
-        GlobalSymbolTable myTab2 = new GlobalSymbolTable(unitMy2Name);
-        GlobalSymbolTable myTab3 = new GlobalSymbolTable(unitMy3Name);
+        GlobalSymbolTable systemTab = new GlobalSymbolTable(unitSystemName,
+            reporter);
+        GlobalSymbolTable myTab1 = new GlobalSymbolTable(unitMyName, reporter);
+        GlobalSymbolTable myTab2 = new GlobalSymbolTable(unitMy2Name, reporter);
+        GlobalSymbolTable myTab3 = new GlobalSymbolTable(unitMy3Name, reporter);
         myTab1.addImport(systemTab, false);
         myTab1.addImport(myTab2, true);
         myTab2.addImport(systemTab, false);

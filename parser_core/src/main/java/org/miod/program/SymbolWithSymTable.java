@@ -4,6 +4,7 @@
  */
 package org.miod.program;
 
+import org.miod.parser.ErrorListener;
 import org.miod.program.types.TypeSymbol;
 
 /**
@@ -13,8 +14,8 @@ import org.miod.program.types.TypeSymbol;
 public abstract class SymbolWithSymTable extends TypeSymbol implements SymbolTable {
     private final BaseSymbolTable symTable;
     
-    public SymbolWithSymTable(SymbolTable parent) {
-        symTable = new BaseSymbolTable(parent);
+    public SymbolWithSymTable(SymbolTable parent, ErrorListener errorListener) {
+        symTable = new BaseSymbolTable(parent, errorListener);
     }
     
     @Override

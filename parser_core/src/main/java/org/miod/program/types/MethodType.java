@@ -4,6 +4,7 @@
  */
 package org.miod.program.types;
 
+import org.miod.parser.ErrorListener;
 import org.miod.program.SymbolTable;
 
 /**
@@ -11,8 +12,8 @@ import org.miod.program.SymbolTable;
  * @author yur
  */
 public final class MethodType extends ProcType {
-    public MethodType(SymbolTable parent) {
-        super(parent);
+    public MethodType(SymbolTable parent, ErrorListener errorListener) {
+        super(parent, errorListener);
     }
     
 }

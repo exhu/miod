@@ -4,6 +4,7 @@
  */
 package org.miod.program.types;
 
+import org.miod.parser.ErrorListener;
 import org.miod.program.ProcBlock;
 import org.miod.program.SymbolTable;
 
@@ -13,9 +14,9 @@ import org.miod.program.SymbolTable;
  */
 public class ProcTypeWithBody extends ProcType {
     protected final ProcBlock block;
-    public ProcTypeWithBody(SymbolTable parent) {
-        super(parent);
-        block = new ProcBlock(this);
+    public ProcTypeWithBody(SymbolTable parent, ErrorListener errorListener) {
+        super(parent, errorListener);
+        block = new ProcBlock(this, errorListener);
     }
     
 }

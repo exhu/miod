@@ -6,6 +6,7 @@ package org.miod.program;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.miod.parser.ErrorListener;
 
 /** Statements block.
  *
@@ -14,7 +15,7 @@ import java.util.List;
 public final class ProcBlock extends BaseSymbolTable {
     private final List<ProcBlock> finals = new ArrayList<>();
     private final List<ProcBlock> blocks = new ArrayList<>();
-    public ProcBlock(SymbolTable parent) {
-        super(parent);
+    public ProcBlock(SymbolTable parent, ErrorListener errorListener) {
+        super(parent, errorListener);
     }
 }

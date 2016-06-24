@@ -6,6 +6,7 @@ package org.miod.program;
 
 import java.util.HashSet;
 import java.util.Set;
+import org.miod.parser.ErrorListener;
 
 /**
  *
@@ -19,9 +20,10 @@ public final class CompilationUnit {
     final private Set<CompilationUnit> importedUnits = new HashSet<>();
     final public GlobalSymbolTable symTable;
 
-    public CompilationUnit(String name, int line, int col, String filename) {
+    public CompilationUnit(String name, int line, int col, String filename,
+            ErrorListener errorListener) {
         this.filename = filename;
-        symTable = new GlobalSymbolTable(name);
+        symTable = new GlobalSymbolTable(name, errorListener);
         symTable.put(new SymItem(name, SymKind.Unit, SymVisibility.Private, new SymLocation(this, line, col)));
     }
 

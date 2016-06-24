@@ -7,6 +7,7 @@ package org.miod.program;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+import org.miod.parser.ErrorListener;
 
 /** Global program symbol table: predefined consts, System unit, this unit
  *
@@ -26,8 +27,8 @@ public final class GlobalSymbolTable extends BaseSymbolTable {
     public final String parentNamespace;
     
     
-    public GlobalSymbolTable(String unitName) {
-        super(null);
+    public GlobalSymbolTable(String unitName, ErrorListener errorListener) {
+        super(null, errorListener);
         this.unitName = unitName;
         this.parentNamespace = getParentNamespace(unitName);
     }

@@ -7,6 +7,7 @@ package org.miod.program;
 import org.miod.program.types.AliasedType;
 import java.util.HashMap;
 import java.util.Map;
+import org.miod.parser.ErrorListener;
 import org.miod.program.errors.SymbolRedefinitionError;
 
 /**
@@ -17,9 +18,11 @@ public class BaseSymbolTable implements SymbolTable {
     final private Map<String, SymItem> items = new HashMap<>();
     final protected SymbolTable parent;
     public static final String NAMESPACE_SEP = "::";
+    protected ErrorListener errorListener;
     
-    BaseSymbolTable(SymbolTable parent) {
+    BaseSymbolTable(SymbolTable parent, ErrorListener errorListener) {
         this.parent = parent;
+        this.errorListener = errorListener;
     }
 
     @Override
@@ -32,7 +35,7 @@ public class BaseSymbolTable implements SymbolTable {
         if (get(item.name) == null) {
             items.put(item.name, item);
         } else {
-            throw new SymbolRedefinitionError(item);
+            errorListener.onError(new SymbolRedefinitionError(item));
         }
     }
     
