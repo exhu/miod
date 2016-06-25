@@ -20,6 +20,7 @@ public final class CompilationUnit {
     final private Set<CompilationUnit> importedUnits = new HashSet<>();
     final public GlobalSymbolTable symTable;
 
+    /// line, col = place of 'unit' directive
     public CompilationUnit(String name, int line, int col, String filename,
             ErrorListener errorListener) {
         this.filename = filename;

@@ -7,6 +7,7 @@ package org.miod.parser.visitors;
 import org.miod.parser.ParserContext;
 import org.miod.parser.generated.MiodParser;
 import org.miod.parser.generated.MiodParserBaseVisitor;
+import org.miod.program.CompilationUnit;
 
 /** First pass visitor. Gathers declarations, tries to evaluate certain
  * expressions.
@@ -14,10 +15,13 @@ import org.miod.parser.generated.MiodParserBaseVisitor;
  * @author yur
  */
 public class SemanticVisitor extends MiodParserBaseVisitor<Object>{
-    protected ParserContext context;
+    protected final ParserContext context;
+    protected CompilationUnit unit;
+    protected final String unitName;
     
-    public SemanticVisitor(ParserContext ctx) {
+    public SemanticVisitor(String unitName, ParserContext ctx) {
         this.context = ctx;
+        this.unitName = unitName;
     }
     
     @Override

@@ -4,16 +4,9 @@
  */
 package org.miod.parser;
 
-import java.nio.file.FileSystems;
-import java.nio.file.Path;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import org.miod.parser.visitors.SemanticVisitor;
 import org.miod.program.CompilationUnit;
-import org.miod.program.SymItem;
 
 /**
  * Maintains all processed units, predefined directives, options etc.
@@ -22,8 +15,8 @@ import org.miod.program.SymItem;
  */
 public final class ParserContext {
 
-    private Map<String, CompilationUnit> units = new HashMap<>();
-    private Set<String> packagePaths = new HashSet<>();
+    private Map<String, CompilationUnit> units = new HashMap<>();    
+    private UnitParserProvider parserProvider;
 
     /* Global defines are bad thing
     private Map<String, SymItem> globalDefines = new HashMap<>();
@@ -31,63 +24,15 @@ public final class ParserContext {
     compiler containing platform constants, e.g. debug mode or ref counting,
     cpu etc.
      */
-    public ParserContext(List<String> packagePaths) {
-        this.packagePaths.addAll(packagePaths);
+    public ParserContext(UnitParserProvider provider) {
+        this.parserProvider = provider;        
     }
-
-    // TODO move to UnitParser?
+    
     /// unitName = import directive argument e.g. miod::system
     public CompilationUnit parseUnit(String unitName) {
         CompilationUnit requestedUnit = units.get(unitName);
         if (requestedUnit == null) {
-            // TODO unitName to relative path
-            Path unitPath = FileSystems.getDefault().getPath(unitName);
-
-            /*
-         try (BufferedReader reader = Files.newBufferedReader(f,
-                Charset.forName("UTF-8"))) {
-            ANTLRInputStream input = new ANTLRInputStream(reader);
-            MyCalcLexer lexer = new MyCalcLexer(input);
-            CommonTokenStream tokens = new CommonTokenStream(lexer);
-            MyCalcParser parser = new MyCalcParser(tokens);
-            parser.removeErrorListeners();
-            ParserErrorListener errorListener = new ParserErrorListener(reporter);
-            parser.addErrorListener(errorListener);
-            tree = parser.compUnit();
-            logger.info(tree.toStringTree(parser));
-        }
-
-        if (reporter.hasErrors()) {
-            reportErrors(reporter.getErrorsCount());
-            return reporter;
-        }
-
-        // declaration pass
-        MyCalcDeclListener declLst = new MyCalcDeclListener(reporter, treeCtx);
-        try {
-            walker.walk(declLst, tree);
-        }
-        catch(SemanticError e) {
-            if (rethrow) {
-                throw e;
-            }
-        }
-
-        // definition pass
-        MyCalcImplListener implLst = new MyCalcImplListener(reporter, treeCtx);
-        try {
-            walker.walk(implLst, tree);
-        }
-        catch(SemanticError e) {
-            if (rethrow) {
-                throw e;
-            }
-        }
-
-        return reporter;
-             */
-            SemanticVisitor visitor1 = new SemanticVisitor(this);
-            // TODO visit tree
+            requestedUnit = parserProvider.parseUnit(unitName);
         }
         return requestedUnit;
     }

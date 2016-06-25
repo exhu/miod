@@ -11,7 +11,7 @@ import org.miod.parser.ParserContext;
  * @author yur
  */
 public class SemanticResolverVisitor extends SemanticVisitor {
-    public SemanticResolverVisitor(ParserContext ctx) {
-        super(ctx);
+    public SemanticResolverVisitor(String unitName, ParserContext ctx) {
+        super(unitName, ctx);
     }
 }
