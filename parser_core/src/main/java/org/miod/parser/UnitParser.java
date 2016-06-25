@@ -4,11 +4,13 @@
  */
 package org.miod.parser;
 
+import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.miod.parser.visitors.SemanticVisitor;
+import org.miod.program.BaseSymbolTable;
 import org.miod.program.CompilationUnit;
 
 /** Top class to use. Called by ParserContext to resolve imports.
@@ -18,19 +20,43 @@ import org.miod.program.CompilationUnit;
  * @author yur
  */
 public final class UnitParser implements UnitParserProvider {
-    private final Set<String> packagePaths = new HashSet<>();
+    private final Set<Path> packagePaths = new HashSet<>();
     private final ParserContext context;
     private boolean terminateOnFirstError = false;
 
     public UnitParser(ParserContext ctx, List<String> packagePaths) {
         this.context = ctx;
-        // TODO convert paths to absolute and canonical
-        this.packagePaths.addAll(packagePaths);
+        
+        addPaths(packagePaths);        
     }
     
-    private String unitNameFromPath(Path p) {
-        // TODO return name based on the path and packagePaths
-        return "";
+    /// convert paths to absolute and canonical
+    private void addPaths(List<String> paths) {
+        for(String s : paths) {
+            packagePaths.add(FileSystems.getDefault().getPath(s).toAbsolutePath());
+        }
+    }
+    
+    /// return name based on the path and packagePaths
+    public String unitNameFromPath(Path p) {
+        
+        // trim package path
+        final Path parent = p.getParent();
+        Path trimmedPath = parent;
+        for(Path pp : packagePaths) {
+            if (p.startsWith(pp)) {
+                trimmedPath = pp.relativize(p);
+            }
+        }
+        
+        final StringBuilder builder = new StringBuilder();
+        for(Path name : trimmedPath) {
+            builder.append(name.toString());
+            builder.append(BaseSymbolTable.NAMESPACE_SEP);
+        }
+        
+        builder.append(p.getFileName());        
+        return builder.toString();
     }
 
     @Override

@@ -48,10 +48,8 @@ Other scopes:
             - if
 
     - class
-        - static_if
         - method (see proc)
     - struct
-        - static_if
     - enum
 
 Pass 1:
