@@ -1,5 +1,9 @@
 package org.miod.tests;
+import java.nio.file.FileSystems;
+import java.util.ArrayList;
+import java.util.List;
 import org.miod.parser.ErrorReporter;
+import org.miod.parser.UnitParser;
 import org.miod.program.GlobalSymbolTable;
 import org.miod.program.SymItem;
 import org.miod.program.SymKind;
@@ -47,5 +51,25 @@ public class ProgramTestSuite {
                 "pak::sub");
         assertEquals(GlobalSymbolTable.getParentNamespace("System"),
                 "");
+    }
+    
+    @Test
+    public void unitNameFromPath() {        
+        List<String> stringPaths = new ArrayList<>();
+        stringPaths.add("abc");
+        stringPaths.add("/root/bb");
+        stringPaths.add("koko/k/qwe/");
+                
+        UnitParser parser = new UnitParser(stringPaths);
+        String unit1 = parser.unitNameFromPath(FileSystems.getDefault().getPath("abc/my.miod"));
+        assertEquals(unit1, "my");
+        String unit2 = parser.unitNameFromPath(FileSystems.getDefault().getPath("abc/mypkg/my.miod"));
+        assertEquals(unit2, "mypkg::my");
+        /*
+        Set<Path> paths = new HashSet<>();
+        for(String s : stringPaths) {
+            paths.add(FileSystems.getDefault().getPath(s).toAbsolutePath());
+        }
+        */
     }
 }

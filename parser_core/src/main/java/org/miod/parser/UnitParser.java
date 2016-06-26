@@ -9,6 +9,8 @@ import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.miod.parser.visitors.SemanticVisitor;
 import org.miod.program.BaseSymbolTable;
 import org.miod.program.CompilationUnit;
@@ -21,41 +23,47 @@ import org.miod.program.CompilationUnit;
  */
 public final class UnitParser implements UnitParserProvider {
     private final Set<Path> packagePaths = new HashSet<>();
-    private final ParserContext context;
+    private final ParserContext context = new ParserContext(this);
     private boolean terminateOnFirstError = false;
+    private final static Logger LOGGER = Logger.getLogger(UnitParser.class.getName());
 
-    public UnitParser(ParserContext ctx, List<String> packagePaths) {
-        this.context = ctx;
-        
+    public UnitParser(List<String> packagePaths) {        
         addPaths(packagePaths);        
     }
     
     /// convert paths to absolute and canonical
     private void addPaths(List<String> paths) {
         for(String s : paths) {
-            packagePaths.add(FileSystems.getDefault().getPath(s).toAbsolutePath());
+            Path p = FileSystems.getDefault().getPath(s).toAbsolutePath();
+            LOGGER.log(Level.INFO, "Add package path %s", p.toString());
+            packagePaths.add(p);
         }
+        // TODO exclude overlapping paths, e.g. 1) /libs/lib1 2) /libs/lib1/some
+        // only the first packages path is valid!
     }
     
     /// return name based on the path and packagePaths
-    public String unitNameFromPath(Path p) {
-        
+    public final String unitNameFromPath(Path p) {        
         // trim package path
-        final Path parent = p.getParent();
+        final Path parent = p.toAbsolutePath().getParent();        
         Path trimmedPath = parent;
-        for(Path pp : packagePaths) {
-            if (p.startsWith(pp)) {
-                trimmedPath = pp.relativize(p);
+        for(Path pp : packagePaths) {            
+            if (parent.startsWith(pp)) {
+                trimmedPath = pp.relativize(parent);                
             }
         }
         
         final StringBuilder builder = new StringBuilder();
         for(Path name : trimmedPath) {
-            builder.append(name.toString());
-            builder.append(BaseSymbolTable.NAMESPACE_SEP);
+            final String s = name.toString();            
+            if (!s.isEmpty()) {
+                builder.append(s);
+                builder.append(BaseSymbolTable.NAMESPACE_SEP);
+            }
         }
         
-        builder.append(p.getFileName());        
+        String fileName = p.getFileName().toString();
+        builder.append(fileName.substring(0, fileName.lastIndexOf('.')));
         return builder.toString();
     }
 
