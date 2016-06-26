@@ -13,6 +13,7 @@ import org.miod.parser.ErrorListener;
  * @author yur
  */
 public final class CompilationUnit {
+    public static final String UNIT_FILENAME_SUFFIX = ".miod";
 
     public final String filename;
 

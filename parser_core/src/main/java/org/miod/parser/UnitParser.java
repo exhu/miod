@@ -4,7 +4,9 @@
  */
 package org.miod.parser;
 
+import java.nio.file.AccessMode;
 import java.nio.file.FileSystems;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.List;
@@ -35,7 +37,7 @@ public final class UnitParser implements UnitParserProvider {
     private void addPaths(List<String> paths) {
         for(String s : paths) {
             Path p = FileSystems.getDefault().getPath(s).toAbsolutePath();
-            LOGGER.log(Level.INFO, "Add package path %s", p.toString());
+            LOGGER.log(Level.INFO, "Add package path {0}", p.toString());
             packagePaths.add(p);
         }
         // TODO exclude overlapping paths, e.g. 1) /libs/lib1 2) /libs/lib1/some
@@ -47,7 +49,7 @@ public final class UnitParser implements UnitParserProvider {
         // trim package path
         final Path parent = p.toAbsolutePath().getParent();        
         Path trimmedPath = parent;
-        for(Path pp : packagePaths) {            
+        for(Path pp : packagePaths) {
             if (parent.startsWith(pp)) {
                 trimmedPath = pp.relativize(parent);                
             }
@@ -65,6 +67,25 @@ public final class UnitParser implements UnitParserProvider {
         String fileName = p.getFileName().toString();
         builder.append(fileName.substring(0, fileName.lastIndexOf('.')));
         return builder.toString();
+    }
+    
+    /// searches file system for the unit
+    public final Path unitNameToPath(String unitName) {        
+        final String stringPath = unitName.replace(BaseSymbolTable.NAMESPACE_SEP,
+                FileSystems.getDefault().getSeparator()) +
+                        CompilationUnit.UNIT_FILENAME_SUFFIX;
+        
+        LOGGER.log(Level.INFO, "string path = {0}", stringPath);
+        
+        for(Path pkgpath : packagePaths) {
+            Path joined = pkgpath.getFileSystem().getPath(pkgpath.toString(), stringPath);
+            LOGGER.log(Level.INFO, "joined path = {0}", joined.toString());
+            if (Files.isReadable(joined)) {
+                return joined;
+            }
+        }
+        
+        return null;
     }
 
     @Override

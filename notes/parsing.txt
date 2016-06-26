@@ -54,15 +54,15 @@ Other scopes:
 
 Pass 1:
     - build and populate scopes with 'unknown' type for expr types of vars
+    - try to evaluate types for expressions
+    - global consts must evaluate completely
+    - skip handlers for nodes under static_if
 
 Pass 2:
     - evaluate expressions
     - fill in scope types, not known on pass 1
     - skip handlers for nodes under static_if
-
-Pass 3:
-
-
+    - generate code
 
 -=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
@@ -96,4 +96,14 @@ progam = CompilationUnit
 Cycles:
     - CompilationUnit -> BaseSymTable->SymItem->SymLocation-><
     - BaseSymTable -> parent -><
+
+==========================
+
+Compiler notes:
+
+- during parsing the main unit dependencies are being parsed as well
+
+Optimization for compiler as a service feature:
+- keep parsing trees for imported units
+- reuse the trees for subsequent compilation calls
 

@@ -71,5 +71,6 @@ public class ProgramTestSuite {
             paths.add(FileSystems.getDefault().getPath(s).toAbsolutePath());
         }
         */
+        parser.unitNameToPath("mypkg::my");
     }
 }
