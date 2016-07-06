@@ -15,7 +15,7 @@ import org.miod.program.CompilationUnit;
  */
 public final class ParserContext {
 
-    private Map<String, CompilationUnit> units = new HashMap<>();    
+    private final Map<String, CompilationUnit> units = new HashMap<>();
     private UnitParserProvider parserProvider;
 
     /* Global defines are bad thing
@@ -25,14 +25,27 @@ public final class ParserContext {
     cpu etc.
      */
     public ParserContext(UnitParserProvider provider) {
-        this.parserProvider = provider;        
+        this.parserProvider = provider;
     }
-    
+
+    public final void setParserProvider(UnitParserProvider provider) {
+        this.parserProvider = provider;
+    }
+
+    final public CompilationUnit getUnit(String name) {
+        return units.get(name);
+    }
+
+    final public void putUnit(String name, CompilationUnit unit) {
+        units.put(name, unit);
+    }
+
     /// unitName = import directive argument e.g. miod::system
     public CompilationUnit parseUnit(String unitName) {
         CompilationUnit requestedUnit = units.get(unitName);
         if (requestedUnit == null) {
             requestedUnit = parserProvider.parseUnit(unitName);
+            units.put(unitName, requestedUnit);
         }
         return requestedUnit;
     }
