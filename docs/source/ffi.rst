@@ -82,6 +82,10 @@ A user must define a typedef for types that are used as pointers, e.g. FILE* ::
     extern proc fopen(fn: cstring, mode: cstring): File
 
 
+@_assume_class{name:"mypackage.MyClass"} before interface type variable
+declaration suggests that the actual interface pointer is used for class 
+instance of the certain type only. This can be used to help devirtualization
+preserving the clean public interface. In debug mode it checks assignment.
 
 FFI for Java target
 -------------------

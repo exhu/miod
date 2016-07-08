@@ -11,6 +11,7 @@ import java.util.Set;
 import java.util.logging.Logger;
 import org.miod.parser.visitors.SemanticVisitor;
 import org.miod.program.CompilationUnit;
+import org.miod.program.errors.UnitNotFoundError;
 
 /** Top class to use. Called by ParserContext to resolve imports.
  * UnitParser.parseFile(filename) -> "import mypkg::myunit" -> 
@@ -21,22 +22,29 @@ import org.miod.program.CompilationUnit;
 public final class UnitParser implements UnitParserProvider {
     private final Set<Path> packagePaths = new HashSet<>();
     private final DefaultUnitsPathsResolver pathsResolver = new DefaultUnitsPathsResolver();
-    private final ParserContext context = new ParserContext(this);
-    private boolean terminateOnFirstError = false;
+    private final ParserContext context = new ParserContext(this);    
     private final static Logger LOGGER = Logger.getLogger(UnitParser.class.getName());
+    private ErrorListener errorListener;
 
-    public UnitParser(List<String> packagePaths) {        
-        pathsResolver.addPaths(packagePaths);        
+    public UnitParser(List<String> packagePaths, ErrorListener errorListener) {
+        this.errorListener = errorListener;
+        pathsResolver.addPaths(packagePaths);
     }
     
     @Override
-    public CompilationUnit parseUnit(String unitName) {
-        // TODO find file in paths
-        // TODO run parseFile
-        throw new UnsupportedOperationException("Not supported yet.");
+    public CompilationUnit parseUnit(String unitName) {        
+        CompilationUnit unit = context.getUnit(unitName);
+        if (unit == null) {
+            // find file in paths
+            unit = parseFile(pathsResolver.unitNameToPath(unitName));
+        }
+        if (unit == null) {
+            errorListener.onError(new UnitNotFoundError(unitName));
+        }
+        return unit;
     }
 
-    public CompilationUnit parseFile(Path f, ErrorListener elistener) {
+    public CompilationUnit parseFile(Path f) {
         // TODO check if already parsed in context
         // TODO pass self as ErrorListener to CompilationUnit etc.
         // TODO decouple ParserContext from UnitParser

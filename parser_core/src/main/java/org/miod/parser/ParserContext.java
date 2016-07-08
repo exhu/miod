@@ -36,17 +36,18 @@ public final class ParserContext {
         return units.get(name);
     }
 
-    final public void putUnit(String name, CompilationUnit unit) {
+    final protected void putUnit(String name, CompilationUnit unit) {
         units.put(name, unit);
     }
 
     /// unitName = import directive argument e.g. miod::system
+    /// check for null return value to handle failure to find the unit
     public CompilationUnit parseUnit(String unitName) {
-        CompilationUnit requestedUnit = units.get(unitName);
-        if (requestedUnit == null) {
-            requestedUnit = parserProvider.parseUnit(unitName);
+        CompilationUnit requestedUnit = parserProvider.parseUnit(unitName);
+        if (requestedUnit != null) {
             units.put(unitName, requestedUnit);
         }
+        
         return requestedUnit;
     }
 }
