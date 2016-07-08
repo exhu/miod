@@ -1,5 +1,6 @@
 TODO:
 
+- decouple CompilationUnit etc.
 - Errors handling (get from mycalc1)
 - rethink types storage (e.g. MethodWithBody), prefer Enum with Data, rather
   than classes per type
