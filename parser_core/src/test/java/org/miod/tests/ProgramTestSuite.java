@@ -2,6 +2,7 @@ package org.miod.tests;
 import java.nio.file.FileSystems;
 import java.util.ArrayList;
 import java.util.List;
+import org.miod.parser.DefaultUnitsPathsResolver;
 import org.miod.parser.ErrorReporter;
 import org.miod.parser.UnitParser;
 import org.miod.program.GlobalSymbolTable;
@@ -60,10 +61,11 @@ public class ProgramTestSuite {
         stringPaths.add("/root/bb");
         stringPaths.add("koko/k/qwe/");
                 
-        UnitParser parser = new UnitParser(stringPaths);
-        String unit1 = parser.unitNameFromPath(FileSystems.getDefault().getPath("abc/my.miod"));
+        DefaultUnitsPathsResolver resolver = new DefaultUnitsPathsResolver();
+        resolver.addPaths(stringPaths);
+        String unit1 = resolver.unitNameFromPath(FileSystems.getDefault().getPath("abc/my.miod"));
         assertEquals(unit1, "my");
-        String unit2 = parser.unitNameFromPath(FileSystems.getDefault().getPath("abc/mypkg/my.miod"));
+        String unit2 = resolver.unitNameFromPath(FileSystems.getDefault().getPath("abc/mypkg/my.miod"));
         assertEquals(unit2, "mypkg::my");
         /*
         Set<Path> paths = new HashSet<>();
@@ -71,6 +73,6 @@ public class ProgramTestSuite {
             paths.add(FileSystems.getDefault().getPath(s).toAbsolutePath());
         }
         */
-        parser.unitNameToPath("mypkg::my");
+        resolver.unitNameToPath("mypkg::my");
     }
 }
