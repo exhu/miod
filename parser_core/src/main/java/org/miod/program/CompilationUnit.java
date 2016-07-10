@@ -4,9 +4,12 @@
  */
 package org.miod.program;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import org.miod.parser.ErrorListener;
+import org.miod.program.annotations.MiodAnnotation;
 
 /**
  *
@@ -20,6 +23,8 @@ public final class CompilationUnit {
     /// both import_all and import myunit::myProc etc.
     final private Set<CompilationUnit> importedUnits = new HashSet<>();
     final public GlobalSymbolTable symTable;
+
+    final private List<MiodAnnotation> annotations = new ArrayList<>();
 
     /// line, col = place of 'unit' directive
     public CompilationUnit(String name, int line, int col, String filename,

@@ -5,6 +5,7 @@
 package org.miod.program;
 
 import org.miod.program.types.TypeSymbol;
+import org.miod.program.values.MiodValue;
 
 /**
  *
@@ -12,6 +13,7 @@ import org.miod.program.types.TypeSymbol;
  */
 public final class SymItem {
     final public String name;
+    final public String fullName;
     final public SymKind kind;
     /// null for predefined consts
     final public SymLocation location;
@@ -19,10 +21,13 @@ public final class SymItem {
     public TypeSymbol type;
     final public SymVisibility visibility;
     /// value for consts
-    public Object value;
+    public MiodValue value;
+
+
     
-    public SymItem(String name, SymKind kind, SymVisibility visibility, SymLocation location) {
-        this.name = name;
+    public SymItem(String fullName, SymKind kind, SymVisibility visibility, SymLocation location) {
+        this.fullName = fullName;
+        this.name = SymbolTable.nameFromFullName(fullName);
         this.kind = kind;
         this.location = location;
         this.visibility = visibility;

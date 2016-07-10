@@ -30,11 +30,11 @@ public class ProgramTestSuite {
         myTab1.addImport(myTab2, true);
         myTab2.addImport(systemTab, false);
         myTab2.addImport(myTab3, false);
-        SymItem sym1 = new SymItem("sym1", SymKind.Var, SymVisibility.Public, null);
+        SymItem sym1 = new SymItem(unitMyName + "::sym1", SymKind.Var, SymVisibility.Public, null);
         // the same name, to check name collision
-        SymItem sym2 = new SymItem("sym1", SymKind.Var, SymVisibility.Public, null);
-        SymItem sym3 = new SymItem("sym3", SymKind.Var, SymVisibility.Public, null);
-        SymItem symSystem = new SymItem("system", SymKind.Var, SymVisibility.Public, null);
+        SymItem sym2 = new SymItem(unitMy2Name + "::sym1", SymKind.Var, SymVisibility.Public, null);
+        SymItem sym3 = new SymItem(unitMy3Name + "::sym3", SymKind.Var, SymVisibility.Public, null);
+        SymItem symSystem = new SymItem(unitSystemName + "::system", SymKind.Var, SymVisibility.Public, null);
         systemTab.put(symSystem);
         myTab1.put(sym1);
         myTab2.put(sym2);

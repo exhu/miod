@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+    Copyright 2016 Yury Benesh
+    see COPYING.txt
  */
 package org.miod.program;
 
@@ -15,4 +14,15 @@ public interface SymbolTable {
     
     void put(SymItem item);
     SymItem get(String id);
+
+    public static final String NAMESPACE_SEP = "::";
+
+    public static String nameFromFullName(String full) {
+        String name;
+        int index = full.lastIndexOf(NAMESPACE_SEP);
+        if (index < 0) {
+            return full;
+        }
+        return full.substring(index + NAMESPACE_SEP.length());
+    }
 }

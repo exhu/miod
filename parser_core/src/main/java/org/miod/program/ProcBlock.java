@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.miod.parser.ErrorListener;
 
-/** Statements block.
+/** Statements block to store variables.
  *
  * @author yur
  */

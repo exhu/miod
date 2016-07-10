@@ -17,9 +17,8 @@ import org.miod.program.errors.SymbolRedefinitionError;
 public class BaseSymbolTable implements SymbolTable {
     final private Map<String, SymItem> items = new HashMap<>();
     final protected SymbolTable parent;
-    public static final String NAMESPACE_SEP = "::";
     protected ErrorListener errorListener;
-    
+
     BaseSymbolTable(SymbolTable parent, ErrorListener errorListener) {
         this.parent = parent;
         this.errorListener = errorListener;
