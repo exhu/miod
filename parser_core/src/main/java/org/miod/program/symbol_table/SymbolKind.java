@@ -2,13 +2,13 @@
     Copyright 2016 Yury Benesh
     see COPYING.txt
  */
-package org.miod.program;
+package org.miod.program.symbol_table;
 
 /** Symbol table types.
  *
  * @author yur
  */
-public enum SymKind {
+public enum SymbolKind {
     Unit, // for imports
     Type,
     Alias,

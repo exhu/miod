@@ -5,10 +5,10 @@ import java.util.List;
 import org.miod.parser.DefaultUnitsPathsResolver;
 import org.miod.parser.ErrorReporter;
 import org.miod.parser.UnitParser;
-import org.miod.program.GlobalSymbolTable;
+import org.miod.program.symbol_table.GlobalSymbolTable;
 import org.miod.program.SymItem;
-import org.miod.program.SymKind;
-import org.miod.program.SymVisibility;
+import org.miod.program.symbol_table.SymbolKind;
+import org.miod.program.symbol_table.SymbolVisibility;
 
 import org.testng.annotations.Test;
 import static org.testng.Assert.*;
@@ -30,11 +30,11 @@ public class ProgramTestSuite {
         myTab1.addImport(myTab2, true);
         myTab2.addImport(systemTab, false);
         myTab2.addImport(myTab3, false);
-        SymItem sym1 = new SymItem(unitMyName + "::sym1", SymKind.Var, SymVisibility.Public, null);
+        SymItem sym1 = new SymItem(unitMyName + "::sym1", SymbolKind.Var, SymbolVisibility.Public, null);
         // the same name, to check name collision
-        SymItem sym2 = new SymItem(unitMy2Name + "::sym1", SymKind.Var, SymVisibility.Public, null);
-        SymItem sym3 = new SymItem(unitMy3Name + "::sym3", SymKind.Var, SymVisibility.Public, null);
-        SymItem symSystem = new SymItem(unitSystemName + "::system", SymKind.Var, SymVisibility.Public, null);
+        SymItem sym2 = new SymItem(unitMy2Name + "::sym1", SymbolKind.Var, SymbolVisibility.Public, null);
+        SymItem sym3 = new SymItem(unitMy3Name + "::sym3", SymbolKind.Var, SymbolVisibility.Public, null);
+        SymItem symSystem = new SymItem(unitSystemName + "::system", SymbolKind.Var, SymbolVisibility.Public, null);
         systemTab.put(symSystem);
         myTab1.put(sym1);
         myTab2.put(sym2);

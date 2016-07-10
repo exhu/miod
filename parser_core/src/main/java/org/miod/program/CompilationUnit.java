@@ -4,6 +4,10 @@
  */
 package org.miod.program;
 
+import org.miod.program.symbol_table.SymbolLocation;
+import org.miod.program.symbol_table.SymbolVisibility;
+import org.miod.program.symbol_table.SymbolKind;
+import org.miod.program.symbol_table.GlobalSymbolTable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -31,16 +35,16 @@ public final class CompilationUnit {
             ErrorListener errorListener) {
         this.filename = filename;
         symTable = new GlobalSymbolTable(name, errorListener);
-        symTable.put(new SymItem(name, SymKind.Unit, SymVisibility.Private, new SymLocation(this, line, col)));
+        symTable.put(new SymItem(name, SymbolKind.Unit, SymbolVisibility.Private, new SymbolLocation(this, line, col)));
     }
 
     /// Adds import into dependencies, symbol table
     public CompilationUnit addImport(String name, int line, int col,
-            SymVisibility visibility,
+            SymbolVisibility visibility,
             String filename, boolean fullNames, CompilationUnit newUnit) {
         //CompilationUnit newUnit = new CompilationUnit(name, line, col, filename);
-        //SymLocation location = new SymLocation(this, line, col);
-        //SymItem item = new SymItem(name, SymKind.Unit, visibility, location);
+        //SymLocation location = new SymbolLocation(this, line, col);
+        //SymItem item = new SymItem(name, SymbolKind.Unit, visibility, location);
         //symTable.put(item);
         symTable.addImport(newUnit.symTable, fullNames);
         return newUnit;
@@ -48,7 +52,7 @@ public final class CompilationUnit {
     
     public void addAliasToUnit(String name) {
         // TODO
-        //SymItem item = new SymItem(name, SymKind.Unit, visibility, location);
+        //SymItem item = new SymItem(name, SymbolKind.Unit, visibility, location);
         //symTable.put(item);
     }
 }

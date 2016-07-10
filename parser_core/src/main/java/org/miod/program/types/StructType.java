@@ -5,7 +5,7 @@
 package org.miod.program.types;
 
 import org.miod.parser.ErrorListener;
-import org.miod.program.SymbolTable;
+import org.miod.program.symbol_table.SymbolTable;
 import org.miod.program.SymbolWithSymTable;
 
 /**

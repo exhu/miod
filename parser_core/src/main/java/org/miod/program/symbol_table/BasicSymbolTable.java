@@ -2,24 +2,26 @@
     Copyright 2016 Yury Benesh
     see COPYING.txt
  */
-package org.miod.program;
+package org.miod.program.symbol_table;
 
 import org.miod.program.types.AliasedType;
 import java.util.HashMap;
 import java.util.Map;
 import org.miod.parser.ErrorListener;
+import org.miod.program.SymItem;
+import org.miod.program.SymbolWithSymTable;
 import org.miod.program.errors.SymbolRedefinitionError;
 
 /**
  *
  * @author yur
  */
-public class BaseSymbolTable implements SymbolTable {
+public class BasicSymbolTable implements SymbolTable {
     final private Map<String, SymItem> items = new HashMap<>();
     final protected SymbolTable parent;
     protected ErrorListener errorListener;
 
-    BaseSymbolTable(SymbolTable parent, ErrorListener errorListener) {
+    public BasicSymbolTable(SymbolTable parent, ErrorListener errorListener) {
         this.parent = parent;
         this.errorListener = errorListener;
     }

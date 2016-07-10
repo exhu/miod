@@ -6,7 +6,7 @@ package org.miod.program.types;
 
 import org.miod.program.CompilationUnit;
 import org.miod.program.SymItem;
-import org.miod.program.SymbolTable;
+import org.miod.program.symbol_table.SymbolTable;
 
 /**
  *

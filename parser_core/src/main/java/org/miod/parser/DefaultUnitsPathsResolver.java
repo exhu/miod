@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.miod.program.BaseSymbolTable;
+import org.miod.program.symbol_table.BasicSymbolTable;
 import org.miod.program.CompilationUnit;
 
 /**
@@ -52,7 +52,7 @@ public final class DefaultUnitsPathsResolver implements UnitsPathsResolver {
             final String s = name.toString();            
             if (!s.isEmpty()) {
                 builder.append(s);
-                builder.append(BaseSymbolTable.NAMESPACE_SEP);
+                builder.append(BasicSymbolTable.NAMESPACE_SEP);
             }
         }
         
@@ -64,7 +64,7 @@ public final class DefaultUnitsPathsResolver implements UnitsPathsResolver {
     /// searches file system for the unit
     @Override
     public Path unitNameToPath(String unitName) {        
-        final String stringPath = unitName.replace(BaseSymbolTable.NAMESPACE_SEP,
+        final String stringPath = unitName.replace(BasicSymbolTable.NAMESPACE_SEP,
                 FileSystems.getDefault().getSeparator()) +
                         CompilationUnit.UNIT_FILENAME_SUFFIX;
         

@@ -2,18 +2,19 @@
     Copyright 2016 Yury Benesh
     see COPYING.txt
  */
-package org.miod.program;
+package org.miod.program.symbol_table;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 import org.miod.parser.ErrorListener;
+import org.miod.program.SymItem;
 
 /** Global program symbol table: predefined consts, System unit, this unit
  *
  * @author yur
  */
-public final class GlobalSymbolTable extends BaseSymbolTable {
+public final class GlobalSymbolTable extends BasicSymbolTable {
     static private class Imported {
         public final boolean fullNamesOnly;
         public final GlobalSymbolTable table;
@@ -76,8 +77,8 @@ public final class GlobalSymbolTable extends BaseSymbolTable {
             if (item.fullNamesOnly == false || item.fullNamesOnly && id.startsWith(item.table.unitName)) {
                 SymItem resolved = item.table.resolveImmediateOnly(id);
                 if (resolved != null && 
-                        (resolved.visibility == SymVisibility.Public ||
-                        (resolved.visibility == SymVisibility.Protected && 
+                        (resolved.visibility == SymbolVisibility.Public ||
+                        (resolved.visibility == SymbolVisibility.Protected && 
                         item.table.parentNamespace.equals(parentNamespace))))
                     return resolved;
             }
