@@ -347,8 +347,9 @@ opaque                          Used to simplify bindings, e.g.
                                 annotations.
 int
 long
-array$<int>                     Passed by reference to functions,
-                                backed by system Array class.
+array$<int>                     Passed by reference to functions with hidden
+                                'size' arg,
+                                copied on assignment.
 array$<int, 120>                
 String                          Immutable string class with
                                 hash code support
