@@ -107,3 +107,45 @@ Optimization for compiler as a service feature:
 - keep parsing trees for imported units
 - reuse the trees for subsequent compilation calls
 
+===============================
+
+Program
+    - unit search paths
+    - compilation units
+
+
+Compilation unit
+    - file
+    - symbol table
+
+Symbol table
+    - parent
+    - map(name, Symbol)
+
+Location
+    - compilation unit
+    - line, col
+
+Symbol
+    - location
+    - name
+    - kind (alias, value, typedef, struct, array, proc)
+    - annotations
+
+Alias extends Symbol
+    - symbol
+
+Value extends Symbol
+    - type
+    - data
+
+Typedef extends Symbol
+    - symbol
+
+Struct extends Symbol
+    - SymbolTable
+
+Array extends Symbol
+    - type
+    - size
+
