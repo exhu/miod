@@ -149,3 +149,23 @@ Array extends Symbol
     - type
     - size
 
+-=-=-=-=-=-=
+Symbol can be
+    - Typed:
+        - proc
+        - var
+        - const
+        - struct
+        - class
+        - array
+        - typedef
+        - alias
+        - method
+
+    - Non-typed:
+        - unit
+
+Type can be:
+    - another Symbol
+    - built-in
+
