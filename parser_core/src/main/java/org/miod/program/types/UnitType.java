@@ -5,35 +5,32 @@
 package org.miod.program.types;
 
 import org.miod.program.CompilationUnit;
-import org.miod.program.SymItem;
 import org.miod.program.symbol_table.SymbolTable;
+import org.miod.program.symbol_table.SymbolTableItem;
 
 /**
  *
  * @author yur
  */
-public final class UnitType extends TypeSymbol implements SymbolTable {
+public final class UnitType extends MiodType implements SymbolTable {
     private final CompilationUnit unit;
     public UnitType(CompilationUnit unit) {
+        super(ValueTypeId.UNIT_DEF);
         this.unit = unit;
-    }
-    @Override
-    public boolean isSymbolTable() {
-        return true;
     }
 
     @Override
-    public SymItem get(String id) {
+    public SymbolTableItem get(String id) {
         return unit.symTable.get(id);
     }
 
     @Override
-    public void put(SymItem item) {
+    public void put(SymbolTableItem item) {
         unit.symTable.put(item);
     }
 
     @Override
-    public SymItem resolve(String id) {
+    public SymbolTableItem resolve(String id) {
         return unit.symTable.resolve(id);
     }
     

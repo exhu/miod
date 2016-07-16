@@ -4,14 +4,12 @@
  */
 package org.miod.program.types;
 
-import org.miod.program.SymItem;
-
 /** alias myname = othertype
  *
  * @author yur
  */
 public final class AliasType extends AliasedType {
-    AliasType(SymItem aliasFor) {
-        super(aliasFor);
+    AliasType(MiodType aliasFor) {
+        super(aliasFor, ValueTypeId.ALIAS);
     }
 }

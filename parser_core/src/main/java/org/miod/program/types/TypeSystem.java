@@ -1,12 +1,8 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+    Copyright 2016 Yury Benesh
+    see COPYING.txt
  */
 package org.miod.program.types;
-
-import org.miod.program.symbol_table.SymbolType;
-import org.miod.program.values.MiodValue;
 
 /**
  *
@@ -14,11 +10,14 @@ import org.miod.program.values.MiodValue;
  */
 public class TypeSystem {
 
-    boolean isCompatible(SymbolType a, SymbolType b) {
+    // TODO change to conversion
+    boolean isCompatible(MiodType a, MiodType b) {
         return false;
     }
 
+    /*
     MiodValue valueFromString(String literal) {
         return null;
     }
+    */
 }

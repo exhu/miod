@@ -4,28 +4,20 @@
  */
 package org.miod.program.types;
 
-import org.miod.program.SymItem;
-
 /**
  *
  * @author yur
  */
-public abstract class AliasedType extends TypeSymbol {
-    public final SymItem aliasFor;
-    AliasedType(SymItem aliasFor) {
+public abstract class AliasedType extends MiodType {
+    public final MiodType aliasFor;
+    AliasedType(MiodType aliasFor, ValueTypeId typeId) {
+        super(typeId);
         this.aliasFor = aliasFor;
     }
     
     /// pass through aliases
-    final public SymItem getFinalSymbol() {
-        if (aliasFor.type.isAliasedType())
-            return ((AliasedType)aliasFor.type).getFinalSymbol();
-        
-        return aliasFor;
-    }
-    
     @Override
-    public boolean isAliasedType() {
-        return true;
+    final public MiodType resolve() {
+        return aliasFor.resolve();
     }
 }

@@ -14,6 +14,8 @@ public enum ValueTypeId {
     TYPE_DEF,
     INT,
     FLOAT,
+    NCHAR_LITERAL,
+    NCHAR,
     STRING_LITERAL,
     NSTRING,
     ARRAY_SIZED,
@@ -30,4 +32,5 @@ public enum ValueTypeId {
     CLASS_WEAK_REF,
     METHOD_DEF,
     METHOD_WITH_INSTANCE_REF,
+    VAR_REF,
 }

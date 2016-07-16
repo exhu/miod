@@ -4,19 +4,14 @@
  */
 package org.miod.program.types;
 
-import org.miod.program.SymItem;
-
-/** type mytype = othertype
- * 
+/**
+ * type mytype = othertype
+ *
  * @author yur
  */
 public final class DistinctType extends AliasedType {
-    DistinctType(SymItem aliasFor) {
-        super(aliasFor);
-    }
-    
-    @Override
-    public boolean isAliasedType() {
-        return aliasFor.type.isAliasedType();
+
+    DistinctType(MiodType aliasFor) {
+        super(aliasFor, ValueTypeId.TYPE_DEF);
     }
 }

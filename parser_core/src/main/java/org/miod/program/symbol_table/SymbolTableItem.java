@@ -4,8 +4,7 @@
  */
 package org.miod.program.symbol_table;
 
-import java.util.List;
-import org.miod.program.annotations.MiodAnnotation;
+import org.miod.program.types.MiodType;
 
 /**
  *
@@ -17,6 +16,7 @@ public abstract class SymbolTableItem {
     final public SymbolVisibility visibility;
     final public SymbolKind kind;
     final public String name;
+    final public MiodType type;
     // no annotations to alias
     //final public List<MiodAnnotation> annotations;
 
