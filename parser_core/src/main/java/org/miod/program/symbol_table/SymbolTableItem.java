@@ -12,18 +12,23 @@ import org.miod.program.annotations.MiodAnnotation;
  * @author yur
  */
 public abstract class SymbolTableItem {
+
     final public SymbolLocation location;
     final public SymbolVisibility visibility;
     final public SymbolKind kind;
-    final public List<MiodAnnotation> annotations;
     final public String name;
-    
+    // no annotations to alias
+    //final public List<MiodAnnotation> annotations;
+
     public SymbolTableItem(String name, SymbolLocation location, SymbolKind kind,
-            List<MiodAnnotation> annotations, SymbolVisibility visibility) {
+            SymbolVisibility visibility) {
         this.name = name;
         this.location = location;
-        this.kind = kind;
-        this.annotations = annotations;
+        this.kind = kind;        
         this.visibility = visibility;
+    }
+
+    public SymbolTableItem resolveAlias() {
+        return this;
     }
 }

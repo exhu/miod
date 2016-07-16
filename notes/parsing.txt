@@ -151,21 +151,67 @@ Array extends Symbol
 
 -=-=-=-=-=-=
 Symbol can be
-    - Typed:
-        - proc
-        - var
-        - const
-        - struct
-        - class
-        - array
-        - typedef
-        - alias
-        - method
-
+    - alias
     - Non-typed:
         - unit
+
+    - Typed:
+        - proc
+            - symtable
+        - var
+        - const
+        - method
+            - symtable
+
+    - Type:
+        - struct
+            - symtable
+        - class
+            - symtable
+        - array
+        - typedef
 
 Type can be:
     - another Symbol
     - built-in
+    - anonymous (e.g. array, any proc, any method)
+
+SymbolLocation
+    - SymbolTable
+    - line, col
+
+SymbolTable
+    - parent
+    - CompilationUnit
+    
+
+-=-=-=-=-=-=-=-=-
+Expression types
+    - unitDef - unit name
+    - methodDef - method name and args
+    - procDef
+    - integer
+    - float
+    - stringLiteral - converted to stringRef on const or var initialization
+    - stringRef
+    - structRef (->struct type)
+    - classRef (->class type)
+    - classWeak (->class type)
+    - classWeakRef (->class type)
+    - arrayRef (->type)
+    - enumDef
+    - enumValue (->enumDef)
+    - classDef
+    - structDef
+    - alias (->type)
+    - typeDef (->type)
+    - bool
+    - openArrayDef (->type)
+    - sizedArrayDef (->type, size)
+    - var argument (->type)
+    - methodWithInstance
+    - procAddr
+
+
+TODO review SymbolTable definitions based on Expression types.
 

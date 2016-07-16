@@ -4,15 +4,15 @@
  */
 package org.miod.program.values;
 
-import org.miod.program.types.TypeSymbol;
+import org.miod.program.symbol_table.SymbolType;
 
 /** Values for consts and annotations.
  *
  * @author yur
  */
 public abstract class MiodValue {
-    protected TypeSymbol type;
-    public MiodValue(TypeSymbol type) {
+    protected SymbolType type;
+    public MiodValue(SymbolType type) {
         this.type = type;
     }
 

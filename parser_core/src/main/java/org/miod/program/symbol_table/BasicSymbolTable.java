@@ -8,7 +8,6 @@ import org.miod.program.types.AliasedType;
 import java.util.HashMap;
 import java.util.Map;
 import org.miod.parser.ErrorListener;
-import org.miod.program.SymItem;
 import org.miod.program.SymbolWithSymTable;
 import org.miod.program.errors.SymbolRedefinitionError;
 
@@ -17,7 +16,7 @@ import org.miod.program.errors.SymbolRedefinitionError;
  * @author yur
  */
 public class BasicSymbolTable implements SymbolTable {
-    final private Map<String, SymItem> items = new HashMap<>();
+    final private Map<String, SymbolTableItem> items = new HashMap<>();
     final protected SymbolTable parent;
     protected ErrorListener errorListener;
 
@@ -27,12 +26,12 @@ public class BasicSymbolTable implements SymbolTable {
     }
 
     @Override
-    final public SymItem get(String id) {
+    final public SymbolTableItem get(String id) {
         return items.get(id);
     }
 
     @Override
-    final public void put(SymItem item) {
+    final public void put(SymbolTableItem item) {
         if (get(item.name) == null) {
             items.put(item.name, item);
         } else {
@@ -40,14 +39,14 @@ public class BasicSymbolTable implements SymbolTable {
         }
     }
     
-    final protected SymItem resolveAlias(SymItem item) {
+    final protected SymbolTableItem resolveAlias(SymbolTableItem item) {
         if (item.type != null && item.type.isAliasedType())
             return ((AliasedType)item.type).getFinalSymbol();
         return item;
     }
 
     @Override
-    public SymItem resolve(String id) {
+    public SymbolTableItem resolve(String id) {
         // initial "::" starts global search first
         if (id.startsWith(NAMESPACE_SEP)) {
             id = id.substring(NAMESPACE_SEP.length());
@@ -56,12 +55,12 @@ public class BasicSymbolTable implements SymbolTable {
         }
         
         // try best match first
-        SymItem item = items.get(id);
+        SymbolTableItem item = items.get(id);
         if (item == null) {
             // split by "::" and try to resolve
             int sub = id.indexOf(NAMESPACE_SEP);
             if (sub > 0) {
-                SymItem subItem = get(id.substring(0, sub));
+                SymbolTableItem subItem = get(id.substring(0, sub));
                 if (subItem != null) {
                     subItem = resolveAlias(subItem);
                     if (subItem.type != null && subItem.type.isSymbolTable()) {

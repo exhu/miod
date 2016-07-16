@@ -4,18 +4,16 @@
  */
 package org.miod.program.symbol_table;
 
-import org.miod.program.SymItem;
-
 /**
  *
  * @author yur
  */
 public interface SymbolTable {
     /// "::ID" skips first match and goes higher to the parent
-    SymItem resolve(String id);
+    SymbolTableItem resolve(String id);
     
-    void put(SymItem item);
-    SymItem get(String id);
+    void put(SymbolTableItem item);
+    SymbolTableItem get(String id);
 
     public static final String NAMESPACE_SEP = "::";
 

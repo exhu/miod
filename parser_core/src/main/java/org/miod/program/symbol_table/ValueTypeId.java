@@ -8,10 +8,10 @@ package org.miod.program.symbol_table;
  *
  * @author yur
  */
-public abstract class SymbolType {
-
-    public SymbolType resolveAlias() {
-        return this;
-    }    
-
+public enum ValueTypeId {
+    String,
+    StructRef,
+    ClassRef,
+    ClassWeak,
+    ArrayRef
 }
