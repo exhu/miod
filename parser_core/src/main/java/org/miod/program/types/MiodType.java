@@ -14,9 +14,10 @@ public abstract class MiodType {
         this.typeId = typeId;
     }
 
-    /** If this type is an alias or typedef returns the underlying type.
+    /** TODO remove. Alias resolution on symbol table level. If this type is an alias or typedef returns the underlying type.
      * @return Super type.
      */
+    @Deprecated
     public MiodType resolve() {
         return this;
     }

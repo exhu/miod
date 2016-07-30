@@ -8,7 +8,7 @@ package org.miod.program.types;
  *
  * @author yur
  */
-public class BuiltinType extends MiodType {
+public final class BuiltinType extends MiodType {
     public BuiltinType(ValueTypeId typeId) {
         super(typeId);
     }

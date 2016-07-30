@@ -9,7 +9,7 @@ import java.util.Map;
 import org.miod.program.symbol_table.SymbolTable;
 import org.miod.program.symbol_table.SymbolTableItem;
 
-/**
+/** DEPRECATED.
  *
  * @author yur
  */

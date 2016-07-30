@@ -4,13 +4,14 @@
  */
 package org.miod.program.symbol_table;
 
-/** Distinct type. E.g. type int = int32
+/** DEPRECATED. Distinct type. E.g. type int = int32
  *
  * @author yur
  */
 public final class TypeDefSymbol extends AliasSymbol {
     public TypeDefSymbol(SymbolDesc desc, SymbolTableItem aliasFor) {
         super(desc, aliasFor);
+        throw new UnsupportedOperationException("todo remove");
     }
 
 }
