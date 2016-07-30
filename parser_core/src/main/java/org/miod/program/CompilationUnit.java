@@ -4,9 +4,7 @@
  */
 package org.miod.program;
 
-import org.miod.program.symbol_table.SymbolLocation;
 import org.miod.program.symbol_table.SymbolVisibility;
-import org.miod.program.symbol_table.SymbolKind;
 import org.miod.program.symbol_table.GlobalSymbolTable;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -14,6 +12,8 @@ import java.util.List;
 import java.util.Set;
 import org.miod.parser.ErrorListener;
 import org.miod.program.annotations.MiodAnnotation;
+import org.miod.program.symbol_table.CompUnitSymbol;
+import org.miod.program.symbol_table.SymbolLocation;
 
 /**
  *
@@ -35,7 +35,8 @@ public final class CompilationUnit {
             ErrorListener errorListener) {
         this.filename = filename;
         symTable = new GlobalSymbolTable(name, errorListener);
-        symTable.put(new SymItem(name, SymbolKind.Unit, SymbolVisibility.Private, new SymbolLocation(this, line, col)));
+        symTable.put(new CompUnitSymbol(this, name, new SymbolLocation(this,
+                line, col)));
     }
 
     /// Adds import into dependencies, symbol table

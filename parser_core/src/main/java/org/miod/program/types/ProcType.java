@@ -5,6 +5,7 @@
 package org.miod.program.types;
 
 import org.miod.parser.ErrorListener;
+import org.miod.program.symbol_table.SymbolDesc;
 import org.miod.program.symbol_table.SymbolTable;
 import org.miod.program.symbol_table.SymbolWithSymTable;
 
@@ -13,7 +14,7 @@ import org.miod.program.symbol_table.SymbolWithSymTable;
  * @author yur
  */
 public class ProcType extends SymbolWithSymTable {
-    public ProcType(SymbolTable parent, ErrorListener errorListener) {
-        super(parent, errorListener);
+    public ProcType(SymbolTable parent, SymbolDesc desc, ErrorListener errorListener) {
+        super(parent, desc, errorListener);
     }
 }

@@ -13,7 +13,8 @@ import org.miod.parser.ErrorListener;
 public abstract class SymbolWithSymTable extends SymbolTableItem implements SymbolTable {
     private final BasicSymbolTable symTable;
     
-    public SymbolWithSymTable(SymbolTable parent, ErrorListener errorListener) {
+    public SymbolWithSymTable(SymbolTable parent, SymbolDesc desc, ErrorListener errorListener) {
+        super(desc);
         symTable = new BasicSymbolTable(parent, errorListener);
     }
     

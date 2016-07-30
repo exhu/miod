@@ -6,7 +6,6 @@ import org.miod.parser.DefaultUnitsPathsResolver;
 import org.miod.parser.ErrorReporter;
 import org.miod.parser.UnitParser;
 import org.miod.program.symbol_table.GlobalSymbolTable;
-import org.miod.program.SymItem;
 import org.miod.program.symbol_table.SymbolKind;
 import org.miod.program.symbol_table.SymbolVisibility;
 

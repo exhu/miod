@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 import org.miod.parser.ErrorListener;
-import org.miod.program.SymItem;
+
 
 /** Global program symbol table: predefined consts, System unit, this unit
  *
@@ -47,8 +47,8 @@ public final class GlobalSymbolTable extends BasicSymbolTable {
     }
     
     @Override
-    final public SymItem resolve(String id) {
-        SymItem item = resolveImmediateOnly(id);
+    final public SymbolTableItem resolve(String id) {
+        SymbolTableItem item = resolveImmediateOnly(id);
         if (item == null) {
             return resolveFromImports(id);
         }
@@ -56,8 +56,8 @@ public final class GlobalSymbolTable extends BasicSymbolTable {
     }
     
     /// Does not look into imports
-    public final SymItem resolveImmediateOnly(String id) {
-        SymItem item = super.resolve(id);
+    public final SymbolTableItem resolveImmediateOnly(String id) {
+        SymbolTableItem item = super.resolve(id);
         if (item == null) {
             if (id.startsWith(unitName)) {
                 // look no further
@@ -67,7 +67,7 @@ public final class GlobalSymbolTable extends BasicSymbolTable {
         return item;
     }
     
-    private SymItem resolveFromImports(String id) {
+    private SymbolTableItem resolveFromImports(String id) {
         // resolve from last import to first
         // ignore "private" symbols
         // check for same package and ignore "protected"
@@ -75,10 +75,10 @@ public final class GlobalSymbolTable extends BasicSymbolTable {
         while(i.hasPrevious()) {
             Imported item = i.previous();
             if (item.fullNamesOnly == false || item.fullNamesOnly && id.startsWith(item.table.unitName)) {
-                SymItem resolved = item.table.resolveImmediateOnly(id);
+                SymbolTableItem resolved = item.table.resolveImmediateOnly(id);
                 if (resolved != null && 
-                        (resolved.visibility == SymbolVisibility.Public ||
-                        (resolved.visibility == SymbolVisibility.Protected && 
+                        (resolved.desc.visibility == SymbolVisibility.Public ||
+                        (resolved.desc.visibility == SymbolVisibility.Protected &&
                         item.table.parentNamespace.equals(parentNamespace))))
                     return resolved;
             }

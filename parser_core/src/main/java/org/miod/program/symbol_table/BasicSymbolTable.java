@@ -30,8 +30,8 @@ public class BasicSymbolTable implements SymbolTable {
 
     @Override
     final public void put(SymbolTableItem item) {
-        if (get(item.name) == null) {
-            items.put(item.name, item);
+        if (get(item.desc.name) == null) {
+            items.put(item.desc.name, item);
         } else {
             errorListener.onError(new SymbolRedefinitionError(item));
         }

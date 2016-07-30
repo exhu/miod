@@ -33,4 +33,5 @@ public enum ValueTypeId {
     METHOD_DEF,
     METHOD_WITH_INSTANCE_REF,
     VAR_REF,
+    OPAQUE,
 }

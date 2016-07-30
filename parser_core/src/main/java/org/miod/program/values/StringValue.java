@@ -4,13 +4,15 @@
  */
 package org.miod.program.values;
 
+import org.miod.program.types.MiodType;
+
 /**
  *
  * @author yur
  */
 public class StringValue extends MiodValue {
-    public StringValue(String v) {
-        super(SymbolType)
+    public StringValue(String v, MiodType type) {
+        super(type);
     }
 
 }

@@ -8,6 +8,8 @@ package org.miod.program.types;
  *
  * @author yur
  */
-public final class NStringType extends StandardType {
-    
+public final class NStringType extends MiodType {
+    public NStringType() {
+        super(ValueTypeId.NSTRING);
+    }
 }
