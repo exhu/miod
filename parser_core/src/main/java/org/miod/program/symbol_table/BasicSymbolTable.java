@@ -4,11 +4,9 @@
  */
 package org.miod.program.symbol_table;
 
-import org.miod.program.types.AliasedType;
 import java.util.HashMap;
 import java.util.Map;
 import org.miod.parser.ErrorListener;
-import org.miod.program.SymbolWithSymTable;
 import org.miod.program.errors.SymbolRedefinitionError;
 
 /**
@@ -38,12 +36,6 @@ public class BasicSymbolTable implements SymbolTable {
             errorListener.onError(new SymbolRedefinitionError(item));
         }
     }
-    
-    final protected SymbolTableItem resolveAlias(SymbolTableItem item) {
-        if (item.type != null && item.type.isAliasedType())
-            return ((AliasedType)item.type).getFinalSymbol();
-        return item;
-    }
 
     @Override
     public SymbolTableItem resolve(String id) {
@@ -62,10 +54,9 @@ public class BasicSymbolTable implements SymbolTable {
             if (sub > 0) {
                 SymbolTableItem subItem = get(id.substring(0, sub));
                 if (subItem != null) {
-                    subItem = resolveAlias(subItem);
-                    if (subItem.type != null && subItem.type.isSymbolTable()) {
-                        SymbolWithSymTable subTable = (SymbolWithSymTable)subItem.type;
-                        item = subTable.resolve(id.substring(sub+NAMESPACE_SEP.length()));
+                    SymbolWithSymTable symTabledItem = (SymbolWithSymTable)subItem.resolveAlias();
+                    if (symTabledItem != null) {
+                        item = symTabledItem.resolve(id.substring(sub+NAMESPACE_SEP.length()));
                     }
                 }
             }

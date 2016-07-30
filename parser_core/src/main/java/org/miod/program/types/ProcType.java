@@ -6,7 +6,7 @@ package org.miod.program.types;
 
 import org.miod.parser.ErrorListener;
 import org.miod.program.symbol_table.SymbolTable;
-import org.miod.program.SymbolWithSymTable;
+import org.miod.program.symbol_table.SymbolWithSymTable;
 
 /** A proc declaration in type section. Symbol table contains declared arguments.
  *

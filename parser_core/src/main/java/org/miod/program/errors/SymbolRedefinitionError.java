@@ -4,14 +4,14 @@
  */
 package org.miod.program.errors;
 
-import org.miod.program.SymItem;
+import org.miod.program.symbol_table.SymbolTableItem;
 
 /**
  *
  * @author yur
  */
 public final class SymbolRedefinitionError extends CompilerError {
-    public SymbolRedefinitionError(SymItem sym) {
+    public SymbolRedefinitionError(SymbolTableItem sym) {
         // TODO error message
         super(sym.toString());
     }
