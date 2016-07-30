@@ -1,5 +1,7 @@
 TODO:
 
+- move types from program.types to org.miod.program.symbol_table
+
 - decouple CompilationUnit etc.
 - Errors handling (get from mycalc1)
 - rethink types storage (e.g. MethodWithBody), prefer Enum with Data, rather

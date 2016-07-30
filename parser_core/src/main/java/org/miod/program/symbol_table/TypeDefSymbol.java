@@ -4,13 +4,13 @@
  */
 package org.miod.program.symbol_table;
 
-/**
+/** Distinct type. E.g. type int = int32
  *
  * @author yur
  */
-public final class TypeDefSymbol extends SymbolTableItem {
-    public TypeDefSymbol(SymbolDesc desc) {
-        super(desc);
+public final class TypeDefSymbol extends AliasSymbol {
+    public TypeDefSymbol(SymbolDesc desc, SymbolTableItem aliasFor) {
+        super(desc, aliasFor);
     }
 
 }

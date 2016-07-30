@@ -111,7 +111,7 @@ PROPERTY: 'property';
 SETTER: 'setter';
 GETTER: 'getter';
 NAMESPACE_SEP: '::';
-EXTENDS: 'extends';
+BASED_ON: 'based_on';
 IMPLEMENTS: 'implements';
 // Map$<String, Integer> -- integer map generic type
 TYPE_ARGS_OPEN: '$<';

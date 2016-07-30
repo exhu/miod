@@ -196,7 +196,7 @@ structBodyStmt: structOrClassField
     ;
 
 classDecl: annotations? EXTERN? ((ABSTRACT? BASE_CLASS)|CLASS)
-    (EXTENDS qualifName)?
+    (BASED_ON qualifName)?
     (IMPLEMENTS qualifName (COMMA qualifName)*)?
     classBodyStmt*
     END_CLASS
