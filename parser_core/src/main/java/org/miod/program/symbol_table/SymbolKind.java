@@ -11,10 +11,10 @@ package org.miod.program.symbol_table;
 public enum SymbolKind {
     Alias,
     Unit, // for imports
-    Proc,
-    Method,
-    Type,  
+    Type,
+    Const,
     Var,
-    Const
+    Proc,
+    Method,    
     //Annotation, -- annotations are parsed and applied to the annotated item    
 }

@@ -15,7 +15,7 @@ public final class SymbolDesc {
     final public SymbolKind kind;
     final public String name;
     final public String canonicalName; // name with full module namespace etc.
-    final public MiodType type;
+    public MiodType type;
     // no annotations to alias
     //final public List<MiodAnnotation> annotations;
 
