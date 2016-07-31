@@ -10,7 +10,7 @@ package org.miod.program.types;
  */
 public enum ValueTypeId {
     UNIT_DEF,
-    ALIAS,
+    //ALIAS,
     // TYPE_DEF,equals to alias, so should be removed from grammar,
     // use struct for distinct types.
     INT8,
@@ -46,3 +46,4 @@ public enum ValueTypeId {
     VAR_REF,
     OPAQUE,
 }
+

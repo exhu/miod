@@ -12,7 +12,8 @@ import java.util.List;
 import java.util.Set;
 import org.miod.parser.ErrorListener;
 import org.miod.program.annotations.MiodAnnotation;
-import org.miod.program.symbol_table.CompUnitSymbol;
+import org.miod.program.symbol_table.symbols.CompUnitSymbol;
+import org.miod.program.symbol_table.DefaultSymbolTable;
 import org.miod.program.symbol_table.SymbolLocation;
 
 /**
@@ -31,11 +32,11 @@ public final class CompilationUnit {
     final private List<MiodAnnotation> annotations = new ArrayList<>();
 
     /// line, col = place of 'unit' directive
-    public CompilationUnit(String name, int line, int col, String filename,
+    public CompilationUnit(DefaultSymbolTable defTable, String name, int line, int col, String filename,
             ErrorListener errorListener) {
         this.filename = filename;
-        symTable = new GlobalSymbolTable(name, errorListener);
-        symTable.put(new CompUnitSymbol(this, name, new SymbolLocation(this,
+        symTable = new GlobalSymbolTable(defTable, name, errorListener);
+        symTable.put(new CompUnitSymbol(new SymbolLocation(name,
                 line, col)));
     }
 

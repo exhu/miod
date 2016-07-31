@@ -28,8 +28,8 @@ public final class GlobalSymbolTable extends BasicSymbolTable {
     public final String parentNamespace;
     
     
-    public GlobalSymbolTable(String unitName, ErrorListener errorListener) {
-        super(null, errorListener);
+    public GlobalSymbolTable(DefaultSymbolTable defTable, String unitName, ErrorListener errorListener) {
+        super(defTable, errorListener);
         this.unitName = unitName;
         this.parentNamespace = getParentNamespace(unitName);
     }

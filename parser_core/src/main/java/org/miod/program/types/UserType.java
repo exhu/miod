@@ -11,7 +11,7 @@ import org.miod.program.symbol_table.SymbolTableItem;
  * @author yur
  */
 public final class UserType extends MiodType {
-    public final SymbolTableItem symbol;
+    public SymbolTableItem symbol;
     public UserType(ValueTypeId typeId, SymbolTableItem symbol) {
         super(typeId);
         this.symbol = symbol;

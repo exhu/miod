@@ -4,7 +4,7 @@
  */
 package org.miod.program.symbol_table;
 
-/** Symbol table types.
+/** DEPRECATED. Symbol table types.
  *
  * @author yur
  */

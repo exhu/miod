@@ -4,18 +4,16 @@
  */
 package org.miod.program.symbol_table;
 
-import org.miod.program.CompilationUnit;
-
 /**
  *
  * @author yur
  */
 public final class SymbolLocation {
-    public final CompilationUnit unit;
+    public final String unitName;
     public final int line, column;
     
-    public SymbolLocation(CompilationUnit unit, int line, int col) {
-        this.unit = unit;
+    public SymbolLocation(String unitName, int line, int col) {
+        this.unitName = unitName;
         this.line = line;
         this.column = col;
     }
