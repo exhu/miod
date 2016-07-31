@@ -17,4 +17,9 @@ public final class UserType extends MiodType {
         this.symbol = symbol;
     }
 
+    @Override
+    public MiodType resolve() {
+        return symbol.resolveAlias().desc.type.resolve();
+    }
+
 }

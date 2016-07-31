@@ -7,11 +7,10 @@ import org.miod.parser.ErrorReporter;
 import org.miod.program.symbol_table.DefaultSymbolTable;
 import org.miod.program.symbol_table.GlobalSymbolTable;
 import org.miod.program.symbol_table.SymbolDesc;
-import org.miod.program.symbol_table.SymbolKind;
 import org.miod.program.symbol_table.SymbolTableItem;
 import org.miod.program.symbol_table.SymbolVisibility;
 import org.miod.program.symbol_table.symbols.VarSymbol;
-import org.miod.program.types.BuiltinType;
+import org.miod.program.types.PrimitiveType;
 import org.miod.program.types.MiodType;
 import org.miod.program.types.ValueTypeId;
 
@@ -39,7 +38,7 @@ public class ProgramTestSuite {
         myTab1.addImport(myTab2, true);
         myTab2.addImport(systemTab, false);
         myTab2.addImport(myTab3, false);
-        BuiltinType btype = new BuiltinType(ValueTypeId.INT32);
+        PrimitiveType btype = new PrimitiveType(ValueTypeId.INT32);
         SymbolTableItem sym1 = newVar("sym1", btype);
         // the same name, to check name collision
         SymbolTableItem sym2 = newVar("sym1", btype);
@@ -85,4 +84,6 @@ public class ProgramTestSuite {
         */
         resolver.unitNameToPath("mypkg::my");
     }
+
+    // TODO write type resolving tests
 }

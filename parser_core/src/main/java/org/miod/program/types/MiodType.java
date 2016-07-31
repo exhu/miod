@@ -13,4 +13,9 @@ public abstract class MiodType {
     public MiodType(ValueTypeId typeId) {
         this.typeId = typeId;
     }
+
+    /// returns final type in the chain, e.g. for UserTypes
+    MiodType resolve() {
+        return this;
+    }
 }
