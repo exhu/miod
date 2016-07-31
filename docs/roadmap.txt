@@ -1,6 +1,6 @@
 TODO:
 
-- move types from program.types to org.miod.program.symbol_table
+- type cannot define alias for array, enums etc., only enum, struct, class
 
 - decouple CompilationUnit etc.
 - Errors handling (get from mycalc1)

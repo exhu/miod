@@ -29,7 +29,8 @@ public enum ValueTypeId {
     STRING_LITERAL,
     NSTRING,
     STRING,
-    ARRAY_SIZED,
+    ARRAY_SIZED, // array definition
+    ARRAY_VALUE,
     ARRAY_REF,
     ENUM_DEF,
     ENUM_VALUE,

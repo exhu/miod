@@ -4,7 +4,7 @@
  */
 package org.miod.program.types;
 
-/**
+/** Sized array definition, e.g. type myarray = array[3, int], or var a : array[3]
  *
  * @author yur
  */
