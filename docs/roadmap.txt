@@ -1,8 +1,11 @@
 TODO:
 
-- type cannot define alias for array, enums etc., only enum, struct, class
+- var a : type -> add symbol table item with resolved 'type' (i.e. bypass alias)
 
-- decouple CompilationUnit etc.
++ 'type' cannot define alias for array, enums etc., only enum, struct, class
+because arrays are mutually compatible anyway.
+
++ decouple CompilationUnit etc.
 - Errors handling (get from mycalc1)
 - rethink types storage (e.g. MethodWithBody), prefer Enum with Data, rather
   than classes per type
