@@ -1,5 +1,29 @@
 TODO:
 
+- forward declarations
+
+For better readability for classes and single pass parsing make language require
+forward declarations.
+
+type 
+
+Child = forward class
+Parent = class child: Child end_class
+
+Child = base_class parent: Parent end_class
+
+
+forward proc myproc(a, b: int): int 
+
+proc myproc return a+b end_proc
+
+proc myproc(a, b: int): int return a+b end_proc
+
+Forward declarations take all arguments, annotations etc. If forward declaration
+is used then the implementation must not specify anything, only proc ... end_proc
+
+
+
 - var a : type -> add symbol table item with resolved 'type' (i.e. bypass alias)
 
 + 'type' cannot define alias for array, enums etc., only enum, struct, class

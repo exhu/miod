@@ -176,8 +176,8 @@ ifStatement: IF boolExpr THEN statement* (ELIF boolExpr THEN statement*)*
 
 
 aliasDecl: ALIAS bareName ASSIGN qualifName;
-typeDecl: TYPE bareName ASSIGN
-    (GENERIC|arrayType|enumDecl|structDecl|classDecl);
+typeDecl: TYPE (bareName ASSIGN
+    (GENERIC|arrayType|enumDecl|structDecl|classDecl))+;
 
 enumDecl: annotations? ENUM (typeArgsOpen typeSpec typeArgsClose)?
     (bareName (ASSIGN constExpr)?)+ END_ENUM

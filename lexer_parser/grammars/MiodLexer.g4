@@ -18,6 +18,7 @@ JOIN_LINE: '\\' NEWLINE -> skip;
 CONST: 'const';
 //FINAL: 'final';
 VAR: 'var';
+FORWARD: 'forward';
 PROC: 'proc';
 METHOD: 'method';
 INLINE: 'inline';
