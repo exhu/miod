@@ -138,11 +138,11 @@ arrayVariant: qualifName # unknownSizeArray
     ;
 
 procMethodDecl: annotations? (EXTERN|INLINE)?
-    (PROC|((ABSTRACT|VIRTUAL|OVERRIDE)? METHOD))
+    (PROC|((ABSTRACT|VIRTUAL|OVERRIDE)? METHOD)) bareName
     OPEN_PAREN procArgsDecl CLOSE_PAREN statement* END_PROC;
 
 procMethodStructDecl: annotations? (EXTERN|INLINE)?
-    (PROC|METHOD)
+    (PROC|METHOD) bareName
     OPEN_PAREN procArgsDecl CLOSE_PAREN statement* END_PROC;
 
 statement: RETURN expr? #statementReturn
@@ -176,14 +176,14 @@ ifStatement: IF boolExpr THEN statement* (ELIF boolExpr THEN statement*)*
 
 
 aliasDecl: ALIAS bareName ASSIGN qualifName;
-typeDecl: TYPE (bareName ASSIGN
-    (GENERIC|arrayType|enumDecl|structDecl|classDecl))+;
+typeDecl: TYPE (bareName ASSIGN (GENERIC|arrayType|enumDecl))+
+    |   (structDecl|classDecl)+;
 
 enumDecl: annotations? ENUM (typeArgsOpen typeSpec typeArgsClose)?
     (bareName (ASSIGN constExpr)?)+ END_ENUM
 ;
 
-structDecl: annotations? EXTERN? STRUCT
+structDecl: annotations? EXTERN? STRUCT bareName
     (IMPLEMENTS qualifName (COMMA qualifName)*)?
     structBodyStmt* END_STRUCT
 ;
@@ -195,7 +195,7 @@ structBodyStmt: structOrClassField
     | STATIC_IF boolExpr THEN structBodyStmt* (ELSE structBodyStmt*)? END_IF
     ;
 
-classDecl: annotations? EXTERN? ((ABSTRACT? BASE_CLASS)|CLASS)
+classDecl: annotations? EXTERN? ((ABSTRACT? BASE_CLASS)|CLASS) bareName
     (BASED_ON qualifName)?
     (IMPLEMENTS qualifName (COMMA qualifName)*)?
     classBodyStmt*
