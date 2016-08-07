@@ -2,24 +2,27 @@ parser grammar MiodParser;
 options {tokenVocab = MiodLexer;}
 
 compUnit: unitHeader unitBody?;
-unitHeader: annotations? GENERIC? UNIT qualifNameOnly;
+unitHeader: annotations? GENERIC? UNIT qualifNameOnlyTxt;
 
 bareName: ID | SETTER | GETTER;
 qualifName: NAMESPACE_SEP? qualifNameTxt;
-qualifNameTxt: bareName (NAMESPACE_SEP bareName)*;
 qualifNameOnly: NAMESPACE_SEP? qualifNameOnlyTxt;
+
+qualifNameTxt: bareName (NAMESPACE_SEP bareName)*;
 qualifNameOnlyTxt: bareName (NAMESPACE_SEP bareName)+;
 
+annotations: annotation+;
 // Must check for predefined annotations like @_rtti
 annotation: ANNOTATE qualifName annotationDict?;
 annotationDict: OPEN_CURLY bareName COLON constExpr (COMMA bareName COLON constExpr)* CLOSE_CURLY;
 
-annotations: annotation+;
 
 unitBody: importDecl* globalStmt+;
+
 // IMPORT imports units, so that public symbols can be addressed as myunit::procName
 // IMPORT_ALL imports unit public symbols into global namespace
-importDecl: (IMPORT|IMPORT_ALL) qualifNameOnly;
+importDecl: (IMPORT|IMPORT_ALL) qualifNameOnlyTxt;
+
 globalStmt: globalStaticIf
     | globalDecl
     | implementStmt
