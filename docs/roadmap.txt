@@ -1,6 +1,6 @@
 TODO:
 
-
+- review grammar
 
 - var a : type -> add symbol table item with resolved 'type' (i.e. bypass alias)
 
