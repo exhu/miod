@@ -103,6 +103,7 @@ GENERIC: 'generic';
 IMPLEMENT: 'implement';
 CLASS: 'class';
 INTERFACE: 'interface';
+END_INTERFACE: 'end_interface';
 BASE_CLASS: 'base_class';
 END_CLASS: 'end_class';
 PROPERTY: 'property';

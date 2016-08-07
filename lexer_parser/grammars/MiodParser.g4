@@ -209,6 +209,16 @@ classBodyStmt: visibilityStmt
     | STATIC_IF boolExpr THEN classBodyStmt* (ELSE classBodyStmt*)? END_IF
     ;
 
+interfaceDecl: annotations? EXTERN? INTERFACE bareName
+    (BASED_ON qualifName (COMMA qualifName)*)?
+    interfaceBodyStmt*
+    END_INTERFACE
+    ;
+
+interfaceBodyStmt: procMethodDecl
+    | STATIC_IF boolExpr THEN interfaceBodyStmt* (ELSE interfaceBodyStmt*)? END_IF
+    ;
+
 // Check for double getters/setters in semantic pass!
 propertyDecl: PROPERTY bareName COLON typeSpec (EQUALS OPEN_CURLY 
     propSetterGetter (COMMA propSetterGetter)? CLOSE_CURLY)?;
