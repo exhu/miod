@@ -40,7 +40,7 @@ implementStmt: IMPLEMENT qualifNameOnly WITH (qualifName ASSIGN typeSpec)* END_W
 
 
 globalDecl: constDecl
-    | procMethodDecl
+    | procDecl
     | typeDecl
     | visibilityStmt
     | varDecl
@@ -137,13 +137,21 @@ arrayVariant: qualifName # unknownSizeArray
     | typeSpec COMMA expr # sizedArray
     ;
 
-procMethodDecl: annotations? (EXTERN|INLINE)?
-    (PROC|((ABSTRACT|VIRTUAL|OVERRIDE)? METHOD)) bareName
-    OPEN_PAREN procArgsDecl CLOSE_PAREN statement* END_PROC;
+procDecl: annotations? (EXTERN|INLINE)? procHeader statement* END_PROC;
+
+procOrMethodDecl: annotations? (EXTERN|INLINE)? (procHeader|methodHeader)
+    statement* END_PROC;
+
+procHeader: PROC bareName procOrMethodArgs;
+methodHeader: (ABSTRACT|VIRTUAL|OVERRIDE)? METHOD bareName procOrMethodArgs;
+
+procOrMethodArgs: OPEN_PAREN procArgsDecl CLOSE_PAREN (COLON typeSpec)?;
 
 procMethodStructDecl: annotations? (EXTERN|INLINE)?
     (PROC|METHOD) bareName
-    OPEN_PAREN procArgsDecl CLOSE_PAREN statement* END_PROC;
+    OPEN_PAREN procArgsDecl CLOSE_PAREN (COLON typeSpec)? statement* END_PROC;
+
+interfaceProcOrMethodDecl: procMethodStructDecl;
 
 statement: RETURN expr? #statementReturn
     | constDecl #statementConstDecl
@@ -205,7 +213,7 @@ classDecl: annotations? EXTERN? ((ABSTRACT? BASE_CLASS)|CLASS) bareName
 classBodyStmt: visibilityStmt
     | annotations? propertyDecl
     | structOrClassField
-    | procMethodDecl
+    | procOrMethodDecl
     | STATIC_IF boolExpr THEN classBodyStmt* (ELSE classBodyStmt*)? END_IF
     ;
 
@@ -215,7 +223,7 @@ interfaceDecl: annotations? EXTERN? INTERFACE bareName
     END_INTERFACE
     ;
 
-interfaceBodyStmt: procMethodDecl
+interfaceBodyStmt: interfaceProcOrMethodDecl
     | STATIC_IF boolExpr THEN interfaceBodyStmt* (ELSE interfaceBodyStmt*)? END_IF
     ;
 
