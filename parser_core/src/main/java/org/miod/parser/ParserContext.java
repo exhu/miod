@@ -36,10 +36,6 @@ public final class ParserContext {
         return units.get(name);
     }
 
-    final protected void putUnit(String name, CompilationUnit unit) {
-        units.put(name, unit);
-    }
-
     /// unitName = import directive argument e.g. miod::system
     /// check for null return value to handle failure to find the unit
     public CompilationUnit parseUnit(String unitName) {
