@@ -63,7 +63,7 @@ public final class DefaultUnitsPathsResolver implements UnitsPathsResolver {
     
     /// searches file system for the unit
     @Override
-    public Path unitNameToPath(String unitName) {        
+    public Path pathFromUnitName(String unitName) {        
         final String stringPath = unitName.replace(BasicSymbolTable.NAMESPACE_SEP,
                 FileSystems.getDefault().getSeparator()) +
                         CompilationUnit.UNIT_FILENAME_SUFFIX;

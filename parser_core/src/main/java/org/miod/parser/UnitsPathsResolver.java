@@ -13,5 +13,5 @@ public interface UnitsPathsResolver {
     /// return name based on the path and packagePaths
     String unitNameFromPath(Path p);
     /// searches file system for the unit
-    Path unitNameToPath(String unitName);
+    Path pathFromUnitName(String unitName);
 }

@@ -36,7 +36,7 @@ public final class UnitParser implements UnitParserProvider {
         CompilationUnit unit = context.getUnit(unitName);
         if (unit == null) {
             // find file in paths
-            unit = parseFile(pathsResolver.unitNameToPath(unitName));
+            unit = parseFile(pathsResolver.pathFromUnitName(unitName));
         }
         if (unit == null) {
             errorListener.onError(new UnitNotFoundError(unitName));

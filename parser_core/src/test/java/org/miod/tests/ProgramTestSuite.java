@@ -82,7 +82,7 @@ public class ProgramTestSuite {
             paths.add(FileSystems.getDefault().getPath(s).toAbsolutePath());
         }
         */
-        resolver.unitNameToPath("mypkg::my");
+        resolver.pathFromUnitName("mypkg::my");
     }
 
     // TODO write type resolving tests
