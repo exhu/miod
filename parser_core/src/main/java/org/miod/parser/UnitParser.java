@@ -36,30 +36,23 @@ public final class UnitParser implements UnitParserProvider {
         CompilationUnit unit = context.getUnit(unitName);
         if (unit == null) {
             // find file in paths
-            unit = parseFile(pathsResolver.pathFromUnitName(unitName));
-        }
-        if (unit == null) {
-            errorListener.onError(new UnitNotFoundError(unitName));
-        }
+            final Path unitPath = pathsResolver.pathFromUnitName(unitName);
+            if (unitPath == null) {
+                errorListener.onError(new UnitNotFoundError(unitName));
+            } else {
+                unit = parseFile(unitPath);
+            }
+        }        
         return unit;
     }
 
-    public CompilationUnit parseFile(Path f) {
-        // TODO check if already parsed in context
-        // TODO pass self as ErrorListener to CompilationUnit etc.
-        // TODO decouple ParserContext from UnitParser
-        // TODO special case for stuct recursion in definition, e.g.
-        // 1) type mystruct = struct parent: mystruct end_struct -- 
-        // remember typename
-        // 2) type myclass = class parent: myclass end_class
-        // -- class type is mutable, so it's put into parent SymbolTable and
-        // filled as parsing goes further.
-        String unitName = "";
-        // TODO path to absolute
-        // TODO unitNameFromPath
-        // TODO unitName to relative path
-        //Path unitPath = FileSystems.getDefault().getPath(unitName);
-
+    public CompilationUnit parseFile(Path unitPath) {
+        final String unitName = pathsResolver.unitNameFromPath(unitPath);
+        // check if already parsed in context
+        CompilationUnit unit = context.getUnit(unitName);
+        if (unit != null) {
+            return unit;
+        }
         /*
          try (BufferedReader reader = Files.newBufferedReader(f,
                 Charset.forName("UTF-8"))) {

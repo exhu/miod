@@ -17,6 +17,7 @@ public final class ParserContext {
 
     private final Map<String, CompilationUnit> units = new HashMap<>();
     private UnitParserProvider parserProvider;
+    private ErrorListener errorListener = null;
 
     /* Global defines are bad thing
     private Map<String, SymItem> globalDefines = new HashMap<>();
@@ -26,6 +27,14 @@ public final class ParserContext {
      */
     public ParserContext(UnitParserProvider provider) {
         this.parserProvider = provider;
+    }
+
+    public final void setErrorListener(ErrorListener lst) {
+        errorListener = lst;
+    }
+
+    public final ErrorListener getErrorListener() {
+        return errorListener;
     }
 
     public final void setParserProvider(UnitParserProvider provider) {
