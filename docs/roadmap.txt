@@ -1,5 +1,6 @@
 TODO:
 
+- finish UnitParser.java
 - class is the only reference type, arrays are copied, allocated from class
     storage, or global storage
 - dynamic arrays are allocated via C implementation.
