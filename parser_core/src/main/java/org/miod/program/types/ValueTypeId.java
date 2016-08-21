@@ -36,7 +36,7 @@ public enum ValueTypeId {
     ENUM_VALUE,
     STRUCT_DEF,
     STRUCT_REF,
-    PROC_DEF,
+    PROC_DEF, // proc body?
     PROC_REF,
     CLASS_DEF,
     CLASS_REF,

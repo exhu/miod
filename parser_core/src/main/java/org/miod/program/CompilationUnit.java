@@ -16,7 +16,7 @@ import org.miod.program.symbol_table.symbols.CompUnitSymbol;
 import org.miod.program.symbol_table.DefaultSymbolTable;
 import org.miod.program.symbol_table.SymbolLocation;
 
-/**
+/** Manages unit's symbol table, dependencies, and annotations.
  *
  * @author yur
  */

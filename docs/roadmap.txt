@@ -1,32 +1,7 @@
 TODO:
 
 - review grammar
-
 - var a : type -> add symbol table item with resolved 'type' (i.e. bypass alias)
-
-+ 'type' cannot define alias for array, enums etc., only enum, struct, class
-because arrays are mutually compatible anyway.
-
-+ decouple CompilationUnit etc.
-- Errors handling (get from mycalc1)
-- rethink types storage (e.g. MethodWithBody), prefer Enum with Data, rather
-  than classes per type
-
-
-- evaluate expressions during second (semantic) pass both type and values
-to calculate static_if's
-
-- check for predefined annotations, unknown annotations trigger error
-
-- track scopes when parsing declarations, no procedure calls are possible
-when defining globals constants/vars
-
-- check for double getters and setters for properties
-
-- check for unnecessary body for abstract methods, external procs and omission
-otherwise
-
-
 
 Version 1 features
 
@@ -34,14 +9,17 @@ Version 1 features
 - procs with local vars
 - visibility levels (public, protected, private)
 - structs
+- opaque
 - unions via opaque
 - global vars
 - cprocs (@_cattr)
 - static packages
-- cstrings
+- nstring, nwstring
 
 Version 2
 
+- classes
+- interfaces
 - int32 analogue to System.identityHashCode(Object)
 - base_class for extendable classes, deprecate "final" keyword,
 include "virtual" keyword
