@@ -13,6 +13,7 @@ public enum ValueTypeId {
     //ALIAS,
     // TYPE_DEF,equals to alias, so should be removed from grammar,
     // use struct for distinct types.
+    BOOL,
     INT8,
     INT16,
     INT32,
