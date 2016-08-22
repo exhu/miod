@@ -56,12 +56,12 @@ public final class UnitParser implements UnitParserProvider {
         if (unitPath == null) {
             errorListener.onError(new UnitNotFoundError(unitName));
         } else {
-            parseFile(unitPath);
+            parseFile(unitName, unitPath);
         }        
     }
 
-    public final void parseFile(Path unitPath) {
-        final String unitName = pathsResolver.unitNameFromPath(unitPath);
+    public final void parseFile(String unitName, Path unitPath) {
+        //final String unitName = pathsResolver.unitNameFromPath(unitPath);
         ParseTree tree;
         ParserErrorListener antlrErrorListener = new ParserErrorListener(this.errorListener);
         try (BufferedReader reader = Files.newBufferedReader(unitPath,
@@ -91,6 +91,7 @@ public final class UnitParser implements UnitParserProvider {
         visitor1.visit(tree);
 
         if (errorListener.hasErrors() == false) {
+            context.putTree(unitName, tree);
             // definition pass
             SemanticResolverVisitor visitor2 = new SemanticResolverVisitor(unitName, context);
             visitor2.visit(tree);

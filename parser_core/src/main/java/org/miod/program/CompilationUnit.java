@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import org.antlr.v4.runtime.tree.ParseTree;
 import org.miod.parser.ErrorListener;
 import org.miod.program.annotations.MiodAnnotation;
 import org.miod.program.symbol_table.symbols.CompUnitSymbol;
@@ -22,6 +23,7 @@ import org.miod.program.symbol_table.SymbolLocation;
  */
 public final class CompilationUnit {
     public static final String UNIT_FILENAME_SUFFIX = ".miod";
+    public ParseTree tree;
 
     public final String filename;
 

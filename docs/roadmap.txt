@@ -1,6 +1,12 @@
 TODO:
 
-- finish UnitParser.java
+- first visitor declares vars, evals expressions,
+    adds imports, triggers imported units parsing,
+    marks nodes requiring second pass
+- second visitor
+    processes nodes marked: declares vars, evals expressions
+
++ finish UnitParser.java
 - class is the only reference type, arrays are copied, allocated from class
     storage, or global storage
 - dynamic arrays are allocated via C implementation.

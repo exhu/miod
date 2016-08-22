@@ -6,6 +6,7 @@ package org.miod.parser;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.antlr.v4.runtime.tree.ParseTree;
 import org.miod.program.CompilationUnit;
 import org.miod.program.symbol_table.DefaultSymbolTable;
 
@@ -68,5 +69,9 @@ public final class ParserContext {
         } else {
             throw new RuntimeException("Unit redefinition for " + unitName);
         }
+    }
+
+    public void putTree(String unitName, ParseTree tree) {
+        units.get(unitName).tree = tree;
     }
 }
