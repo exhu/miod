@@ -7,6 +7,7 @@ package org.miod.parser;
 import java.util.HashMap;
 import java.util.Map;
 import org.miod.program.CompilationUnit;
+import org.miod.program.symbol_table.DefaultSymbolTable;
 
 /**
  * Maintains all processed units, predefined directives, options etc.
@@ -18,6 +19,7 @@ public final class ParserContext {
     private final Map<String, CompilationUnit> units = new HashMap<>();
     private UnitParserProvider parserProvider;
     private ErrorListener errorListener = null;
+    private DefaultSymbolTable defSymbolTablel = new DefaultSymbolTable(null);
 
     /* Global defines are bad thing
     private Map<String, SymItem> globalDefines = new HashMap<>();
@@ -31,6 +33,11 @@ public final class ParserContext {
 
     public final void setErrorListener(ErrorListener lst) {
         errorListener = lst;
+        defSymbolTablel.setErrorListener(lst);
+    }
+
+    public final DefaultSymbolTable getDefaultSymbolTable() {
+        return defSymbolTablel;
     }
 
     public final ErrorListener getErrorListener() {
@@ -41,18 +48,25 @@ public final class ParserContext {
         this.parserProvider = provider;
     }
 
-    final public CompilationUnit getUnit(String name) {
-        return units.get(name);
-    }
-
     /// unitName = import directive argument e.g. miod::system
     /// check for null return value to handle failure to find the unit
-    public CompilationUnit parseUnit(String unitName) {
-        CompilationUnit requestedUnit = parserProvider.parseUnit(unitName);
+    public CompilationUnit getOrParseUnit(String unitName) {
+        CompilationUnit requestedUnit = units.get(unitName);
         if (requestedUnit != null) {
-            units.put(unitName, requestedUnit);
+            return requestedUnit;
+        } else {
+            parserProvider.parseUnit(unitName);
         }
-        
-        return requestedUnit;
+        // try again
+        return units.get(unitName);
+    }
+
+    /// used by CompilationUnit to register self
+    public void putUnit(String unitName, CompilationUnit unit) {
+        if (units.get(unitName) == null) {
+            units.put(unitName, unit);
+        } else {
+            throw new RuntimeException("Unit redefinition for " + unitName);
+        }
     }
 }

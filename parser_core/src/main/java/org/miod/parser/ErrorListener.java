@@ -12,7 +12,8 @@ import org.miod.program.errors.CompilerWarning;
  * @author yur
  */
 public interface ErrorListener {
-    
+
+    boolean hasErrors();
     void onError(CompilerError e);
     void onWarning(CompilerWarning w);
     /*

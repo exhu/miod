@@ -24,6 +24,16 @@ public final class ErrorReporter implements ErrorListener {
     }
 
     @Override
+    public boolean hasErrors() {
+        return errors.isEmpty() == false;
+    }
+
+    public void reset() {
+        errors.clear();
+        warnings.clear();
+    }
+
+    @Override
     public void onError(CompilerError e) {
         errors.add(e);
         if (stopAtFirstError)

@@ -12,5 +12,5 @@ import org.miod.program.CompilationUnit;
  */
 public interface UnitParserProvider {
     /// must check if this unit is already parsed
-    CompilationUnit parseUnit(String unitName);
+    void parseUnit(String unitName);
 }

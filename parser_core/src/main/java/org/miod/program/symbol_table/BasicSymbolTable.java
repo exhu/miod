@@ -23,6 +23,10 @@ public class BasicSymbolTable implements SymbolTable {
         this.errorListener = errorListener;
     }
 
+    public final void setErrorListener(ErrorListener listener) {
+        errorListener = listener;
+    }
+
     @Override
     final public SymbolTableItem get(String id) {
         return items.get(id);

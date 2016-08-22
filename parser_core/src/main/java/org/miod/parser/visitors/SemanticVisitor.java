@@ -38,11 +38,21 @@ public class SemanticVisitor extends MiodParserBaseVisitor<Object> {
         return res;
     }
 
+
+
     // TODO special case for stuct recursion in definition, e.g.
     // 1) type mystruct = struct parent: mystruct end_struct --
     // remember typename
     // 2) type myclass = class parent: myclass end_class
     // -- class type is mutable, so it's put into parent SymbolTable and
     // filled as parsing goes further.
+
+    @Override
+    public Object visitUnitHeader(MiodParser.UnitHeaderContext ctx) {        
+        unit = new CompilationUnit(context.getDefaultSymbolTable(), unitName,
+                0, 0, unitName, context.getErrorListener());        
+        context.putUnit(unitName, unit);
+        return super.visitUnitHeader(ctx); //To change body of generated methods, choose Tools | Templates.
+    }
 
 }
