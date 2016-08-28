@@ -9,6 +9,7 @@ import org.miod.parser.generated.MiodParser;
 import org.miod.parser.generated.MiodParserBaseVisitor;
 import org.miod.program.CompilationUnit;
 import org.miod.program.errors.CompileTimeExpressionExpected;
+import org.miod.program.values.NullValue;
 
 /**
  * First pass visitor. Gathers declarations, tries to evaluate certain
@@ -52,7 +53,13 @@ public class SemanticVisitor extends MiodParserBaseVisitor<Object> {
         unit = new CompilationUnit(context.getDefaultSymbolTable(), unitName,
                 0, 0, unitName, context.getErrorListener());        
         context.putUnit(unitName, unit);
-        return super.visitUnitHeader(ctx); //To change body of generated methods, choose Tools | Templates.
+        return super.visitUnitHeader(ctx);
     }
+
+    @Override
+    public Object visitLiteralNull(MiodParser.LiteralNullContext ctx) {
+        return NullValue.value;
+    }
+
 
 }

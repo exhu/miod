@@ -104,17 +104,17 @@ expr: literal #exprLiteral
     | BASE #exprBase
     ;
 
-literal: NULL
-    | INTEGER
-    | INT_OCTAL 
-    | INT_HEX
-    | INT_BIN
-    | FLOAT
-    | STRING
-    | RAW_STRING
-    | CHAR_STR
-    | TRUE
-    | FALSE
+literal: NULL   #literalNull
+    | INTEGER   #literalInteger
+    | INT_OCTAL #literalIntOctal
+    | INT_HEX   #literalIntHex
+    | INT_BIN   #literalIntBin
+    | FLOAT     #literalFloat
+    | STRING    #literalString
+    | RAW_STRING#literalRawString
+    | CHAR_STR  #literalCharStr
+    | TRUE      #literalTrue
+    | FALSE     #literalFalse
     ;
 
 
