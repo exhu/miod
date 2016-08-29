@@ -17,12 +17,11 @@ import java.util.logging.Logger;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.miod.generated.MiodLexer;
-import org.miod.generated.MiodParser;
 import org.miod.parser.visitors.SemanticResolverVisitor;
 import org.miod.parser.visitors.SemanticVisitor;
 import org.miod.program.errors.CompilerIOError;
 import org.miod.program.errors.UnitNotFoundError;
+import org.miod.parser.generated.*;
 
 /**
  * Top class to use. Called by ParserContext to resolve imports.

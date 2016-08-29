@@ -1,5 +1,6 @@
 TODO:
 
+- expression evaluation = node(type, value?)
 - first visitor declares vars, evals expressions,
     adds imports, triggers imported units parsing,
     marks nodes requiring second pass
