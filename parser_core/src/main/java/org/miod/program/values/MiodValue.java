@@ -11,7 +11,11 @@ import org.miod.program.types.MiodType;
  * @author yur
  */
 public abstract class MiodValue {
-    protected MiodType type;
+    protected final MiodType type;
+
+    final public MiodType getType() {
+        return type;
+    }
     public MiodValue(MiodType type) {
         this.type = type;
     }

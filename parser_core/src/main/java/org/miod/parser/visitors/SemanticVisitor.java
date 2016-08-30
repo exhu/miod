@@ -5,6 +5,7 @@
 package org.miod.parser.visitors;
 
 import org.miod.parser.ParserContext;
+import org.miod.parser.expr.ExprNodeData;
 import org.miod.parser.generated.MiodParser;
 import org.miod.parser.generated.MiodParserBaseVisitor;
 import org.miod.program.CompilationUnit;
@@ -17,7 +18,7 @@ import org.miod.program.values.NullValue;
  *
  * @author yur
  */
-public class SemanticVisitor extends MiodParserBaseVisitor<Object> {
+public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
 
     protected final ParserContext context;
     protected CompilationUnit unit;
@@ -29,8 +30,8 @@ public class SemanticVisitor extends MiodParserBaseVisitor<Object> {
     }
 
     @Override
-    public Object visitGlobalStaticIf(MiodParser.GlobalStaticIfContext ctx) {
-        Object res = visit(ctx.boolExpr());
+    public ExprNodeData visitGlobalStaticIf(MiodParser.GlobalStaticIfContext ctx) {
+        ExprNodeData res = visit(ctx.boolExpr());
         if (res == null) {
             context.getErrorListener().onError(new CompileTimeExpressionExpected());
         } else {
@@ -49,7 +50,7 @@ public class SemanticVisitor extends MiodParserBaseVisitor<Object> {
     // filled as parsing goes further.
 
     @Override
-    public Object visitUnitHeader(MiodParser.UnitHeaderContext ctx) {        
+    public ExprNodeData visitUnitHeader(MiodParser.UnitHeaderContext ctx) {
         unit = new CompilationUnit(context.getDefaultSymbolTable(), unitName,
                 0, 0, unitName, context.getErrorListener());        
         context.putUnit(unitName, unit);
@@ -57,8 +58,8 @@ public class SemanticVisitor extends MiodParserBaseVisitor<Object> {
     }
 
     @Override
-    public Object visitLiteralNull(MiodParser.LiteralNullContext ctx) {
-        return NullValue.value;
+    public ExprNodeData visitLiteralNull(MiodParser.LiteralNullContext ctx) {
+        return new ExprNodeData(NullValue.value);
     }
 
 
