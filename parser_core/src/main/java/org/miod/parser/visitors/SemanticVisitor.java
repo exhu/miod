@@ -19,6 +19,7 @@ import org.miod.program.values.NullValue;
  * @author yur
  */
 public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
+    protected final static ExprNodeData NULL_VALUE = new ExprNodeData(NullValue.value);
 
     protected final ParserContext context;
     protected CompilationUnit unit;
@@ -59,7 +60,7 @@ public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
 
     @Override
     public ExprNodeData visitLiteralNull(MiodParser.LiteralNullContext ctx) {
-        return new ExprNodeData(NullValue.value);
+        return NULL_VALUE;
     }
 
 
