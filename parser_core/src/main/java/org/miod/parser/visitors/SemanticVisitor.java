@@ -9,8 +9,12 @@ import org.miod.parser.expr.ExprNodeData;
 import org.miod.parser.generated.MiodParser;
 import org.miod.parser.generated.MiodParserBaseVisitor;
 import org.miod.program.CompilationUnit;
+import org.miod.program.errors.BooleanExprExpected;
 import org.miod.program.errors.CompileTimeExpressionExpected;
+import org.miod.program.types.ValueTypeId;
+import org.miod.program.values.BoolValue;
 import org.miod.program.values.NullValue;
+import org.miod.program.values.RuntimeValue;
 
 /**
  * First pass visitor. Gathers declarations, tries to evaluate certain
@@ -33,12 +37,21 @@ public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
     @Override
     public ExprNodeData visitGlobalStaticIf(MiodParser.GlobalStaticIfContext ctx) {
         ExprNodeData res = visit(ctx.boolExpr());
-        if (res == null) {
+        if (res == null || res.value == null || res.value instanceof RuntimeValue) {
             context.getErrorListener().onError(new CompileTimeExpressionExpected());
         } else {
             // TODO if true, visit(ctx.trueStmts), else ctx.falseStmts
+            if (res.value.getType().typeId == ValueTypeId.BOOL) {
+                if (((BoolValue)res.value).value == true) {
+                    return visit(ctx.trueStmts);
+                } else {
+                    return visit(ctx.falseStmts);
+                }
+            } else {
+                context.getErrorListener().onError(new BooleanExprExpected());
+            }
         }
-        return res;
+        return null;
     }
 
 

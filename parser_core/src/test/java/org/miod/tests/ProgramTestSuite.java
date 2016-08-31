@@ -12,7 +12,6 @@ import org.miod.program.symbol_table.SymbolVisibility;
 import org.miod.program.symbol_table.symbols.VarSymbol;
 import org.miod.program.types.PrimitiveType;
 import org.miod.program.types.MiodType;
-import org.miod.program.types.ValueTypeId;
 
 import org.testng.annotations.Test;
 import static org.testng.Assert.*;
@@ -38,7 +37,7 @@ public class ProgramTestSuite {
         myTab1.addImport(myTab2, true);
         myTab2.addImport(systemTab, false);
         myTab2.addImport(myTab3, false);
-        PrimitiveType btype = new PrimitiveType(ValueTypeId.INT32);
+        PrimitiveType btype = PrimitiveType.INT32;
         SymbolTableItem sym1 = newVar("sym1", btype);
         // the same name, to check name collision
         SymbolTableItem sym2 = newVar("sym1", btype);

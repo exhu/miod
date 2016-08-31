@@ -9,8 +9,12 @@ package org.miod.program.types;
  * @author yur
  */
 public final class PrimitiveType extends MiodType {
-    public PrimitiveType(ValueTypeId typeId) {
+    private PrimitiveType(ValueTypeId typeId) {
         super(typeId);
     }
+    
+    public static final PrimitiveType BOOL = new PrimitiveType(ValueTypeId.BOOL);
+    public static final PrimitiveType INT32 = new PrimitiveType(ValueTypeId.INT32);
+
 
 }
