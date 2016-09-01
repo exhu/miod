@@ -23,6 +23,10 @@ public final class ErrorReporter implements ErrorListener {
 
     }
 
+    public void setStopAtFirstError(boolean b) {
+        stopAtFirstError = b;
+    }
+
     @Override
     public boolean hasErrors() {
         return errors.isEmpty() == false;

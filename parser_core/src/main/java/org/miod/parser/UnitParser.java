@@ -7,6 +7,7 @@ package org.miod.parser;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashSet;
@@ -55,11 +56,17 @@ public final class UnitParser implements UnitParserProvider {
         if (unitPath == null) {
             errorListener.onError(new UnitNotFoundError(unitName));
         } else {
-            parseFile(unitName, unitPath, false);
+            parseFile(unitName, unitPath, true);
         }        
     }
 
-    public final void parseFile(String unitName, Path unitPath, boolean singlePass) {
+    public void parseFileFromPathString(String fn, boolean multiPass) {
+        final Path unitPath = FileSystems.getDefault().getPath(fn).toAbsolutePath();
+        final String unitName = pathsResolver.unitNameFromPath(unitPath);
+        parseFile(unitName, unitPath, multiPass);
+    }
+
+    public final void parseFile(String unitName, Path unitPath, boolean multiPass) {
         //final String unitName = pathsResolver.unitNameFromPath(unitPath);
         ParseTree tree;
         ParserErrorListener antlrErrorListener = new ParserErrorListener(this.errorListener);
@@ -91,7 +98,7 @@ public final class UnitParser implements UnitParserProvider {
 
         if (errorListener.hasErrors() == false) {
             context.putTree(unitName, tree);
-            if (singlePass == false) {
+            if (multiPass) {
                 // definition pass
                 SemanticResolverVisitor visitor2 = new SemanticResolverVisitor(unitName, context);
                 visitor2.visit(tree);

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.miod.parser.DefaultUnitsPathsResolver;
 import org.miod.parser.ErrorReporter;
+import org.miod.parser.UnitParser;
 import org.miod.program.symbol_table.DefaultSymbolTable;
 import org.miod.program.symbol_table.GlobalSymbolTable;
 import org.miod.program.symbol_table.SymbolDesc;
@@ -82,6 +83,17 @@ public class ProgramTestSuite {
         }
         */
         resolver.pathFromUnitName("mypkg::my");
+    }
+
+    @Test
+    public void staticIfTest() {
+        ErrorReporter reporter = new ErrorReporter();
+        reporter.setStopAtFirstError(true);
+        
+        List<String> stringPaths = new ArrayList<>();
+        stringPaths.add("test_data");
+        UnitParser parser = new UnitParser(stringPaths, reporter);
+        parser.parseFileFromPathString("test_data/pkg1/test0001.miod", false);
     }
 
     // TODO write type resolving tests
