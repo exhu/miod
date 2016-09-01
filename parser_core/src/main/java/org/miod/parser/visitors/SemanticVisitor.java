@@ -40,7 +40,6 @@ public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
         if (res == null || res.value == null || res.value instanceof RuntimeValue) {
             context.getErrorListener().onError(new CompileTimeExpressionExpected());
         } else {
-            // TODO if true, visit(ctx.trueStmts), else ctx.falseStmts
             if (res.value.getType().typeId == ValueTypeId.BOOL) {
                 if (((BoolValue)res.value).value == true) {
                     return visit(ctx.trueStmts);
@@ -53,8 +52,6 @@ public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
         }
         return null;
     }
-
-
 
     // TODO special case for stuct recursion in definition, e.g.
     // 1) type mystruct = struct parent: mystruct end_struct --
@@ -75,6 +72,4 @@ public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
     public ExprNodeData visitLiteralNull(MiodParser.LiteralNullContext ctx) {
         return NULL_VALUE;
     }
-
-
 }

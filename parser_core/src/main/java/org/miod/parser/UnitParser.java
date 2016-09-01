@@ -55,11 +55,11 @@ public final class UnitParser implements UnitParserProvider {
         if (unitPath == null) {
             errorListener.onError(new UnitNotFoundError(unitName));
         } else {
-            parseFile(unitName, unitPath);
+            parseFile(unitName, unitPath, false);
         }        
     }
 
-    public final void parseFile(String unitName, Path unitPath) {
+    public final void parseFile(String unitName, Path unitPath, boolean singlePass) {
         //final String unitName = pathsResolver.unitNameFromPath(unitPath);
         ParseTree tree;
         ParserErrorListener antlrErrorListener = new ParserErrorListener(this.errorListener);
@@ -91,9 +91,11 @@ public final class UnitParser implements UnitParserProvider {
 
         if (errorListener.hasErrors() == false) {
             context.putTree(unitName, tree);
-            // definition pass
-            SemanticResolverVisitor visitor2 = new SemanticResolverVisitor(unitName, context);
-            visitor2.visit(tree);
+            if (singlePass == false) {
+                // definition pass
+                SemanticResolverVisitor visitor2 = new SemanticResolverVisitor(unitName, context);
+                visitor2.visit(tree);
+            }
         }
     }
 }
