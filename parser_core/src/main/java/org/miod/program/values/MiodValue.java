@@ -16,6 +16,7 @@ public abstract class MiodValue {
     final public MiodType getType() {
         return type;
     }
+
     public MiodValue(MiodType type) {
         this.type = type;
     }

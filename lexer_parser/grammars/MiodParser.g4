@@ -92,7 +92,7 @@ expr: literal #exprLiteral
     | expr SHL expr #exprShl
     | expr SHR expr #exprShr
     | NOT expr #exprNot
-    | expr GREATER expr #exprGreater
+    | left=expr GREATER right=expr #exprGreater
     | expr LESS expr #exprLess
     | expr GREATER_EQ expr #exprGreaterEq
     | expr LESS_EQ expr #exprLessEq

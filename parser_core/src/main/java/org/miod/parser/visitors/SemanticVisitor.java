@@ -11,8 +11,11 @@ import org.miod.parser.generated.MiodParserBaseVisitor;
 import org.miod.program.CompilationUnit;
 import org.miod.program.errors.BooleanExprExpected;
 import org.miod.program.errors.CompileTimeExpressionExpected;
+import org.miod.program.errors.OperationNotSupported;
+import org.miod.program.errors.TypesMismatch;
 import org.miod.program.types.ValueTypeId;
 import org.miod.program.values.BoolValue;
+import org.miod.program.values.IntegerValue;
 import org.miod.program.values.NullValue;
 import org.miod.program.values.RuntimeValue;
 
@@ -24,6 +27,8 @@ import org.miod.program.values.RuntimeValue;
  */
 public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
     protected final static ExprNodeData NULL_VALUE = new ExprNodeData(NullValue.value);
+    protected final static ExprNodeData TRUE_VALUE = new ExprNodeData(BoolValue.TRUE);
+    protected final static ExprNodeData FALSE_VALUE = new ExprNodeData(BoolValue.FALSE);
 
     protected final ParserContext context;
     protected CompilationUnit unit;
@@ -72,4 +77,47 @@ public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
     public ExprNodeData visitLiteralNull(MiodParser.LiteralNullContext ctx) {
         return NULL_VALUE;
     }
+
+    @Override
+    public ExprNodeData visitLiteralFalse(MiodParser.LiteralFalseContext ctx) {
+        return FALSE_VALUE;
+    }
+
+    @Override
+    public ExprNodeData visitLiteralTrue(MiodParser.LiteralTrueContext ctx) {
+        return TRUE_VALUE;
+    }
+
+    @Override
+    public ExprNodeData visitLiteralInteger(MiodParser.LiteralIntegerContext ctx) {
+        return new ExprNodeData(new IntegerValue(Long.parseLong(ctx.INTEGER().getText())));
+    }
+
+    @Override
+    public ExprNodeData visitExprLiteral(MiodParser.ExprLiteralContext ctx) {
+        return visit(ctx.literal());
+    }
+
+    @Override
+    public ExprNodeData visitExprGreater(MiodParser.ExprGreaterContext ctx) {
+        ExprNodeData left = visit(ctx.left);
+        ExprNodeData right = visit(ctx.right);
+        if (left.value.getType() == right.value.getType()) {
+            if (left.value instanceof IntegerValue) {
+                IntegerValue a = (IntegerValue)left.value;
+                IntegerValue b = (IntegerValue)right.value;
+                if (a.value > b.value)
+                    return TRUE_VALUE;
+                return FALSE_VALUE;
+            } else {
+                context.getErrorListener().onError(new OperationNotSupported());
+            } 
+        } else {
+            context.getErrorListener().onError(new TypesMismatch());
+        }
+        return null;
+    }
+
+    
+
 }

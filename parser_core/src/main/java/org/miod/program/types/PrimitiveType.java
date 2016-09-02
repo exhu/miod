@@ -15,6 +15,13 @@ public final class PrimitiveType extends MiodType {
     
     public static final PrimitiveType BOOL = new PrimitiveType(ValueTypeId.BOOL);
     public static final PrimitiveType INT32 = new PrimitiveType(ValueTypeId.INT32);
+    public static final PrimitiveType INT64 = new PrimitiveType(ValueTypeId.INT64);
 
 
+    public static PrimitiveType typeFromInteger(long v) {
+        if (v >= Integer.MIN_VALUE && v <= Integer.MAX_VALUE) {
+            return INT32;
+        }
+        return INT64;
+    }
 }
