@@ -22,7 +22,7 @@ import org.miod.program.values.RuntimeValue;
 /**
  * First pass visitor. Gathers declarations, tries to evaluate certain
  * expressions.
- *
+ * TODO deprecate ExprNodeData, use MiodValue directly.
  * @author yur
  */
 public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
