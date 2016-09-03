@@ -11,9 +11,9 @@ import org.miod.program.types.NullType;
  * @author yur
  */
 public final class NullValue extends MiodValue {
-    public static final NullValue value = new NullValue();
+    public static final NullValue VALUE = new NullValue();
     private NullValue() {
-        super(NullType.value);
+        super(NullType.VALUE);
     }
 
 }

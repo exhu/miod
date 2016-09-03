@@ -8,10 +8,10 @@ package org.miod.program.types;
  *
  * @author yur
  */
-public class TypeSystem {
+public final class TypeSystem {
 
     // TODO change to conversion
-    boolean isCompatible(MiodType a, MiodType b) {
+    static boolean isCompatible(MiodType a, MiodType b) {
         return false;
     }
 

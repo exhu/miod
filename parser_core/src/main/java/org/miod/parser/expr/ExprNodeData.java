@@ -10,6 +10,7 @@ import org.miod.program.values.MiodValue;
  *
  * @author yur
  */
+@Deprecated
 public final class ExprNodeData {
     /// Can be null for the first pass, e.g. yet unknown identifiers,
     /// error if null for the second pass.

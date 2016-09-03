@@ -16,6 +16,7 @@ import org.miod.program.errors.TypesMismatch;
 import org.miod.program.types.ValueTypeId;
 import org.miod.program.values.BoolValue;
 import org.miod.program.values.IntegerValue;
+import org.miod.program.values.MiodValue;
 import org.miod.program.values.NullValue;
 import org.miod.program.values.RuntimeValue;
 
@@ -25,11 +26,7 @@ import org.miod.program.values.RuntimeValue;
  * TODO deprecate ExprNodeData, use MiodValue directly.
  * @author yur
  */
-public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
-    protected final static ExprNodeData NULL_VALUE = new ExprNodeData(NullValue.value);
-    protected final static ExprNodeData TRUE_VALUE = new ExprNodeData(BoolValue.TRUE);
-    protected final static ExprNodeData FALSE_VALUE = new ExprNodeData(BoolValue.FALSE);
-
+public class SemanticVisitor extends MiodParserBaseVisitor<MiodValue> {
     protected final ParserContext context;
     protected CompilationUnit unit;
     protected final String unitName;
@@ -40,13 +37,13 @@ public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
     }
 
     @Override
-    public ExprNodeData visitGlobalStaticIf(MiodParser.GlobalStaticIfContext ctx) {
-        ExprNodeData res = visit(ctx.boolExpr());
-        if (res == null || res.value == null || res.value instanceof RuntimeValue) {
+    public MiodValue visitGlobalStaticIf(MiodParser.GlobalStaticIfContext ctx) {
+        MiodValue res = visit(ctx.boolExpr());
+        if (res == null || res instanceof RuntimeValue) {
             context.getErrorListener().onError(new CompileTimeExpressionExpected());
         } else {
-            if (res.value.getType().typeId == ValueTypeId.BOOL) {
-                if (((BoolValue)res.value).value == true) {
+            if (res.getType().typeId == ValueTypeId.BOOL) {
+                if (((BoolValue)res).value == true) {
                     return visit(ctx.trueStmts);
                 } else {
                     return visit(ctx.falseStmts);
@@ -66,7 +63,7 @@ public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
     // filled as parsing goes further.
 
     @Override
-    public ExprNodeData visitUnitHeader(MiodParser.UnitHeaderContext ctx) {
+    public MiodValue visitUnitHeader(MiodParser.UnitHeaderContext ctx) {
         unit = new CompilationUnit(context.getDefaultSymbolTable(), unitName,
                 0, 0, unitName, context.getErrorListener());        
         context.putUnit(unitName, unit);
@@ -74,46 +71,50 @@ public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
     }
 
     @Override
-    public ExprNodeData visitLiteralNull(MiodParser.LiteralNullContext ctx) {
-        return NULL_VALUE;
+    public MiodValue visitLiteralNull(MiodParser.LiteralNullContext ctx) {
+        return NullValue.VALUE;
     }
 
     @Override
-    public ExprNodeData visitLiteralFalse(MiodParser.LiteralFalseContext ctx) {
-        return FALSE_VALUE;
+    public MiodValue visitLiteralFalse(MiodParser.LiteralFalseContext ctx) {
+        return BoolValue.FALSE;
     }
 
     @Override
-    public ExprNodeData visitLiteralTrue(MiodParser.LiteralTrueContext ctx) {
-        return TRUE_VALUE;
+    public MiodValue visitLiteralTrue(MiodParser.LiteralTrueContext ctx) {
+        return BoolValue.TRUE;
     }
 
     @Override
-    public ExprNodeData visitLiteralInteger(MiodParser.LiteralIntegerContext ctx) {
-        return new ExprNodeData(new IntegerValue(Long.parseLong(ctx.INTEGER().getText())));
+    public MiodValue visitLiteralInteger(MiodParser.LiteralIntegerContext ctx) {
+        return new IntegerValue(Long.parseLong(ctx.INTEGER().getText()));
     }
 
     @Override
-    public ExprNodeData visitExprLiteral(MiodParser.ExprLiteralContext ctx) {
+    public MiodValue visitExprLiteral(MiodParser.ExprLiteralContext ctx) {
         return visit(ctx.literal());
     }
 
     @Override
-    public ExprNodeData visitExprGreater(MiodParser.ExprGreaterContext ctx) {
-        ExprNodeData left = visit(ctx.left);
-        ExprNodeData right = visit(ctx.right);
-        if (left.value.getType() == right.value.getType()) {
-            if (left.value instanceof IntegerValue) {
-                IntegerValue a = (IntegerValue)left.value;
-                IntegerValue b = (IntegerValue)right.value;
-                if (a.value > b.value)
-                    return TRUE_VALUE;
-                return FALSE_VALUE;
+    public MiodValue visitExprGreater(MiodParser.ExprGreaterContext ctx) {
+        MiodValue left = visit(ctx.left);
+        MiodValue right = visit(ctx.right);
+        if (left != null && right != null && !(left instanceof RuntimeValue)
+                && !(right instanceof RuntimeValue)) {
+            // TODO check compatibility, move comparison to type class
+            if (left.getType() == right.getType()) {
+                if (left instanceof IntegerValue) {
+                    IntegerValue a = (IntegerValue)left;
+                    IntegerValue b = (IntegerValue)right;
+                    if (a.value > b.value)
+                        return BoolValue.TRUE;
+                    return BoolValue.FALSE;
+                } else {
+                    context.getErrorListener().onError(new OperationNotSupported());
+                }
             } else {
-                context.getErrorListener().onError(new OperationNotSupported());
-            } 
-        } else {
-            context.getErrorListener().onError(new TypesMismatch());
+                context.getErrorListener().onError(new TypesMismatch());
+            }
         }
         return null;
     }

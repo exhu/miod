@@ -9,7 +9,7 @@ package org.miod.program.types;
  * @author yur
  */
 public final class NullType extends MiodType {
-    public static final NullType value = new NullType();
+    public static final NullType VALUE = new NullType();
     private NullType() {
         super(ValueTypeId.NULL);
     }
