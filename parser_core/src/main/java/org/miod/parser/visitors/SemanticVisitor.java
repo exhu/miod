@@ -13,6 +13,7 @@ import org.miod.program.errors.BooleanExprExpected;
 import org.miod.program.errors.CompileTimeExpressionExpected;
 import org.miod.program.errors.OperationNotSupported;
 import org.miod.program.errors.TypesMismatch;
+import org.miod.program.types.PrimitiveType;
 import org.miod.program.types.ValueTypeId;
 import org.miod.program.values.BoolValue;
 import org.miod.program.values.IntegerValue;
@@ -101,8 +102,8 @@ public class SemanticVisitor extends MiodParserBaseVisitor<MiodValue> {
         MiodValue right = visit(ctx.right);
         if (left != null && right != null && !(left instanceof RuntimeValue)
                 && !(right instanceof RuntimeValue)) {
-            // TODO check compatibility, move comparison to type class
-            if (left.getType() == right.getType()) {
+            // TODO boolean values
+            if (PrimitiveType.compatible(left.getType().typeId, right.getType().typeId)) {
                 if (left instanceof IntegerValue) {
                     IntegerValue a = (IntegerValue)left;
                     IntegerValue b = (IntegerValue)right;

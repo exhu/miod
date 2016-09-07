@@ -1,6 +1,8 @@
 TODO:
 
 - expression evaluation = node(type, value?)
+    - if values then check compatibility
+
 - first visitor declares vars, evals expressions,
     adds imports, triggers imported units parsing,
     marks nodes requiring second pass
