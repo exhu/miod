@@ -16,6 +16,7 @@ import org.miod.program.errors.TypesMismatch;
 import org.miod.program.types.PrimitiveType;
 import org.miod.program.types.ValueTypeId;
 import org.miod.program.values.BoolValue;
+import org.miod.program.values.GreaterThanOp;
 import org.miod.program.values.IntegerValue;
 import org.miod.program.values.MiodValue;
 import org.miod.program.values.NullValue;
@@ -101,15 +102,15 @@ public class SemanticVisitor extends MiodParserBaseVisitor<MiodValue> {
         MiodValue left = visit(ctx.left);
         MiodValue right = visit(ctx.right);
         if (left != null && right != null && !(left instanceof RuntimeValue)
-                && !(right instanceof RuntimeValue)) {
-            // TODO boolean values
+                && !(right instanceof RuntimeValue)) {            
             if (PrimitiveType.compatible(left.getType().typeId, right.getType().typeId)) {
-                if (left instanceof IntegerValue) {
-                    IntegerValue a = (IntegerValue)left;
-                    IntegerValue b = (IntegerValue)right;
-                    if (a.value > b.value)
+                if (left instanceof GreaterThanOp) {
+                    GreaterThanOp op = (GreaterThanOp)left;
+                
+                    if (op.greaterThan((GreaterThanOp)right))
                         return BoolValue.TRUE;
-                    return BoolValue.FALSE;
+                    else
+                        return BoolValue.FALSE;
                 } else {
                     context.getErrorListener().onError(new OperationNotSupported());
                 }
@@ -119,7 +120,4 @@ public class SemanticVisitor extends MiodParserBaseVisitor<MiodValue> {
         }
         return null;
     }
-
-    
-
 }

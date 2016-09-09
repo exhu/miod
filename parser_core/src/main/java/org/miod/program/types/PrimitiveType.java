@@ -45,13 +45,12 @@ public final class PrimitiveType extends MiodType {
     }
 
     public static boolean compatible(ValueTypeId a, ValueTypeId b) {
+        if (a == b)
+            return true;
+
         if (matchType(a, SIGNED_TYPES) && matchType(b, SIGNED_TYPES))
             return true;
-        if (matchType(a, UNSIGNED_TYPES) && matchType(b, UNSIGNED_TYPES))
-            return true;
-        if (a == ValueTypeId.FLOAT && b == ValueTypeId.FLOAT)
-            return true;
-        return a == ValueTypeId.DOUBLE && b == ValueTypeId.DOUBLE;
+        return matchType(a, UNSIGNED_TYPES) && matchType(b, UNSIGNED_TYPES);
     }
 
     public static ValueTypeId promote(ValueTypeId a, ValueTypeId b) {
