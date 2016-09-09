@@ -10,7 +10,7 @@ import org.miod.program.types.PrimitiveType;
  *
  * @author yur
  */
-public final class IntegerValue extends MiodValue implements GreaterThanOp {
+public final class IntegerValue extends MiodValue implements LessThanOp {
     public final long value;
     public IntegerValue(long v) {
         super(PrimitiveType.typeFromInteger(v));
@@ -18,11 +18,14 @@ public final class IntegerValue extends MiodValue implements GreaterThanOp {
     }
 
     @Override
-    public boolean greaterThan(GreaterThanOp other) {
+    public boolean lessThan(LessThanOp other) {
         IntegerValue o = (IntegerValue)other;
-        return value > o.value;
+        return value < o.value;
     }
 
-
-
+    @Override
+    public boolean lessThanOrEqual(LessThanOp other) {
+        IntegerValue o = (IntegerValue)other;
+        return value <= o.value;
+    }
 }

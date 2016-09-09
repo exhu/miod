@@ -16,11 +16,11 @@ import org.miod.program.errors.TypesMismatch;
 import org.miod.program.types.PrimitiveType;
 import org.miod.program.types.ValueTypeId;
 import org.miod.program.values.BoolValue;
-import org.miod.program.values.GreaterThanOp;
 import org.miod.program.values.IntegerValue;
 import org.miod.program.values.MiodValue;
 import org.miod.program.values.NullValue;
 import org.miod.program.values.RuntimeValue;
+import org.miod.program.values.LessThanOp;
 
 /**
  * First pass visitor. Gathers declarations, tries to evaluate certain
@@ -104,10 +104,10 @@ public class SemanticVisitor extends MiodParserBaseVisitor<MiodValue> {
         if (left != null && right != null && !(left instanceof RuntimeValue)
                 && !(right instanceof RuntimeValue)) {            
             if (PrimitiveType.compatible(left.getType().typeId, right.getType().typeId)) {
-                if (left instanceof GreaterThanOp) {
-                    GreaterThanOp op = (GreaterThanOp)left;
+                if (left instanceof LessThanOp) {
+                    LessThanOp op = (LessThanOp)left;
                 
-                    if (op.greaterThan((GreaterThanOp)right))
+                    if (!op.lessThanOrEqual((LessThanOp)right))
                         return BoolValue.TRUE;
                     else
                         return BoolValue.FALSE;

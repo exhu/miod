@@ -8,6 +8,7 @@ package org.miod.program.values;
  *
  * @author yur
  */
-public interface GreaterThanOp {
-    boolean greaterThan(GreaterThanOp other);
+public interface LessThanOp {
+    boolean lessThan(LessThanOp other);
+    boolean lessThanOrEqual(LessThanOp other);
 }
