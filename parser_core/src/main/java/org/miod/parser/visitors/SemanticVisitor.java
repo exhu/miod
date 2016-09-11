@@ -5,7 +5,6 @@
 package org.miod.parser.visitors;
 
 import org.miod.parser.ParserContext;
-import org.miod.parser.expr.ExprNodeData;
 import org.miod.parser.generated.MiodParser;
 import org.miod.parser.generated.MiodParserBaseVisitor;
 import org.miod.program.CompilationUnit;
@@ -16,6 +15,7 @@ import org.miod.program.errors.TypesMismatch;
 import org.miod.program.types.PrimitiveType;
 import org.miod.program.types.ValueTypeId;
 import org.miod.program.values.BoolValue;
+import org.miod.program.values.EqualOp;
 import org.miod.program.values.IntegerValue;
 import org.miod.program.values.MiodValue;
 import org.miod.program.values.NullValue;
@@ -97,27 +97,54 @@ public class SemanticVisitor extends MiodParserBaseVisitor<MiodValue> {
         return visit(ctx.literal());
     }
 
-    @Override
-    public MiodValue visitExprGreater(MiodParser.ExprGreaterContext ctx) {
-        MiodValue left = visit(ctx.left);
-        MiodValue right = visit(ctx.right);
+    private boolean compatibleValues(MiodValue left, MiodValue right) {
         if (left != null && right != null && !(left instanceof RuntimeValue)
-                && !(right instanceof RuntimeValue)) {            
+                && !(right instanceof RuntimeValue)) {
             if (PrimitiveType.compatible(left.getType().typeId, right.getType().typeId)) {
-                if (left instanceof LessThanOp) {
-                    LessThanOp op = (LessThanOp)left;
-                
-                    if (!op.lessThanOrEqual((LessThanOp)right))
-                        return BoolValue.TRUE;
-                    else
-                        return BoolValue.FALSE;
-                } else {
-                    context.getErrorListener().onError(new OperationNotSupported());
-                }
+                return true;
             } else {
                 context.getErrorListener().onError(new TypesMismatch());
             }
         }
+        return false;
+    }
+
+    @Override
+    public MiodValue visitExprGreater(MiodParser.ExprGreaterContext ctx) {
+        MiodValue left = visit(ctx.left);
+        MiodValue right = visit(ctx.right);
+        if (compatibleValues(left, right)) {
+            if(left instanceof LessThanOp) {
+                LessThanOp op = (LessThanOp)left;
+                if (!op.lessThanOrEqual((LessThanOp)right))
+                    return BoolValue.TRUE;
+                else
+                    return BoolValue.FALSE;
+            } else {
+                context.getErrorListener().onError(new OperationNotSupported());
+            }
+        }
         return null;
     }
+
+    @Override
+    public MiodValue visitExprEquals(MiodParser.ExprEqualsContext ctx) {
+        MiodValue left = visit(ctx.left);
+        MiodValue right = visit(ctx.right);
+        if (compatibleValues(left, right)) {
+            if (left instanceof EqualOp) {
+                EqualOp op = (EqualOp)left;
+                if (op.equal((EqualOp)right)) {
+                    return BoolValue.TRUE;
+                } else {
+                    return BoolValue.FALSE;
+                }
+            } else {
+                context.getErrorListener().onError(new OperationNotSupported());
+            }
+        }
+        return null;
+    }
+
+
 }

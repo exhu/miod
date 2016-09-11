@@ -93,11 +93,11 @@ expr: literal #exprLiteral
     | expr SHR expr #exprShr
     | NOT expr #exprNot
     | left=expr GREATER right=expr #exprGreater
-    | expr LESS expr #exprLess
-    | expr GREATER_EQ expr #exprGreaterEq
-    | expr LESS_EQ expr #exprLessEq
-    | expr EQUALS expr #exprEquals
-    | expr NOT_EQ expr #exprNotEq
+    | left=expr LESS right=expr #exprLess
+    | left=expr GREATER_EQ right=expr #exprGreaterEq
+    | left=expr LESS_EQ right=expr #exprLessEq
+    | left=expr EQUALS right=expr #exprEquals
+    | left=expr NOT_EQ right=expr #exprNotEq
     | expr AND expr #exprAnd
     | expr OR expr #exprOr
     | LITERAL (typeArgsOpen (NSTRING|NWSTRING) typeArgsClose)? OPEN_PAREN expr CLOSE_PAREN #exprLiteralOper

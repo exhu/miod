@@ -10,7 +10,7 @@ import org.miod.program.types.PrimitiveType;
  *
  * @author yur
  */
-public final class IntegerValue extends MiodValue implements LessThanOp {
+public final class IntegerValue extends MiodValue implements LessThanOp, EqualOp {
     public final long value;
     public IntegerValue(long v) {
         super(PrimitiveType.typeFromInteger(v));
@@ -28,4 +28,11 @@ public final class IntegerValue extends MiodValue implements LessThanOp {
         IntegerValue o = (IntegerValue)other;
         return value <= o.value;
     }
+
+    @Override
+    public boolean equal(EqualOp other) {
+        return value == ((IntegerValue)other).value;
+    }
+
+
 }
