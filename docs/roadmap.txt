@@ -1,6 +1,8 @@
 TODO:
 
 - expression evaluation = node(type, value?)
+    - fix RuntimeValue expressions, it throws OperationNotSupported even if types
+    do support that operation but the value is of RuntimeValue
     - if values then check compatibility
 
 - first visitor declares vars, evals expressions,
