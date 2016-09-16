@@ -57,13 +57,6 @@ public class SemanticVisitor extends MiodParserBaseVisitor<MiodValue> {
         return null;
     }
 
-    // TODO special case for stuct recursion in definition, e.g.
-    // 1) type mystruct = struct parent: mystruct end_struct --
-    // remember typename
-    // 2) type myclass = class parent: myclass end_class
-    // -- class type is mutable, so it's put into parent SymbolTable and
-    // filled as parsing goes further.
-
     @Override
     public MiodValue visitUnitHeader(MiodParser.UnitHeaderContext ctx) {
         unit = new CompilationUnit(context.getDefaultSymbolTable(), unitName,
@@ -109,14 +102,11 @@ public class SemanticVisitor extends MiodParserBaseVisitor<MiodValue> {
         return false;
     }
 
-    @Override
-    public MiodValue visitExprGreater(MiodParser.ExprGreaterContext ctx) {
-        MiodValue left = visit(ctx.left);
-        MiodValue right = visit(ctx.right);
+    private MiodValue exprLessOrEqual(MiodValue left, MiodValue right) {
         if (compatibleValues(left, right)) {
             if(left instanceof LessThanOp) {
                 LessThanOp op = (LessThanOp)left;
-                if (!op.lessThanOrEqual((LessThanOp)right))
+                if (op.lessThanOrEqual((LessThanOp)right))
                     return BoolValue.TRUE;
                 else
                     return BoolValue.FALSE;
@@ -127,10 +117,22 @@ public class SemanticVisitor extends MiodParserBaseVisitor<MiodValue> {
         return null;
     }
 
-    @Override
-    public MiodValue visitExprEquals(MiodParser.ExprEqualsContext ctx) {
-        MiodValue left = visit(ctx.left);
-        MiodValue right = visit(ctx.right);
+    private MiodValue exprLess(MiodValue left, MiodValue right) {
+        if (compatibleValues(left, right)) {
+            if(left instanceof LessThanOp) {
+                LessThanOp op = (LessThanOp)left;
+                if (op.lessThan((LessThanOp)right))
+                    return BoolValue.TRUE;
+                else
+                    return BoolValue.FALSE;
+            } else {
+                context.getErrorListener().onError(new OperationNotSupported());
+            }
+        }
+        return null;
+    }
+
+    private MiodValue exprEq(MiodValue left, MiodValue right) {
         if (compatibleValues(left, right)) {
             if (left instanceof EqualOp) {
                 EqualOp op = (EqualOp)left;
@@ -143,8 +145,64 @@ public class SemanticVisitor extends MiodParserBaseVisitor<MiodValue> {
                 context.getErrorListener().onError(new OperationNotSupported());
             }
         }
+
         return null;
     }
 
+    private static MiodValue invertBool(MiodValue v) {
+        if (v == BoolValue.TRUE)
+            return BoolValue.FALSE;
+        else if (v == BoolValue.FALSE)
+            return BoolValue.TRUE;
+        return v;
+    }
 
+    @Override
+    public MiodValue visitExprGreater(MiodParser.ExprGreaterContext ctx) {
+        MiodValue left = visit(ctx.left);
+        MiodValue right = visit(ctx.right);
+        return invertBool(exprLessOrEqual(left, right));
+    }
+
+    @Override
+    public MiodValue visitExprLess(MiodParser.ExprLessContext ctx) {
+        MiodValue left = visit(ctx.left);
+        MiodValue right = visit(ctx.right);
+        return exprLess(left, right);
+    }
+
+    @Override
+    public MiodValue visitExprGreaterEq(MiodParser.ExprGreaterEqContext ctx) {
+        MiodValue left = visit(ctx.left);
+        MiodValue right = visit(ctx.right);
+        return exprLessOrEqual(right, left);
+    }
+
+    @Override
+    public MiodValue visitExprLessEq(MiodParser.ExprLessEqContext ctx) {
+        MiodValue left = visit(ctx.left);
+        MiodValue right = visit(ctx.right);
+        return exprLessOrEqual(left, right);
+    }
+
+    @Override
+    public MiodValue visitExprEquals(MiodParser.ExprEqualsContext ctx) {
+        MiodValue left = visit(ctx.left);
+        MiodValue right = visit(ctx.right);        
+        return exprEq(left, right);
+    }
+
+    @Override
+    public MiodValue visitExprNotEq(MiodParser.ExprNotEqContext ctx) {
+        MiodValue left = visit(ctx.left);
+        MiodValue right = visit(ctx.right);
+        return invertBool(exprEq(left, right));
+    }
+
+    // TODO special case for stuct recursion in definition, e.g.
+    // 1) type mystruct = struct parent: mystruct end_struct --
+    // remember typename
+    // 2) type myclass = class parent: myclass end_class
+    // -- class type is mutable, so it's put into parent SymbolTable and
+    // filled as parsing goes further.
 }
