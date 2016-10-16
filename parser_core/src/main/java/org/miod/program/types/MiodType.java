@@ -29,4 +29,12 @@ public abstract class MiodType {
     MiodType promote(MiodType other) {
         return this;
     }
+
+    public boolean supportsEqualOp() {
+        return false;
+    }
+    
+    boolean supportsLessThanOp() {
+        return false;
+    }
 }

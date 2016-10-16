@@ -238,3 +238,15 @@ Forward declarations take all arguments, annotations etc. If forward declaration
 is used then the implementation must not specify anything, only proc ... end_proc
 
 
+-=-=-=-=-
+
+type
+    - supported operations
+    - supported conversions
+        - explicit
+        - implicit
+        - implicit with value
+
+value
+    - type
+    - data
