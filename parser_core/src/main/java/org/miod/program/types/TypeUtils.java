@@ -4,6 +4,8 @@
  */
 package org.miod.program.types;
 
+import java.util.HashSet;
+import java.util.Set;
 import static org.miod.program.types.PrimitiveType.CARDINAL;
 import static org.miod.program.types.PrimitiveType.INT32;
 import static org.miod.program.types.PrimitiveType.INT64;
@@ -41,7 +43,7 @@ public final class TypeUtils {
         return false;
     }
 
-    public static boolean compatible(ValueTypeId a, ValueTypeId b) {
+    public static boolean comparable(ValueTypeId a, ValueTypeId b) {
         if (a == b)
             return true;
 

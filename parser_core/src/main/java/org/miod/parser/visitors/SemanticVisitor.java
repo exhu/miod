@@ -90,10 +90,10 @@ public class SemanticVisitor extends MiodParserBaseVisitor<MiodValue> {
         return visit(ctx.literal());
     }
 
-    private boolean compatibleValues(MiodValue left, MiodValue right) {
+    private boolean comparableValues(MiodValue left, MiodValue right) {
         if (left != null && right != null && !(left instanceof RuntimeValue)
                 && !(right instanceof RuntimeValue)) {
-            if (TypeUtils.compatible(left.getType().typeId, right.getType().typeId)) {
+            if (TypeUtils.comparable(left.getType().typeId, right.getType().typeId)) {
                 return true;
             } else {
                 context.getErrorListener().onError(new TypesMismatch());
@@ -103,7 +103,7 @@ public class SemanticVisitor extends MiodParserBaseVisitor<MiodValue> {
     }
 
     private MiodValue exprLessOrEqual(MiodValue left, MiodValue right) {
-        if (compatibleValues(left, right)) {
+        if (comparableValues(left, right)) {
             if(left instanceof LessThanOp) {
                 LessThanOp op = (LessThanOp)left;
                 if (op.lessThanOrEqual((LessThanOp)right))
@@ -118,7 +118,7 @@ public class SemanticVisitor extends MiodParserBaseVisitor<MiodValue> {
     }
 
     private MiodValue exprLess(MiodValue left, MiodValue right) {
-        if (compatibleValues(left, right)) {
+        if (comparableValues(left, right)) {
             if(left instanceof LessThanOp) {
                 LessThanOp op = (LessThanOp)left;
                 if (op.lessThan((LessThanOp)right))
@@ -133,7 +133,7 @@ public class SemanticVisitor extends MiodParserBaseVisitor<MiodValue> {
     }
 
     private MiodValue exprEq(MiodValue left, MiodValue right) {
-        if (compatibleValues(left, right)) {
+        if (comparableValues(left, right)) {
             if (left instanceof EqualOp) {
                 EqualOp op = (EqualOp)left;
                 if (op.equal((EqualOp)right)) {
