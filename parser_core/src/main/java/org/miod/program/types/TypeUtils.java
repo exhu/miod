@@ -4,11 +4,11 @@
  */
 package org.miod.program.types;
 
-import java.util.HashSet;
-import java.util.Set;
 import static org.miod.program.types.PrimitiveType.CARDINAL;
 import static org.miod.program.types.PrimitiveType.INT32;
 import static org.miod.program.types.PrimitiveType.INT64;
+import static org.miod.program.types.PrimitiveType.UINT64;
+
 
 /**
  *
@@ -23,7 +23,9 @@ public final class TypeUtils {
                 return CARDINAL;
             if (v >= Integer.MIN_VALUE)
                 return INT32;
-        }
+        } else if (v > Long.MAX_VALUE)
+            return UINT64;
+
         return INT64;
     }
 

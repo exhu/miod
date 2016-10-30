@@ -97,4 +97,8 @@ public class ProgramTestSuite {
     }
 
     // TODO write type resolving tests
+    @Test
+    public void constExpressionEvalTest() {
+        // TODO comparable, int/uint/cardinal tests etc.
+    }
 }
