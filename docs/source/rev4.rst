@@ -59,6 +59,9 @@ Program entry point is the proc 'main' in the first specified unit.
 All unit definitions obey current visibility rule -- *private*, *protected*,
 *public* -- specified by the respective statements.
 
+*protected* procs and methods can be called when compiler option is enabled in
+order to support writing unit tests.
+
 The rest of the unit is the types, conts, aliases, procs block.
 
 The unit can be an ordinary compilation unit, a generic unit, and a generic
