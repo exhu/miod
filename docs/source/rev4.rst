@@ -587,21 +587,21 @@ then one should create two functions, e.g.
 ::
 
     # function sets 'valid' to true on success
-    proc parseNumber(s: string, valid: var bool): int
+    proc intFromString(s: string, valid: var bool): int
 
     # function aborts program execution on wrong number format in the string
-    proc parseNumberAbort(s: string): int
+    proc intFromStringAbort(s: string): int
 
 
 A more common way can be so that the function returns a boolean flag:
 
 ::
 
-    proc parseNumber(s: string, out: var int): bool
-    proc openFile(fn: string, out: var File, out: var FileError): bool
+    proc parseIntFromString(out: var int, s: string): bool
+    proc openFile(out: var File, out: var FileError, fn: string): bool
 
     # convenience function, aborts program on error
-    proc openFileAbort(fn: string): File
+    proc fileOpenAbort(fn: string): File
 
 Error info is lightweight and thus implemented as value objects (structs):
 

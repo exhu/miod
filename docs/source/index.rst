@@ -20,6 +20,7 @@ Contents:
    codegen
    implementation
    c_oop
+   coding
 
 
 Indices and tables
