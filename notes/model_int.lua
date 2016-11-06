@@ -6,7 +6,7 @@ function M.new_int_type(bits, sign)
     return {bits = bits, sign = sign}
 end
 
-M.intTypes = {
+M.int_types = {
     int8 = M.new_int_type(8, true),
     int16 = M.new_int_type(16, true),
     int32 = M.new_int_type(32, true),
@@ -20,17 +20,20 @@ M.intTypes = {
 
 function M.is_comparable(a, b)
     if a.sign == b.sign then return true end
-    if a == M.intTypes.cardinal or b == M.intTypes.cardinal then
+    if a == M.int_types.cardinal or b == M.int_types.cardinal then
         return true
     end
 
     return false
 end
 
-pp(M.intTypes)
+pp(M.int_types)
 
-assert(M.is_comparable(M.intTypes.int8, M.intTypes.uint32) == false)
-assert(M.is_comparable(M.intTypes.int8, M.intTypes.cardinal))
-assert(M.is_comparable(M.intTypes.int8, M.intTypes.int32))
-assert(M.is_comparable(M.intTypes.int32, M.intTypes.cardinal))
+assert(M.is_comparable(M.int_types.int8, M.int_types.uint32) == false)
+assert(M.is_comparable(M.int_types.int8, M.int_types.cardinal))
+assert(M.is_comparable(M.int_types.int8, M.int_types.int32))
+assert(M.is_comparable(M.int_types.int32, M.int_types.cardinal))
 
+
+M.value_type_id = {'unit', 'bool', 'integer', 'float'}
+M.value_flags = {'var_ref'}
