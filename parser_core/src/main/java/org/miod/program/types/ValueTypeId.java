@@ -14,17 +14,18 @@ public enum ValueTypeId {
     // TYPE_DEF,equals to alias, so should be removed from grammar,
     // use struct for distinct types.
     BOOL,
+    /// declared in the order of integer promotion
     INT8,
     INT16,
     INT32,
     INT64,
-    FLOAT,
-    DOUBLE,
     UINT8,
     UINT16,
     CARDINAL,
     UINT32,
     UINT64, //-- not properly supported
+    FLOAT,
+    DOUBLE,
     NCHAR_LITERAL,
     NCHAR,
     STRING_LITERAL,

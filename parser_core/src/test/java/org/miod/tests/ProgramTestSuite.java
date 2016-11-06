@@ -13,6 +13,7 @@ import org.miod.program.symbol_table.SymbolVisibility;
 import org.miod.program.symbol_table.symbols.VarSymbol;
 import org.miod.program.types.PrimitiveType;
 import org.miod.program.types.MiodType;
+import org.miod.program.types.TypeUtils;
 
 import org.testng.annotations.Test;
 import static org.testng.Assert.*;
@@ -94,6 +95,18 @@ public class ProgramTestSuite {
         stringPaths.add("test_data");
         UnitParser parser = new UnitParser(stringPaths, reporter);
         parser.parseFileFromPathString("test_data/pkg1/test0001.miod", false);
+    }
+    
+    @Test
+    public void integerTest() {        
+        assertEquals(TypeUtils.typeFromInteger(0), PrimitiveType.CARDINAL);
+        assertEquals(TypeUtils.typeFromInteger(-1), PrimitiveType.INT32);
+        assertEquals(TypeUtils.typeFromInteger(Integer.MIN_VALUE), PrimitiveType.INT32);
+        assertEquals(TypeUtils.typeFromInteger(Integer.MAX_VALUE), PrimitiveType.CARDINAL);
+        assertEquals(TypeUtils.typeFromInteger((long)(Integer.MAX_VALUE)+1), PrimitiveType.INT64);
+        assertEquals(TypeUtils.typeFromInteger((long)(Integer.MIN_VALUE)-1), PrimitiveType.INT64);
+        assertEquals(TypeUtils.typeFromInteger(Long.MIN_VALUE), PrimitiveType.INT64);
+        assertEquals(TypeUtils.typeFromInteger(Long.MAX_VALUE), PrimitiveType.INT64);
     }
 
     // TODO write type resolving tests

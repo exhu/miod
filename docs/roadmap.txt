@@ -1,4 +1,5 @@
 TODO:
+- think over unit testing techniques e.g. how to implement generic assertEquals etc.
 
 - expression evaluation = node(type, value?)
     + add supportsOperation methods to MiodType

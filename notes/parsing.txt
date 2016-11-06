@@ -250,3 +250,6 @@ type
 value
     - type
     - data
+
+
+cardinal 0..max_int -> promotable to int
