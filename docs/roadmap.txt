@@ -1,4 +1,5 @@
 TODO:
+- use IntegerType class, write FloatType class
 - think over unit testing techniques e.g. how to implement generic assertEquals etc.
 
 - expression evaluation = node(type, value?)

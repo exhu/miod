@@ -8,6 +8,7 @@ package org.miod.program.types;
  *
  * @author yur
  */
+@Deprecated
 public final class PrimitiveType extends MiodType {
     private PrimitiveType(ValueTypeId typeId) {
         super(typeId);
