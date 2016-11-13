@@ -102,6 +102,7 @@ expr: literal #exprLiteral
     | expr OR expr #exprOr
     | LITERAL (typeArgsOpen (NSTRING|NWSTRING) typeArgsClose)? OPEN_PAREN expr CLOSE_PAREN #exprLiteralOper
     | BASE #exprBase
+    | VAR qualifName #exprVar
     ;
 
 literal: NULL   #literalNull
