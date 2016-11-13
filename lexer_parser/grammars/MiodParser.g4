@@ -73,7 +73,9 @@ typeArgsClose: GREATER;
 expr: literal #exprLiteral
     | NEW OPEN_PAREN typeSpec CLOSE_PAREN #exprNew
     | CAST typeArgsOpen typeSpec typeArgsClose OPEN_PAREN expr CLOSE_PAREN #exprCast
-    | qualifName (typeArgsOpen qualifName (COMMA qualifName)* typeArgsClose)? #exprQualifName
+    | qualifName #exprQualifName
+    //| qualifName (typeArgsOpen qualifName (COMMA qualifName)* typeArgsClose)? #exprQualifNameGeneric
+    | VAR qualifName #exprVar
     | expr MEMBER_ACCESS bareName #exprMemberAccess
     | expr OPEN_BRACKET expr CLOSE_BRACKET #exprIndex
     | expr OPEN_PAREN (expr (COMMA expr)*)? CLOSE_PAREN #exprCall
@@ -102,7 +104,6 @@ expr: literal #exprLiteral
     | expr OR expr #exprOr
     | LITERAL (typeArgsOpen (NSTRING|NWSTRING) typeArgsClose)? OPEN_PAREN expr CLOSE_PAREN #exprLiteralOper
     | BASE #exprBase
-    | VAR qualifName #exprVar
     ;
 
 literal: NULL   #literalNull
