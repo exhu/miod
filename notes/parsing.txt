@@ -253,3 +253,25 @@ value
 
 
 cardinal 0..max_int -> promotable to int
+
+
+-=-=- arrays -=-=-=
+a1 = {a2}
+
+ref = 2
+
+a1 = nil
+ref--
+ref = 1
+
+new(MyArray[2]) if MyArray = array[int]
+new(MyArray) if MyArray = array[int, 3]
+
+c implementation:
+
+struct array
+{	
+	int refcounter;	
+	void *data;
+	int sz;
+};

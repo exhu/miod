@@ -1,5 +1,6 @@
 TODO:
 - use IntegerType class, write FloatType class
+- exclude nstring and nwstring
 - think over unit testing techniques e.g. how to implement generic assertEquals etc.
 
 - expression evaluation = node(type, value?)

@@ -350,10 +350,8 @@ opaque                          Used to simplify bindings, e.g.
                                 annotations.
 int
 long
-array$<int>                     Passed by reference to functions with hidden
-                                'size' arg,
-                                copied on assignment.
-array$<int, 120>                
+array$<int>                     Passed by reference, reference counted type
+array$<int, 120>                Same as above but allocated in place.
 String                          Immutable string class with
                                 hash code support
 proc()
