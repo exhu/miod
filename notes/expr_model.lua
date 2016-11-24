@@ -25,15 +25,24 @@ M.node_value_kind = enum { 'unknown', 'runtime', 'value', 'generic' }
 
 pp(M.node_kind)
 
-function M.make_type_struct(type_name) 
+function M.create_type_struct(type_name) 
     -- value_ops = table of 'equals', 'greater', 'plus' etc. functions
     return { name = type_name, value_ops = {} }
 end
 
-function M.make_node_result(kind, v_type)
+function M.create_node_result(kind, v_type)
     assert(M.node_value_kind[kind])
     return { value_kind = kind, value_type = v_type }
 end
+
+--[[
+function M.create_ast_node(name)
+    return { name = name, result = M.create_node_result('unknown', nil) }
+end
+--]]
+
+local sample_ast = { {'plus', nodes = { {value_kind = 'value', value = 3 },
+    {value_kind = 'value', value = 4}} }
 
 
 ----------------
