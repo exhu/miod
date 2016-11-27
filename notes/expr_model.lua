@@ -39,10 +39,11 @@ end
 function M.create_ast_node(name)
     return { name = name, result = M.create_node_result('unknown', nil) }
 end
---]]
 
 local sample_ast = { {'plus', nodes = { {value_kind = 'value', value = 3 },
     {value_kind = 'value', value = 4}} } }
+
+--]]
 
 local numeric_ops = enum { 'neg', 'bnot', 'mul', 'div', 'mod', 'plus', 'minus',
     'bor', 'band', 'xor', 'shl', 'shr', 'gt', 'lt', 'ge', 'le', 'eq', 'ne' } 
@@ -99,6 +100,40 @@ local function calc_values(op, a,b)
 
     return M.create_node_result('unknown', nil)
 end
+
+
+local type_id = enum { 'int32', 'cardinal', 'struct', 'struct_ref' }
+
+local function int_type(type_id, bits)
+    local t = {}
+    t.type_id = type_id
+    t.bits = bits
+    return t
+end
+
+-- struct_decl_item = decl_struct from symbol table
+local function struct_type(struct_decl_item)
+    local t = {}
+    t.type_id = 'struct'
+    t.struct = struct_decl
+    return t
+end
+
+local function struct_ref(struct_decl_item)
+    local t = {}
+    t.type_id = 'struct_ref'
+    t.struct = struct_decl
+    return t
+end
+
+local symtable = {}
+
+local function decl_struct(name, fields)
+    local t = {kind = 'struct', fields = fields}
+    symtable[name] = t
+    return t
+end
+
 
 ----------------
 return M
