@@ -20,19 +20,6 @@ public abstract class MiodType {
     }
 
     @Deprecated
-    boolean isCompatibleWith(MiodType other) {
-        return other.typeId == typeId;
-    }
-
-    /// returns other if its range is greater than this,
-    /// e.g. float.promote(double) -> double
-    /// int32.promote(int16) -> int32
-    @Deprecated
-    MiodType promote(MiodType other) {
-        return this;
-    }
-
-    @Deprecated
     public boolean supportsEqualOp() {
         return false;
     }

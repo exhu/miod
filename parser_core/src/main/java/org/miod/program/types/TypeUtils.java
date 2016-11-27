@@ -57,7 +57,7 @@ public final class TypeUtils {
         return isSignedInt(a) || isUnsignedInt(a);
     }
 
-    public static boolean comparable(ValueTypeId a, ValueTypeId b) {     
+    public static boolean isComparable(ValueTypeId a, ValueTypeId b) {
         if (isSignedInt(a) && isSignedInt(b))
             return true;
         else if (isUnsignedInt(a) && isUnsignedInt(b))
@@ -67,6 +67,10 @@ public final class TypeUtils {
             return true;
         else if (b == ValueTypeId.CARDINAL && isInteger(a))
             return true;
+
+        if (a == b && isFloatOrDouble(a)) {
+            return true;
+        }
 
         return false;
     }
@@ -105,7 +109,7 @@ public final class TypeUtils {
         return ValueTypeId.INT64;
     }
 
-    private static boolean isFloatOrDouble(ValueTypeId a) {
+    public static boolean isFloatOrDouble(ValueTypeId a) {
         return a == ValueTypeId.FLOAT || a == ValueTypeId.DOUBLE;
     }
 

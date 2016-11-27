@@ -1,8 +1,8 @@
 TODO:
-- use NodeExprResult in parser classes
 - use IntegerType class, write FloatType class
 - put promotion, operator evaluation etc. out of MiodValue/MiodType classes
 into static class (TypeUtils?).
+- remove supportsEqualOp, supportsLessThanOp
 - exclude nstring and nwstring
 - think over unit testing techniques e.g. how to implement generic assertEquals etc.
 

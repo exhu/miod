@@ -93,7 +93,7 @@ public class SemanticVisitor extends MiodParserBaseVisitor<MiodValue> {
     private boolean comparableValues(MiodValue left, MiodValue right) {
         if (left != null && right != null && !(left instanceof RuntimeValue)
                 && !(right instanceof RuntimeValue)) {
-            if (TypeUtils.comparable(left.getType().typeId, right.getType().typeId)) {
+            if (TypeUtils.isComparable(left.getType().typeId, right.getType().typeId)) {
                 return true;
             } else {
                 context.getErrorListener().onError(new TypesMismatch());
