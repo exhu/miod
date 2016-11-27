@@ -4,9 +4,9 @@
  */
 package org.miod.program.types;
 
-import static org.miod.program.types.PrimitiveType.CARDINAL;
-import static org.miod.program.types.PrimitiveType.INT32;
-import static org.miod.program.types.PrimitiveType.INT64;
+import static org.miod.program.types.IntegerType.CARDINAL;
+import static org.miod.program.types.IntegerType.INT32;
+import static org.miod.program.types.IntegerType.INT64;
 
 
 /**
@@ -16,7 +16,7 @@ import static org.miod.program.types.PrimitiveType.INT64;
 public final class TypeUtils {
     private TypeUtils() {}
 
-    public static PrimitiveType typeFromInteger(long v) {
+    public static IntegerType typeFromInteger(long v) {
         if (v <= Integer.MAX_VALUE) {
             if (v >= 0)
                 return CARDINAL;

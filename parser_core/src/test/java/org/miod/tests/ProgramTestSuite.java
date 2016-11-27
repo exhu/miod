@@ -11,7 +11,7 @@ import org.miod.program.symbol_table.SymbolDesc;
 import org.miod.program.symbol_table.SymbolTableItem;
 import org.miod.program.symbol_table.SymbolVisibility;
 import org.miod.program.symbol_table.symbols.VarSymbol;
-import org.miod.program.types.PrimitiveType;
+import org.miod.program.types.IntegerType;
 import org.miod.program.types.MiodType;
 import org.miod.program.types.TypeUtils;
 
@@ -39,7 +39,7 @@ public class ProgramTestSuite {
         myTab1.addImport(myTab2, true);
         myTab2.addImport(systemTab, false);
         myTab2.addImport(myTab3, false);
-        PrimitiveType btype = PrimitiveType.INT32;
+        IntegerType btype = IntegerType.INT32;
         SymbolTableItem sym1 = newVar("sym1", btype);
         // the same name, to check name collision
         SymbolTableItem sym2 = newVar("sym1", btype);
@@ -98,15 +98,20 @@ public class ProgramTestSuite {
     }
     
     @Test
-    public void integerTest() {        
-        assertEquals(TypeUtils.typeFromInteger(0), PrimitiveType.CARDINAL);
-        assertEquals(TypeUtils.typeFromInteger(-1), PrimitiveType.INT32);
-        assertEquals(TypeUtils.typeFromInteger(Integer.MIN_VALUE), PrimitiveType.INT32);
-        assertEquals(TypeUtils.typeFromInteger(Integer.MAX_VALUE), PrimitiveType.CARDINAL);
-        assertEquals(TypeUtils.typeFromInteger((long)(Integer.MAX_VALUE)+1), PrimitiveType.INT64);
-        assertEquals(TypeUtils.typeFromInteger((long)(Integer.MIN_VALUE)-1), PrimitiveType.INT64);
-        assertEquals(TypeUtils.typeFromInteger(Long.MIN_VALUE), PrimitiveType.INT64);
-        assertEquals(TypeUtils.typeFromInteger(Long.MAX_VALUE), PrimitiveType.INT64);
+    public void integerTest() {
+        assertEquals(TypeUtils.typeFromInteger(0), IntegerType.CARDINAL);
+        assertEquals(TypeUtils.typeFromInteger(-1), IntegerType.INT32);
+        assertEquals(TypeUtils.typeFromInteger(Integer.MIN_VALUE), IntegerType.INT32);
+        assertEquals(TypeUtils.typeFromInteger(Integer.MAX_VALUE), IntegerType.CARDINAL);
+        assertEquals(TypeUtils.typeFromInteger((long)(Integer.MAX_VALUE)+1), IntegerType.INT64);
+        assertEquals(TypeUtils.typeFromInteger((long)(Integer.MIN_VALUE)-1), IntegerType.INT64);
+        assertEquals(TypeUtils.typeFromInteger(Long.MIN_VALUE), IntegerType.INT64);
+        assertEquals(TypeUtils.typeFromInteger(Long.MAX_VALUE), IntegerType.INT64);
+    }
+
+    @Test
+    public void promotionTest() {
+        // TODO check int, float promotion
     }
 
     // TODO write type resolving tests

@@ -11,6 +11,11 @@ package org.miod.program.types;
 public final class IntegerType extends NumericType {
     public final int bits;
     public final boolean signed;
+    
+    public static final IntegerType INT32 = new IntegerType(ValueTypeId.INT32);
+    public static final IntegerType INT64 = new IntegerType(ValueTypeId.INT64);
+    public static final IntegerType UINT64 = new IntegerType(ValueTypeId.UINT64);
+    public static final IntegerType CARDINAL = new IntegerType(ValueTypeId.CARDINAL);
 
     public IntegerType(ValueTypeId typeId) {
         super(typeId);

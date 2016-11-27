@@ -14,11 +14,7 @@ public final class PrimitiveType extends MiodType {
         super(typeId);
     }
     
-    public static final PrimitiveType BOOL = new PrimitiveType(ValueTypeId.BOOL);
-    public static final PrimitiveType INT32 = new PrimitiveType(ValueTypeId.INT32);
-    public static final PrimitiveType INT64 = new PrimitiveType(ValueTypeId.INT64);
-    public static final PrimitiveType UINT64 = new PrimitiveType(ValueTypeId.UINT64);
-    public static final PrimitiveType CARDINAL = new PrimitiveType(ValueTypeId.CARDINAL);
+    public static final PrimitiveType BOOL = new PrimitiveType(ValueTypeId.BOOL);    
 
     @Override
     public boolean supportsEqualOp() {
