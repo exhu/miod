@@ -49,5 +49,6 @@ public enum ValueTypeId {
     VAR_REF,
     OPAQUE,
     NULL,
+    GENERIC,
 }
 

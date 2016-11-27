@@ -22,15 +22,13 @@ end
 -- 'value' means known constant or literal
 -- 'unknown' means undefined variable for 1st pass or error for 2nd pass
 M.node_value_kind = enum { 'unknown', 'runtime', 'value', 'generic' }
+M.symitem_kind = enum { 'unit', 'alias', 'struct', 'interface',
+    'class', 'proc', 'method', 'var', 'const', 'enum' }
 
-pp(M.node_kind)
 
-function M.create_type_struct(type_name) 
-    -- value_ops = table of 'equals', 'greater', 'plus' etc. functions
-    return { name = type_name, value_ops = {} }
-end
+pp(M.node_value_kind)
 
-function M.create_node_result(kind, v_type)
+function M.new_node_result(kind, v_type)
     assert(M.node_value_kind[kind])
     return { value_kind = kind, value_type = v_type }
 end
