@@ -4,7 +4,7 @@
  */
 package org.miod.program.values;
 
-import org.miod.program.types.TypeUtils;
+import org.miod.program.types.IntegerType;
 
 /**
  *
@@ -13,7 +13,7 @@ import org.miod.program.types.TypeUtils;
 public final class IntegerValue extends MiodValue implements LessThanOp, EqualOp {
     public final long value;
     public IntegerValue(long v) {
-        super(TypeUtils.typeFromInteger(v));
+        super(IntegerType.fromLiteral(v));
         value = v;
     }
 

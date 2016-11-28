@@ -16,6 +16,7 @@ import static org.miod.program.types.IntegerType.INT64;
 public final class TypeUtils {
     private TypeUtils() {}
 
+    @Deprecated
     public static IntegerType typeFromInteger(long v) {
         if (v <= Integer.MAX_VALUE) {
             if (v >= 0)
@@ -29,14 +30,17 @@ public final class TypeUtils {
         return INT64;
     }
 
+    @Deprecated
     final public static ValueTypeId[] SIGNED_TYPES = new ValueTypeId[]{
         ValueTypeId.INT8, ValueTypeId.INT16,
         ValueTypeId.INT32, ValueTypeId.INT64 };
 
+    @Deprecated
     final public static ValueTypeId[] UNSIGNED_TYPES = new ValueTypeId[]{
         ValueTypeId.UINT8, ValueTypeId.UINT16, ValueTypeId.CARDINAL,
         ValueTypeId.UINT32, ValueTypeId.UINT64  };
 
+    @Deprecated
     private static boolean matchType(ValueTypeId t, ValueTypeId[] arr) {
         for(ValueTypeId i : arr) {
             if (i == t)
@@ -45,30 +49,29 @@ public final class TypeUtils {
         return false;
     }
 
+    @Deprecated
     private static boolean isSignedInt(ValueTypeId a) {
         return matchType(a, SIGNED_TYPES);
     }
 
+    @Deprecated
     private static boolean isUnsignedInt(ValueTypeId a) {
         return matchType(a, UNSIGNED_TYPES);
     }
 
+    @Deprecated
     private static boolean isInteger(ValueTypeId a) {
         return isSignedInt(a) || isUnsignedInt(a);
     }
 
-    public static boolean isComparable(ValueTypeId a, ValueTypeId b) {
-        if (isSignedInt(a) && isSignedInt(b))
-            return true;
-        else if (isUnsignedInt(a) && isUnsignedInt(b))
-            return true;
-
-        if (a == ValueTypeId.CARDINAL && isInteger(b))
-            return true;
-        else if (b == ValueTypeId.CARDINAL && isInteger(a))
-            return true;
-
-        if (a == b && isFloatOrDouble(a)) {
+    public static boolean isComparable(MiodType a, MiodType b) {
+        if (a instanceof IntegerType && b instanceof IntegerType) {
+            IntegerType iA = (IntegerType)a;
+            IntegerType iB = (IntegerType)b;
+            return iA.isComparableTo(iB);
+        }
+        
+        if ((a == b) && a instanceof FloatType) {
             return true;
         }
 
@@ -79,6 +82,7 @@ public final class TypeUtils {
         public ValueTypeId typeId;
     }
 
+    @Deprecated
     private static boolean tryPromoteCardinal(ValueTypeId a, ValueTypeId b, PromotionResult out) {
         if (a == ValueTypeId.CARDINAL && isSignedInt(b)) {
             // <= int32  -> int32, else b
@@ -93,6 +97,7 @@ public final class TypeUtils {
         return false;
     }
 
+    @Deprecated
     private static ValueTypeId promoteInteger(ValueTypeId a, ValueTypeId b) {
         if (a == b) {
             return a;
@@ -113,6 +118,7 @@ public final class TypeUtils {
         return a == ValueTypeId.FLOAT || a == ValueTypeId.DOUBLE;
     }
 
+    @Deprecated
     public static boolean promote(ValueTypeId a, ValueTypeId b, PromotionResult out) {
         if (a == ValueTypeId.FLOAT || b == ValueTypeId.FLOAT) {
             out.typeId = ValueTypeId.FLOAT;

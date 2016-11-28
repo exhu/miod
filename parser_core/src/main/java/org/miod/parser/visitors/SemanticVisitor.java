@@ -91,9 +91,8 @@ public class SemanticVisitor extends MiodParserBaseVisitor<MiodValue> {
     }
 
     private boolean comparableValues(MiodValue left, MiodValue right) {
-        if (left != null && right != null && !(left instanceof RuntimeValue)
-                && !(right instanceof RuntimeValue)) {
-            if (TypeUtils.isComparable(left.getType().typeId, right.getType().typeId)) {
+        if (left != null && right != null) {
+            if (TypeUtils.isComparable(left.getType(), right.getType())) {
                 return true;
             } else {
                 context.getErrorListener().onError(new TypesMismatch());
@@ -110,9 +109,10 @@ public class SemanticVisitor extends MiodParserBaseVisitor<MiodValue> {
                     return BoolValue.TRUE;
                 else
                     return BoolValue.FALSE;
-            } else {
+            }            
+            else {
                 context.getErrorListener().onError(new OperationNotSupported());
-            }
+            }            
         }
         return null;
     }

@@ -1,5 +1,9 @@
 TODO:
-- use IntegerType class, write FloatType class
+>- before calling comparableValues check if types are comparable, then
+    if RuntimeValue then form a new RuntimeValue using .promote method
+    if null return null (throw OperationNotSupported only on second pass)
+
+* use IntegerType class, write FloatType class
 - put promotion, operator evaluation etc. out of MiodValue/MiodType classes
 into static class (TypeUtils?).
 - remove supportsEqualOp, supportsLessThanOp

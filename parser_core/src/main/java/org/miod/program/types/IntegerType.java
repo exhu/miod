@@ -8,16 +8,42 @@ package org.miod.program.types;
  *
  * @author yur
  */
-public final class IntegerType extends NumericType {
+public final class IntegerType extends NumericType<IntegerType> {
     public final int bits;
     public final boolean signed;
-    
+
+    public static final IntegerType INT8 = new IntegerType(ValueTypeId.INT8);
     public static final IntegerType INT32 = new IntegerType(ValueTypeId.INT32);
     public static final IntegerType INT64 = new IntegerType(ValueTypeId.INT64);
     public static final IntegerType UINT64 = new IntegerType(ValueTypeId.UINT64);
     public static final IntegerType CARDINAL = new IntegerType(ValueTypeId.CARDINAL);
 
-    public IntegerType(ValueTypeId typeId) {
+    public static IntegerType fromLiteral(long v) {
+        if (v <= Integer.MAX_VALUE) {
+            if (v >= 0)
+                return CARDINAL;
+            else if (v >= Integer.MIN_VALUE)
+                return INT32;
+        }
+        /*else if (v > Long.MAX_VALUE) -- TODO replace long with BigInt?
+            return UINT64;*/
+
+        return INT64;
+    }
+
+    public boolean isComparableTo(IntegerType other) {
+        return (signed == other.signed) || (typeId == ValueTypeId.CARDINAL
+               || other.typeId == ValueTypeId.CARDINAL);
+    }
+
+    @Override
+    public IntegerType promote(IntegerType other) {
+        if (other.bits > bits)
+            return other;
+        return this;
+    }
+
+    private IntegerType(ValueTypeId typeId) {
         super(typeId);
         switch(typeId) {
             case INT8:

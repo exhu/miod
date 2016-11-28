@@ -8,10 +8,12 @@ package org.miod.program.types;
  *
  * @author yur
  */
-public abstract class NumericType extends MiodType {
+public abstract class NumericType<T extends NumericType> extends MiodType {
     public NumericType(ValueTypeId typeId) {
         super(typeId);
     }
+
+    public abstract T promote(T other);
 
     @Override
     public boolean supportsEqualOp() {

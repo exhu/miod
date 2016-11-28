@@ -11,6 +11,8 @@ import org.miod.program.types.MiodType;
  * @author yur
  */
 public final class RuntimeValue extends MiodValue {
+    // TODO hide constructor, introduce static consts for default types
+
     public RuntimeValue(MiodType type) {
         super(type);
     }

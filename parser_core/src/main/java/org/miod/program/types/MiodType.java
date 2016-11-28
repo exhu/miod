@@ -18,13 +18,11 @@ public abstract class MiodType {
     MiodType resolve() {
         return this;
     }
-
-    @Deprecated
+    
     public boolean supportsEqualOp() {
         return false;
     }
-
-    @Deprecated
+    
     boolean supportsLessThanOp() {
         return false;
     }
