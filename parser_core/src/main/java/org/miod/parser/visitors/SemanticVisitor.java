@@ -101,6 +101,12 @@ public class SemanticVisitor extends MiodParserBaseVisitor<MiodValue> {
         return false;
     }
 
+    /*
+        null <= 3 = null
+        1 <= 3 = BoolValue(FALSE)
+        int <= 4 = RuntimeValue(int)
+        TODO...
+    */
     private MiodValue exprLessOrEqual(MiodValue left, MiodValue right) {
         if (comparableValues(left, right)) {
             if(left instanceof LessThanOp) {

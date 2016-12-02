@@ -1,7 +1,8 @@
 TODO:
->- before calling comparableValues check if types are comparable, then
+>- exprLessOrEqual
+    before calling comparableValues check if types are comparable, then
     if RuntimeValue then form a new RuntimeValue using .promote method
-    if null return null (throw OperationNotSupported only on second pass)
+    if null return null (throw OperationNotSupported only on second pass!)
 
 * use IntegerType class, write FloatType class
 - put promotion, operator evaluation etc. out of MiodValue/MiodType classes

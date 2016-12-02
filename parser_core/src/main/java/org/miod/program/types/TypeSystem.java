@@ -11,7 +11,7 @@ package org.miod.program.types;
 public final class TypeSystem {
 
     // TODO change to conversion
-    static boolean isCompatible(MiodType a, MiodType b) {
+    static boolean isComparable(MiodType a, MiodType b) {
         return false;
     }
 
@@ -19,5 +19,7 @@ public final class TypeSystem {
     MiodValue valueFromString(String literal) {
         return null;
     }
-    */
+     */
+    private TypeSystem() {
+    }
 }
