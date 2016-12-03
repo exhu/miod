@@ -14,6 +14,7 @@ import org.miod.program.values.EqualOp;
 import org.miod.program.values.ErrorValue;
 import org.miod.program.values.LessThanOp;
 import org.miod.program.values.MiodValue;
+import org.miod.program.values.PlusOp;
 import org.miod.program.values.RuntimeValue;
 
 /**
@@ -125,6 +126,24 @@ public final class ExpressionEval {
 
     public static SymbolLocation makeSymLocation(String unitName, Token token) {
         return new SymbolLocation(unitName, token.getLine(), token.getCharPositionInLine());
+    }
+
+    public static MiodValue exprPlus(MiodValue left, MiodValue right,
+            ErrorListener errors) {
+        if (left == null || right == null) {
+            return null;
+        }
+
+        if (left.getType().supportsPlusOp() && right.getType().supportsPlusOp()) {
+            if (left instanceof PlusOp) {
+                PlusOp op = (PlusOp) left;
+                return op.plusOp(right);
+            } else {
+                errors.onError(new OperationNotSupported());
+                return ErrorValue.UNSUPPORTED;
+            }
+        }
+        return ErrorValue.TYPES_MISMATCH;
     }
 
     private ExpressionEval() {

@@ -25,4 +25,9 @@ public abstract class NumericType<T extends NumericType> extends MiodType {
     public boolean supportsLessThanOp() {
         return true;
     }
+
+    @Override
+    public boolean supportsPlusOp() {
+        return true;
+    }
 }

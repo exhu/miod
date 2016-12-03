@@ -11,7 +11,8 @@ import org.miod.program.types.MiodType;
  *
  * @author yur
  */
-public final class IntegerValue extends MiodValue implements LessThanOp, EqualOp {
+public final class IntegerValue extends MiodValue implements LessThanOp,
+        EqualOp, PlusOp {
 
     public final long value;
 
@@ -54,4 +55,12 @@ public final class IntegerValue extends MiodValue implements LessThanOp, EqualOp
     public String toString() {
         return String.valueOf(value);
     }
+
+    @Override
+    public MiodValue plusOp(MiodValue other) {
+        return new IntegerValue(value + ((IntegerValue)other).value, 
+                ((IntegerType)type).promote((IntegerType)other.type));
+    }
+
+
 }

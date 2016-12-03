@@ -71,6 +71,7 @@ typeArgsClose: GREATER;
 // Recursive rules are to be here.
 // If current scope is global then fails for procedure/method calls and property access
 expr: literal #exprLiteral
+    | OPEN_PAREN expr CLOSE_PAREN #exprParen
     | NEW OPEN_PAREN typeSpec CLOSE_PAREN #exprNew
     | CAST typeArgsOpen typeSpec typeArgsClose OPEN_PAREN expr CLOSE_PAREN #exprCast
     | qualifName #exprQualifName
@@ -86,7 +87,7 @@ expr: literal #exprLiteral
     | expr MUL expr #exprMul
     | expr DIV expr #exprDiv
     | expr MOD expr #exprMod
-    | expr PLUS expr #exprPlus
+    | left=expr PLUS right=expr #exprPlus
     | expr MINUS expr #exprMinus
     | expr BOR expr #exprBOr
     | expr BAND expr #exprBAnd

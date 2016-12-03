@@ -5,15 +5,18 @@ import java.util.List;
 import org.miod.parser.DefaultUnitsPathsResolver;
 import org.miod.parser.ErrorReporter;
 import org.miod.parser.UnitParser;
+import org.miod.program.CompilationUnit;
 import org.miod.program.symbol_table.DefaultSymbolTable;
 import org.miod.program.symbol_table.GlobalSymbolTable;
 import org.miod.program.symbol_table.SymbolDesc;
 import org.miod.program.symbol_table.SymbolTableItem;
 import org.miod.program.symbol_table.SymbolVisibility;
+import org.miod.program.symbol_table.symbols.ConstSymbol;
 import org.miod.program.symbol_table.symbols.VarSymbol;
 import org.miod.program.types.FloatType;
 import org.miod.program.types.IntegerType;
 import org.miod.program.types.MiodType;
+import org.miod.program.values.IntegerValue;
 
 import org.testng.annotations.Test;
 import static org.testng.Assert.*;
@@ -96,6 +99,20 @@ public class ProgramTestSuite {
         UnitParser parser = new UnitParser(stringPaths, reporter);
         parser.parseFileFromPathString("test_data/pkg1/test0001.miod", false);
         System.out.println(parser.getContext().getOrParseUnit("pkg1::test0001").symTable.getItemsAsString());
+    }
+
+    @Test
+    public void arithmConstTest() {
+        ErrorReporter reporter = new ErrorReporter();
+        reporter.setStopAtFirstError(true);
+
+        List<String> stringPaths = new ArrayList<>();
+        stringPaths.add("test_data");
+        UnitParser parser = new UnitParser(stringPaths, reporter);
+        parser.parseFileFromPathString("test_data/pkg1/test0002.miod", false);
+        CompilationUnit unit = parser.getContext().getOrParseUnit("pkg1::test0002");
+        System.out.println(unit.symTable.getItemsAsString());
+        assertEquals(((IntegerValue)((ConstSymbol)unit.symTable.resolve("b")).value).value, 15);
     }
     
     @Test

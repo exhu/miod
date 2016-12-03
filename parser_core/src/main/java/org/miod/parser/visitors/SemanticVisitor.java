@@ -12,6 +12,7 @@ import org.miod.parser.expr.ExpressionEval;
 import static org.miod.parser.expr.ExpressionEval.exprEq;
 import static org.miod.parser.expr.ExpressionEval.exprLess;
 import static org.miod.parser.expr.ExpressionEval.exprLessOrEqual;
+import static org.miod.parser.expr.ExpressionEval.exprPlus;
 import static org.miod.parser.expr.ExpressionEval.invertBool;
 import org.miod.parser.generated.MiodParser;
 import org.miod.parser.generated.MiodParserBaseVisitor;
@@ -145,8 +146,6 @@ public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
                 context.getErrorListener())));
     }
 
-
-
     // TODO special case for stuct recursion in definition, e.g.
     // 1) type mystruct = struct parent: mystruct end_struct --
     // remember typename
@@ -180,7 +179,7 @@ public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
         
         ExprNodeData nodeValue = visit(ctx.constExpr());
         MiodValue value = nodeValue.value;
-        // TODO create symbol, put to table
+        // create symbol, put to table
         if (ctx.typeSpec() != null) {
             // TODO check type of the expr
             LOGGER.log(Level.INFO, "typed const");            
@@ -224,5 +223,14 @@ public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
         return resolveSymbol(ctx.qualifName().getText());
     }
 
+    @Override
+    public ExprNodeData visitExprParen(MiodParser.ExprParenContext ctx) {
+        return visit(ctx.expr());
+    }
 
+    @Override
+    public ExprNodeData visitExprPlus(MiodParser.ExprPlusContext ctx) {
+        return ExprNodeData.newValue(exprPlus(visit(ctx.left).value,
+                visit(ctx.right).value, context.getErrorListener()));
+    }
 }

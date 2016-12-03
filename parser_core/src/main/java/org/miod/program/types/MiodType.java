@@ -30,4 +30,8 @@ public abstract class MiodType {
     public boolean supportsLessThanOp() {
         return false;
     }
+
+    public boolean supportsPlusOp() {
+        return false;
+    }
 }
