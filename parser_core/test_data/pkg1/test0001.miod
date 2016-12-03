@@ -1,5 +1,5 @@
 unit pkg1::test0001
 
-static_if 3 > 4 then const a = 3 else const a = 7 end_if
+static_if 3 > 4 then const a = 3 else const a : int = 7 end_if
 
 const b = a
