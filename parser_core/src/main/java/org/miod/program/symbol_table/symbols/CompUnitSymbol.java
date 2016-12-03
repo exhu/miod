@@ -14,11 +14,17 @@ import org.miod.program.types.UnitType;
  *
  * @author yur
  */
-@Deprecated
 public final class CompUnitSymbol extends SymbolTableItem {
     public CompUnitSymbol(SymbolLocation location) {
         super(new SymbolDesc(location.unitName, location,
                 null, SymbolVisibility.PRIVATE));
         desc.type = new UnitType(this);
     }
+
+    @Override
+    public String toString() {
+        return String.format("CompUnitSymbol(%s)", desc.name);
+    }
+
+
 }

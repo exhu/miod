@@ -19,4 +19,11 @@ public final class ConstSymbol extends SymbolTableItem {
         super(desc);
         this.value = value;
     }
+
+    @Override
+    public String toString() {
+        return String.format("ConstSymbol(%s)", value.toString());
+    }
+
+
 }

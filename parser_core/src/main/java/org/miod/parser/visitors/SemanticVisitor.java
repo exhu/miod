@@ -206,9 +206,8 @@ public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
         return null;
     }
 
-    @Override
-    public ExprNodeData visitExprQualifName(MiodParser.ExprQualifNameContext ctx) {
-        SymbolTableItem sym = unit.symTable.resolve(ctx.qualifName().getText());
+    protected final ExprNodeData resolveSymbol(String name) {
+        SymbolTableItem sym = unit.symTable.resolve(name);
         if (sym != null) {
             return ExprNodeData.newFromSymbolTableItem(sym);
         }
@@ -216,12 +215,13 @@ public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
     }
 
     @Override
+    public ExprNodeData visitExprQualifName(MiodParser.ExprQualifNameContext ctx) {
+        return resolveSymbol(ctx.qualifName().getText());
+    }
+
+    @Override
     public ExprNodeData visitTypeSpecName(MiodParser.TypeSpecNameContext ctx) {
-        SymbolTableItem sym = unit.symTable.resolve(ctx.qualifName().getText());
-        if (sym != null) {
-            return ExprNodeData.newFromSymbolTableItem(sym);
-        }
-        return null;
+        return resolveSymbol(ctx.qualifName().getText());
     }
 
 

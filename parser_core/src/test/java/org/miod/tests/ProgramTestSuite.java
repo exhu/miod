@@ -95,6 +95,7 @@ public class ProgramTestSuite {
         stringPaths.add("test_data");
         UnitParser parser = new UnitParser(stringPaths, reporter);
         parser.parseFileFromPathString("test_data/pkg1/test0001.miod", false);
+        System.out.println(parser.getContext().getOrParseUnit("pkg1::test0001").symTable.getItemsAsString());
     }
     
     @Test
