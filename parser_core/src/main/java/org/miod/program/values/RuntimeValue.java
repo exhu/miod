@@ -4,6 +4,7 @@
  */
 package org.miod.program.values;
 
+import org.miod.program.types.BoolType;
 import org.miod.program.types.MiodType;
 
 /** Unknown value e.g. for function calls, variables etc.
@@ -11,9 +12,10 @@ import org.miod.program.types.MiodType;
  * @author yur
  */
 public final class RuntimeValue extends MiodValue {
-    // TODO hide constructor, introduce static consts for default types
+    // TODO introduce static consts for default types
+    public static final RuntimeValue BOOL = new RuntimeValue(BoolType.INSTANCE);
 
-    public RuntimeValue(MiodType type) {
+    private RuntimeValue(MiodType type) {
         super(type);
     }
 

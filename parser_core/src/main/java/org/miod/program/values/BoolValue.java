@@ -4,20 +4,24 @@
  */
 package org.miod.program.values;
 
-import org.miod.program.types.PrimitiveType;
+import org.miod.program.types.BoolType;
 
 /**
  *
  * @author yur
  */
-public final class BoolValue extends MiodValue {
-    public final boolean value;
-    private BoolValue(boolean v) {
-        super(PrimitiveType.BOOL);
-        value = v;
-    }
-
+public final class BoolValue extends MiodValue implements EqualOp {
     public static final BoolValue TRUE = new BoolValue(true);
     public static final BoolValue FALSE = new BoolValue(false);
 
+    @Override
+    public boolean equal(EqualOp other) {
+        return ((BoolValue)other).value == value;
+    }
+
+    public final boolean value;
+    private BoolValue(boolean v) {
+        super(BoolType.INSTANCE);
+        value = v;
+    }
 }

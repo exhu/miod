@@ -27,7 +27,7 @@ public abstract class MiodType {
         return false;
     }
     
-    boolean supportsLessThanOp() {
+    public boolean supportsLessThanOp() {
         return false;
     }
 }
