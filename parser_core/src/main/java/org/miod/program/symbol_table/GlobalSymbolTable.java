@@ -77,8 +77,8 @@ public final class GlobalSymbolTable extends BasicSymbolTable {
             if (item.fullNamesOnly == false || item.fullNamesOnly && id.startsWith(item.table.unitName)) {
                 SymbolTableItem resolved = item.table.resolveImmediateOnly(id);
                 if (resolved != null && 
-                        (resolved.desc.visibility == SymbolVisibility.Public ||
-                        (resolved.desc.visibility == SymbolVisibility.Protected &&
+                        (resolved.desc.visibility == SymbolVisibility.PUBLIC ||
+                        (resolved.desc.visibility == SymbolVisibility.PROTECTED &&
                         item.table.parentNamespace.equals(parentNamespace))))
                     return resolved;
             }

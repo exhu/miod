@@ -37,7 +37,7 @@ public class BasicSymbolTable implements SymbolTable {
         if (get(item.desc.name) == null) {
             items.put(item.desc.name, item);
         } else {
-            errorListener.onError(new SymbolRedefinitionError(item));
+            errorListener.onError(new SymbolRedefinitionError(item, null));
         }
     }
 

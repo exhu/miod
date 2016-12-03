@@ -20,7 +20,7 @@ import static org.testng.Assert.*;
 
 public class ProgramTestSuite {
     private SymbolTableItem newVar(String name, MiodType type) {
-        return new VarSymbol(new SymbolDesc(name, null, type, SymbolVisibility.Public));
+        return new VarSymbol(new SymbolDesc(name, null, type, SymbolVisibility.PUBLIC));
     }
     @Test
     public void globalSymbolTable() {

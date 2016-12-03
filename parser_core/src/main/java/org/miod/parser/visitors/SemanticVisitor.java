@@ -7,6 +7,8 @@ package org.miod.parser.visitors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.miod.parser.ParserContext;
+import org.miod.parser.expr.ExprNodeData;
+import org.miod.parser.expr.ExpressionEval;
 import static org.miod.parser.expr.ExpressionEval.exprEq;
 import static org.miod.parser.expr.ExpressionEval.exprLess;
 import static org.miod.parser.expr.ExpressionEval.exprLessOrEqual;
@@ -17,7 +19,14 @@ import org.miod.program.CompilationUnit;
 import org.miod.program.errors.BooleanExprExpected;
 import org.miod.program.errors.CompileTimeExpressionExpected;
 import org.miod.program.errors.SymbolRedefinitionError;
+import org.miod.program.errors.TypesMismatch;
+import org.miod.program.symbol_table.SymbolDesc;
+import org.miod.program.symbol_table.SymbolLocation;
 import org.miod.program.symbol_table.SymbolTableItem;
+import org.miod.program.symbol_table.SymbolVisibility;
+import org.miod.program.symbol_table.symbols.ConstSymbol;
+import org.miod.program.types.IntegerType;
+import org.miod.program.types.MiodType;
 import org.miod.program.types.ValueTypeId;
 import org.miod.program.values.BoolValue;
 import org.miod.program.values.IntegerValue;
@@ -31,7 +40,7 @@ import org.miod.program.values.RuntimeValue;
  *
  * @author yur
  */
-public class SemanticVisitor extends MiodParserBaseVisitor<MiodValue> {
+public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
     private static final Logger LOGGER = Logger.getLogger(SemanticVisitor.class.getName());
 
     protected final ParserContext context;
@@ -43,14 +52,9 @@ public class SemanticVisitor extends MiodParserBaseVisitor<MiodValue> {
         this.unitName = unitName;
     }
 
-    /// signal error "expected expression" for second pass if v == null or ErrorValue
-    protected MiodValue checkValue(MiodValue v) {
-        return v;
-    }
-
     @Override
-    public MiodValue visitGlobalStaticIf(MiodParser.GlobalStaticIfContext ctx) {
-        MiodValue res = visit(ctx.boolExpr());
+    public ExprNodeData visitGlobalStaticIf(MiodParser.GlobalStaticIfContext ctx) {
+        MiodValue res = visit(ctx.boolExpr()).value;
         if (res == null || res instanceof RuntimeValue) {
             context.getErrorListener().onError(new CompileTimeExpressionExpected());
         } else if (res.getType().typeId == ValueTypeId.BOOL) {
@@ -66,7 +70,7 @@ public class SemanticVisitor extends MiodParserBaseVisitor<MiodValue> {
     }
 
     @Override
-    public MiodValue visitUnitHeader(MiodParser.UnitHeaderContext ctx) {
+    public ExprNodeData visitUnitHeader(MiodParser.UnitHeaderContext ctx) {
         unit = new CompilationUnit(context.getDefaultSymbolTable(), unitName,
                 0, 0, unitName, context.getErrorListener());
         context.putUnit(unitName, unit);
@@ -74,65 +78,70 @@ public class SemanticVisitor extends MiodParserBaseVisitor<MiodValue> {
     }
 
     @Override
-    public MiodValue visitLiteralNull(MiodParser.LiteralNullContext ctx) {
-        return NullValue.VALUE;
+    public ExprNodeData visitLiteralNull(MiodParser.LiteralNullContext ctx) {
+        return ExprNodeData.newValue(NullValue.VALUE);
     }
 
     @Override
-    public MiodValue visitLiteralFalse(MiodParser.LiteralFalseContext ctx) {
-        return BoolValue.FALSE;
+    public ExprNodeData visitLiteralFalse(MiodParser.LiteralFalseContext ctx) {
+        return ExprNodeData.newValue(BoolValue.FALSE);
     }
 
     @Override
-    public MiodValue visitLiteralTrue(MiodParser.LiteralTrueContext ctx) {
-        return BoolValue.TRUE;
+    public ExprNodeData visitLiteralTrue(MiodParser.LiteralTrueContext ctx) {
+        return ExprNodeData.newValue(BoolValue.TRUE);
     }
 
     @Override
-    public MiodValue visitLiteralInteger(MiodParser.LiteralIntegerContext ctx) {
-        return new IntegerValue(Long.parseLong(ctx.INTEGER().getText()));
+    public ExprNodeData visitLiteralInteger(MiodParser.LiteralIntegerContext ctx) {
+        return ExprNodeData.newValue(new IntegerValue(Long.parseLong(ctx.INTEGER().getText())));
     }
 
     @Override
-    public MiodValue visitExprLiteral(MiodParser.ExprLiteralContext ctx) {
+    public ExprNodeData visitExprLiteral(MiodParser.ExprLiteralContext ctx) {
         return visit(ctx.literal());
     }
 
 
 
     @Override
-    public MiodValue visitExprGreater(MiodParser.ExprGreaterContext ctx) {    ;
-        return checkValue(invertBool(exprLessOrEqual(visit(ctx.left), visit(ctx.right),
+    public ExprNodeData visitExprGreater(MiodParser.ExprGreaterContext ctx) {    ;
+        return ExprNodeData.newValue(invertBool(exprLessOrEqual(
+                visit(ctx.left).value, visit(ctx.right).value,
                 context.getErrorListener())));
     }
 
     @Override
-    public MiodValue visitExprLess(MiodParser.ExprLessContext ctx) {        
-        return checkValue(exprLess(visit(ctx.left), visit(ctx.right),
+    public ExprNodeData visitExprLess(MiodParser.ExprLessContext ctx) {
+        return ExprNodeData.newValue(exprLess(visit(ctx.left).value,
+                visit(ctx.right).value,
                 context.getErrorListener()));
     }
 
     @Override
-    public MiodValue visitExprGreaterEq(MiodParser.ExprGreaterEqContext ctx) {        
-        return checkValue(exprLessOrEqual(visit(ctx.right), visit(ctx.left),
+    public ExprNodeData visitExprGreaterEq(MiodParser.ExprGreaterEqContext ctx) {
+        return ExprNodeData.newValue(exprLessOrEqual(visit(ctx.right).value,
+                visit(ctx.left).value,
                 context.getErrorListener()));
     }
 
     @Override
-    public MiodValue visitExprLessEq(MiodParser.ExprLessEqContext ctx) {        
-        return checkValue(exprLessOrEqual(visit(ctx.left), visit(ctx.right),
+    public ExprNodeData visitExprLessEq(MiodParser.ExprLessEqContext ctx) {
+        return ExprNodeData.newValue(exprLessOrEqual(visit(ctx.left).value,
+                visit(ctx.right).value,
                 context.getErrorListener()));
     }
 
     @Override
-    public MiodValue visitExprEquals(MiodParser.ExprEqualsContext ctx) {        
-        return checkValue(exprEq(visit(ctx.left), visit(ctx.right),
+    public ExprNodeData visitExprEquals(MiodParser.ExprEqualsContext ctx) {
+        return ExprNodeData.newValue(exprEq(visit(ctx.left).value, visit(ctx.right).value,
                 context.getErrorListener()));
     }
 
     @Override
-    public MiodValue visitExprNotEq(MiodParser.ExprNotEqContext ctx) {        
-        return checkValue(invertBool(exprEq(visit(ctx.left), visit(ctx.right),
+    public ExprNodeData visitExprNotEq(MiodParser.ExprNotEqContext ctx) {
+        return ExprNodeData.newValue(invertBool(exprEq(visit(ctx.left).value,
+                visit(ctx.right).value,
                 context.getErrorListener())));
     }
 
@@ -146,34 +155,73 @@ public class SemanticVisitor extends MiodParserBaseVisitor<MiodValue> {
     // filled as parsing goes further.
 
     @Override
-    public MiodValue visitConstExpr(MiodParser.ConstExprContext ctx) {
+    public ExprNodeData visitConstExpr(MiodParser.ConstExprContext ctx) {
         return visit(ctx.expr()); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public MiodValue visitConstAssign(MiodParser.ConstAssignContext ctx) {
+    public ExprNodeData visitConstAssign(MiodParser.ConstAssignContext ctx) {
         LOGGER.log(Level.INFO, "const assign var = {0}, expr = {1}", new String[] {
                 ctx.bareName().getText(),
                 ctx.constExpr().getText()});
 
         // check if already defined
         String id = ctx.bareName().getText();
+        SymbolLocation loc = ExpressionEval.makeSymLocation(unitName, ctx.getStart());
         SymbolTableItem sym = unit.symTable.resolve(id);
         if (sym != null) {
-            context.getErrorListener().onError(new SymbolRedefinitionError(sym));
+            context.getErrorListener().onError(new SymbolRedefinitionError(sym, loc));
             return null;
         }
 
+        // TODO get visibility from context
+        SymbolVisibility visibility = SymbolVisibility.PUBLIC;
+        SymbolDesc desc = new SymbolDesc(id, loc, null, visibility);
+        
+        ExprNodeData nodeValue = visit(ctx.constExpr());
+        MiodValue value = nodeValue.value;
         // TODO create symbol, put to table
-
         if (ctx.typeSpec() != null) {
             // TODO check type of the expr
-            LOGGER.log(Level.INFO, "typed const");
+            LOGGER.log(Level.INFO, "typed const");            
+            ExprNodeData typeSpec = visit(ctx.typeSpec());
+
+            MiodType targetType = typeSpec.typespec;
+
+            if (value instanceof IntegerValue && targetType instanceof IntegerType) {
+                value = ((IntegerValue)value).convertTo((IntegerType)targetType);
+            }
+            if (typeSpec.typespec != value.getType()) {
+                context.getErrorListener().onError(new TypesMismatch());
+                return null;
+            }
+            desc.type = typeSpec.typespec;
+            // TODO handle IntegerValue conversion to lower bits type
         } else {
             // TODO type of the expr
-            LOGGER.log(Level.INFO, "auto const");
+            LOGGER.log(Level.INFO, "auto const");            
+            desc.type = nodeValue.value.getType();
         }
-        return super.visitConstAssign(ctx);
+        unit.symTable.put(new ConstSymbol(desc, value));
+        return null;
+    }
+
+    @Override
+    public ExprNodeData visitExprQualifName(MiodParser.ExprQualifNameContext ctx) {
+        SymbolTableItem sym = unit.symTable.resolve(ctx.qualifName().getText());
+        if (sym != null) {
+            return ExprNodeData.newFromSymbolTableItem(sym);
+        }
+        return null;
+    }
+
+    @Override
+    public ExprNodeData visitTypeSpecName(MiodParser.TypeSpecNameContext ctx) {
+        SymbolTableItem sym = unit.symTable.resolve(ctx.qualifName().getText());
+        if (sym != null) {
+            return ExprNodeData.newFromSymbolTableItem(sym);
+        }
+        return null;
     }
 
 

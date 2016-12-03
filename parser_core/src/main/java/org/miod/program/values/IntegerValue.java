@@ -5,6 +5,7 @@
 package org.miod.program.values;
 
 import org.miod.program.types.IntegerType;
+import org.miod.program.types.MiodType;
 
 /**
  *
@@ -15,6 +16,18 @@ public final class IntegerValue extends MiodValue implements LessThanOp, EqualOp
     public IntegerValue(long v) {
         super(IntegerType.fromLiteral(v));
         value = v;
+    }
+
+    private IntegerValue(long v, MiodType t) {
+        super(t);
+        value = v;
+    }
+
+    public IntegerValue convertTo(IntegerType target) {
+        if (type.typeId == target.typeId)
+            return this;
+        
+        return new IntegerValue(value, ((IntegerType)type).promote(target));
     }
 
     @Override

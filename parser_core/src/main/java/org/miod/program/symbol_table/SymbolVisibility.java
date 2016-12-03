@@ -9,7 +9,7 @@ package org.miod.program.symbol_table;
  * @author yur
  */
 public enum SymbolVisibility {
-    Private,
-    Protected,
-    Public
+    PRIVATE,
+    PROTECTED,
+    PUBLIC,
 }

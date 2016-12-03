@@ -4,9 +4,11 @@
  */
 package org.miod.parser.expr;
 
+import org.antlr.v4.runtime.Token;
 import org.miod.parser.ErrorListener;
 import org.miod.program.errors.OperationNotSupported;
 import org.miod.program.errors.TypesMismatch;
+import org.miod.program.symbol_table.SymbolLocation;
 import org.miod.program.values.BoolValue;
 import org.miod.program.values.EqualOp;
 import org.miod.program.values.ErrorValue;
@@ -119,6 +121,10 @@ public final class ExpressionEval {
             return BoolValue.TRUE;
         }
         return v;
+    }
+
+    public static SymbolLocation makeSymLocation(String unitName, Token token) {
+        return new SymbolLocation(unitName, token.getLine(), token.getCharPositionInLine());
     }
 
     private ExpressionEval() {
