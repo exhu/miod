@@ -11,6 +11,7 @@ import org.miod.program.symbol_table.SymbolDesc;
 import org.miod.program.symbol_table.SymbolTableItem;
 import org.miod.program.symbol_table.SymbolVisibility;
 import org.miod.program.symbol_table.symbols.VarSymbol;
+import org.miod.program.types.FloatType;
 import org.miod.program.types.IntegerType;
 import org.miod.program.types.MiodType;
 
@@ -110,7 +111,14 @@ public class ProgramTestSuite {
 
     @Test
     public void promotionTest() {
-        // TODO check int, float promotion
+        // check int, float promotion
+        assertEquals(IntegerType.CARDINAL.promote(IntegerType.INT8), IntegerType.INT32);
+        assertEquals(IntegerType.CARDINAL.promote(IntegerType.INT32), IntegerType.INT32);
+        assertEquals(IntegerType.CARDINAL.promote(IntegerType.UINT32), IntegerType.UINT32);
+        assertEquals(IntegerType.CARDINAL.promote(IntegerType.INT64), IntegerType.INT64);
+        assertEquals(FloatType.FLOAT.promote(FloatType.FLOAT), FloatType.FLOAT);
+        assertEquals(FloatType.FLOAT.promote(FloatType.DOUBLE), FloatType.DOUBLE);
+        assertEquals(FloatType.DOUBLE.promote(FloatType.DOUBLE), FloatType.DOUBLE);
     }
 
     // TODO write type resolving tests

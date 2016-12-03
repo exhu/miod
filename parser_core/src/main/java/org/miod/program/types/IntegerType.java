@@ -13,7 +13,11 @@ public final class IntegerType extends NumericType<IntegerType> {
     public final boolean signed;
 
     public static final IntegerType INT8 = new IntegerType(ValueTypeId.INT8);
+    public static final IntegerType UINT8 = new IntegerType(ValueTypeId.UINT8);
+    public static final IntegerType INT16 = new IntegerType(ValueTypeId.INT16);
+    public static final IntegerType UINT16 = new IntegerType(ValueTypeId.UINT16);
     public static final IntegerType INT32 = new IntegerType(ValueTypeId.INT32);
+    public static final IntegerType UINT32 = new IntegerType(ValueTypeId.UINT32);
     public static final IntegerType INT64 = new IntegerType(ValueTypeId.INT64);
     public static final IntegerType UINT64 = new IntegerType(ValueTypeId.UINT64);
     public static final IntegerType CARDINAL = new IntegerType(ValueTypeId.CARDINAL);
@@ -42,10 +46,33 @@ public final class IntegerType extends NumericType<IntegerType> {
     }
 
     @Override
-    public IntegerType promote(IntegerType other) {
-        if (other.bits > bits)
-            return other;
-        return this;
+    public IntegerType promote(IntegerType other) {        
+        if (signed == other.signed) {
+            if (other.bits > bits)
+                return other;
+            else
+                return this;
+        }
+        
+        // cardinal        
+        IntegerType card = null, noncard = null;
+
+        if (typeId == ValueTypeId.CARDINAL) {
+            card = this;
+            noncard = other;
+        } else if (other.typeId == ValueTypeId.CARDINAL) {
+            card = other;
+            noncard = this;
+        }
+
+        if (card != null) {
+            if (noncard.bits < 32)
+                return INT32;
+            else
+                return noncard;
+        }
+
+        return null;
     }
 
     private IntegerType(ValueTypeId typeId) {

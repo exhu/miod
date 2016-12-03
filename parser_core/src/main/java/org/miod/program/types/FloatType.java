@@ -21,7 +21,7 @@ public final class FloatType extends NumericType<FloatType> {
 
     @Override
     public boolean isComparableTo(MiodType other) {
-        return other instanceof FloatType;
+        return other.typeId == typeId;
     }
 
     private FloatType(ValueTypeId typeId) {

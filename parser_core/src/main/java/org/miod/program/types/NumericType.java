@@ -13,6 +13,7 @@ public abstract class NumericType<T extends NumericType> extends MiodType {
         super(typeId);
     }
 
+    /// for arithmetic operations
     public abstract T promote(T other);
 
     @Override
