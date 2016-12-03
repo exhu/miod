@@ -89,45 +89,39 @@ public class SemanticVisitor extends MiodParserBaseVisitor<MiodValue> {
     }
 
     @Override
-    public MiodValue visitExprGreater(MiodParser.ExprGreaterContext ctx) {
-        MiodValue left = visit(ctx.left);
-        MiodValue right = visit(ctx.right);
-        return invertBool(exprLessOrEqual(left, right, context.getErrorListener()));
+    public MiodValue visitExprGreater(MiodParser.ExprGreaterContext ctx) {    ;
+        return invertBool(exprLessOrEqual(visit(ctx.left), visit(ctx.right),
+                context.getErrorListener()));
     }
 
     @Override
-    public MiodValue visitExprLess(MiodParser.ExprLessContext ctx) {
-        MiodValue left = visit(ctx.left);
-        MiodValue right = visit(ctx.right);
-        return exprLess(left, right, context.getErrorListener());
+    public MiodValue visitExprLess(MiodParser.ExprLessContext ctx) {        
+        return exprLess(visit(ctx.left), visit(ctx.right),
+                context.getErrorListener());
     }
 
     @Override
-    public MiodValue visitExprGreaterEq(MiodParser.ExprGreaterEqContext ctx) {
-        MiodValue left = visit(ctx.left);
-        MiodValue right = visit(ctx.right);
-        return exprLessOrEqual(right, left, context.getErrorListener());
+    public MiodValue visitExprGreaterEq(MiodParser.ExprGreaterEqContext ctx) {        
+        return exprLessOrEqual(visit(ctx.right), visit(ctx.left),
+                context.getErrorListener());
     }
 
     @Override
-    public MiodValue visitExprLessEq(MiodParser.ExprLessEqContext ctx) {
-        MiodValue left = visit(ctx.left);
-        MiodValue right = visit(ctx.right);
-        return exprLessOrEqual(left, right, context.getErrorListener());
+    public MiodValue visitExprLessEq(MiodParser.ExprLessEqContext ctx) {        
+        return exprLessOrEqual(visit(ctx.left), visit(ctx.right),
+                context.getErrorListener());
     }
 
     @Override
-    public MiodValue visitExprEquals(MiodParser.ExprEqualsContext ctx) {
-        MiodValue left = visit(ctx.left);
-        MiodValue right = visit(ctx.right);
-        return exprEq(left, right, context.getErrorListener());
+    public MiodValue visitExprEquals(MiodParser.ExprEqualsContext ctx) {        
+        return exprEq(visit(ctx.left), visit(ctx.right),
+                context.getErrorListener());
     }
 
     @Override
-    public MiodValue visitExprNotEq(MiodParser.ExprNotEqContext ctx) {
-        MiodValue left = visit(ctx.left);
-        MiodValue right = visit(ctx.right);
-        return invertBool(exprEq(left, right, context.getErrorListener()));
+    public MiodValue visitExprNotEq(MiodParser.ExprNotEqContext ctx) {        
+        return invertBool(exprEq(visit(ctx.left), visit(ctx.right),
+                context.getErrorListener()));
     }
 
     // TODO special case for stuct recursion in definition, e.g.

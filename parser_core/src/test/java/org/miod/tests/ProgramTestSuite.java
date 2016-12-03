@@ -13,7 +13,6 @@ import org.miod.program.symbol_table.SymbolVisibility;
 import org.miod.program.symbol_table.symbols.VarSymbol;
 import org.miod.program.types.IntegerType;
 import org.miod.program.types.MiodType;
-import org.miod.program.types.TypeUtils;
 
 import org.testng.annotations.Test;
 import static org.testng.Assert.*;
@@ -99,14 +98,14 @@ public class ProgramTestSuite {
     
     @Test
     public void integerTest() {
-        assertEquals(TypeUtils.typeFromInteger(0), IntegerType.CARDINAL);
-        assertEquals(TypeUtils.typeFromInteger(-1), IntegerType.INT32);
-        assertEquals(TypeUtils.typeFromInteger(Integer.MIN_VALUE), IntegerType.INT32);
-        assertEquals(TypeUtils.typeFromInteger(Integer.MAX_VALUE), IntegerType.CARDINAL);
-        assertEquals(TypeUtils.typeFromInteger((long)(Integer.MAX_VALUE)+1), IntegerType.INT64);
-        assertEquals(TypeUtils.typeFromInteger((long)(Integer.MIN_VALUE)-1), IntegerType.INT64);
-        assertEquals(TypeUtils.typeFromInteger(Long.MIN_VALUE), IntegerType.INT64);
-        assertEquals(TypeUtils.typeFromInteger(Long.MAX_VALUE), IntegerType.INT64);
+        assertEquals(IntegerType.fromLiteral(0), IntegerType.CARDINAL);
+        assertEquals(IntegerType.fromLiteral(-1), IntegerType.INT32);
+        assertEquals(IntegerType.fromLiteral(Integer.MIN_VALUE), IntegerType.INT32);
+        assertEquals(IntegerType.fromLiteral(Integer.MAX_VALUE), IntegerType.CARDINAL);
+        assertEquals(IntegerType.fromLiteral((long)(Integer.MAX_VALUE)+1), IntegerType.INT64);
+        assertEquals(IntegerType.fromLiteral((long)(Integer.MIN_VALUE)-1), IntegerType.INT64);
+        assertEquals(IntegerType.fromLiteral(Long.MIN_VALUE), IntegerType.INT64);
+        assertEquals(IntegerType.fromLiteral(Long.MAX_VALUE), IntegerType.INT64);
     }
 
     @Test
