@@ -5,30 +5,30 @@
 package org.miod.parser.visitors;
 
 import org.miod.parser.ParserContext;
+import static org.miod.parser.expr.ExpressionEval.exprEq;
+import static org.miod.parser.expr.ExpressionEval.exprLess;
+import static org.miod.parser.expr.ExpressionEval.exprLessOrEqual;
+import static org.miod.parser.expr.ExpressionEval.invertBool;
 import org.miod.parser.generated.MiodParser;
 import org.miod.parser.generated.MiodParserBaseVisitor;
 import org.miod.program.CompilationUnit;
 import org.miod.program.errors.BooleanExprExpected;
 import org.miod.program.errors.CompileTimeExpressionExpected;
-import org.miod.program.errors.OperationNotSupported;
-import org.miod.program.errors.TypesMismatch;
-import org.miod.program.types.TypeUtils;
 import org.miod.program.types.ValueTypeId;
 import org.miod.program.values.BoolValue;
-import org.miod.program.values.EqualOp;
 import org.miod.program.values.IntegerValue;
 import org.miod.program.values.MiodValue;
 import org.miod.program.values.NullValue;
 import org.miod.program.values.RuntimeValue;
-import org.miod.program.values.LessThanOp;
 
 /**
  * First pass visitor. Gathers declarations, tries to evaluate certain
- * expressions.
- * TODO deprecate ExprNodeData, use MiodValue directly.
+ * expressions. TODO deprecate ExprNodeData, use MiodValue directly.
+ *
  * @author yur
  */
 public class SemanticVisitor extends MiodParserBaseVisitor<MiodValue> {
+
     protected final ParserContext context;
     protected CompilationUnit unit;
     protected final String unitName;
@@ -43,16 +43,14 @@ public class SemanticVisitor extends MiodParserBaseVisitor<MiodValue> {
         MiodValue res = visit(ctx.boolExpr());
         if (res == null || res instanceof RuntimeValue) {
             context.getErrorListener().onError(new CompileTimeExpressionExpected());
-        } else {
-            if (res.getType().typeId == ValueTypeId.BOOL) {
-                if (((BoolValue)res).value == true) {
-                    return visit(ctx.trueStmts);
-                } else {
-                    return visit(ctx.falseStmts);
-                }
+        } else if (res.getType().typeId == ValueTypeId.BOOL) {
+            if (((BoolValue) res).value == true) {
+                return visit(ctx.trueStmts);
             } else {
-                context.getErrorListener().onError(new BooleanExprExpected());
+                return visit(ctx.falseStmts);
             }
+        } else {
+            context.getErrorListener().onError(new BooleanExprExpected());
         }
         return null;
     }
@@ -60,7 +58,7 @@ public class SemanticVisitor extends MiodParserBaseVisitor<MiodValue> {
     @Override
     public MiodValue visitUnitHeader(MiodParser.UnitHeaderContext ctx) {
         unit = new CompilationUnit(context.getDefaultSymbolTable(), unitName,
-                0, 0, unitName, context.getErrorListener());        
+                0, 0, unitName, context.getErrorListener());
         context.putUnit(unitName, unit);
         return super.visitUnitHeader(ctx);
     }
@@ -90,119 +88,46 @@ public class SemanticVisitor extends MiodParserBaseVisitor<MiodValue> {
         return visit(ctx.literal());
     }
 
-    private boolean comparableValues(MiodValue left, MiodValue right) {
-        if (left != null && right != null) {
-            if (TypeUtils.isComparable(left.getType(), right.getType())) {
-                return true;
-            } else {
-                context.getErrorListener().onError(new TypesMismatch());
-            }
-        }
-        return false;
-    }
-
-    /*
-        null <= 3 = null
-        1 <= 3 = BoolValue(FALSE)
-        int <= 4 = RuntimeValue(int)
-        TODO...
-    */
-    private MiodValue exprLessOrEqual(MiodValue left, MiodValue right) {
-        if (comparableValues(left, right)) {
-            if(left instanceof LessThanOp) {
-                LessThanOp op = (LessThanOp)left;
-                if (op.lessThanOrEqual((LessThanOp)right))
-                    return BoolValue.TRUE;
-                else
-                    return BoolValue.FALSE;
-            }            
-            else {
-                context.getErrorListener().onError(new OperationNotSupported());
-            }            
-        }
-        return null;
-    }
-
-    private MiodValue exprLess(MiodValue left, MiodValue right) {
-        if (comparableValues(left, right)) {
-            if(left instanceof LessThanOp) {
-                LessThanOp op = (LessThanOp)left;
-                if (op.lessThan((LessThanOp)right))
-                    return BoolValue.TRUE;
-                else
-                    return BoolValue.FALSE;
-            } else {
-                context.getErrorListener().onError(new OperationNotSupported());
-            }
-        }
-        return null;
-    }
-
-    private MiodValue exprEq(MiodValue left, MiodValue right) {
-        if (comparableValues(left, right)) {
-            if (left instanceof EqualOp) {
-                EqualOp op = (EqualOp)left;
-                if (op.equal((EqualOp)right)) {
-                    return BoolValue.TRUE;
-                } else {
-                    return BoolValue.FALSE;
-                }
-            } else {
-                context.getErrorListener().onError(new OperationNotSupported());
-            }
-        }
-
-        return null;
-    }
-
-    private static MiodValue invertBool(MiodValue v) {
-        if (v == BoolValue.TRUE)
-            return BoolValue.FALSE;
-        else if (v == BoolValue.FALSE)
-            return BoolValue.TRUE;
-        return v;
-    }
-
     @Override
     public MiodValue visitExprGreater(MiodParser.ExprGreaterContext ctx) {
         MiodValue left = visit(ctx.left);
         MiodValue right = visit(ctx.right);
-        return invertBool(exprLessOrEqual(left, right));
+        return invertBool(exprLessOrEqual(left, right, context.getErrorListener()));
     }
 
     @Override
     public MiodValue visitExprLess(MiodParser.ExprLessContext ctx) {
         MiodValue left = visit(ctx.left);
         MiodValue right = visit(ctx.right);
-        return exprLess(left, right);
+        return exprLess(left, right, context.getErrorListener());
     }
 
     @Override
     public MiodValue visitExprGreaterEq(MiodParser.ExprGreaterEqContext ctx) {
         MiodValue left = visit(ctx.left);
         MiodValue right = visit(ctx.right);
-        return exprLessOrEqual(right, left);
+        return exprLessOrEqual(right, left, context.getErrorListener());
     }
 
     @Override
     public MiodValue visitExprLessEq(MiodParser.ExprLessEqContext ctx) {
         MiodValue left = visit(ctx.left);
         MiodValue right = visit(ctx.right);
-        return exprLessOrEqual(left, right);
+        return exprLessOrEqual(left, right, context.getErrorListener());
     }
 
     @Override
     public MiodValue visitExprEquals(MiodParser.ExprEqualsContext ctx) {
         MiodValue left = visit(ctx.left);
-        MiodValue right = visit(ctx.right);        
-        return exprEq(left, right);
+        MiodValue right = visit(ctx.right);
+        return exprEq(left, right, context.getErrorListener());
     }
 
     @Override
     public MiodValue visitExprNotEq(MiodParser.ExprNotEqContext ctx) {
         MiodValue left = visit(ctx.left);
         MiodValue right = visit(ctx.right);
-        return invertBool(exprEq(left, right));
+        return invertBool(exprEq(left, right, context.getErrorListener()));
     }
 
     // TODO special case for stuct recursion in definition, e.g.

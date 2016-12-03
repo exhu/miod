@@ -31,9 +31,14 @@ public final class IntegerType extends NumericType<IntegerType> {
         return INT64;
     }
 
-    public boolean isComparableTo(IntegerType other) {
-        return (signed == other.signed) || (typeId == ValueTypeId.CARDINAL
-               || other.typeId == ValueTypeId.CARDINAL);
+    @Override
+    public boolean isComparableTo(MiodType other) {
+        if (other instanceof IntegerType) {
+            IntegerType otherInt = (IntegerType)other;
+            return (signed == otherInt.signed) || (typeId == ValueTypeId.CARDINAL
+                   || otherInt.typeId == ValueTypeId.CARDINAL);
+        }
+        return false;
     }
 
     @Override

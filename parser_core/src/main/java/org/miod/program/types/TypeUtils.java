@@ -13,6 +13,7 @@ import static org.miod.program.types.IntegerType.INT64;
  *
  * @author yur
  */
+@Deprecated
 public final class TypeUtils {
     private TypeUtils() {}
 
@@ -62,21 +63,7 @@ public final class TypeUtils {
     @Deprecated
     private static boolean isInteger(ValueTypeId a) {
         return isSignedInt(a) || isUnsignedInt(a);
-    }
-
-    public static boolean isComparable(MiodType a, MiodType b) {
-        if (a instanceof IntegerType && b instanceof IntegerType) {
-            IntegerType iA = (IntegerType)a;
-            IntegerType iB = (IntegerType)b;
-            return iA.isComparableTo(iB);
-        }
-        
-        if ((a == b) && a instanceof FloatType) {
-            return true;
-        }
-
-        return false;
-    }
+    }    
 
     public static class PromotionResult {
         public ValueTypeId typeId;

@@ -10,10 +10,15 @@ import org.miod.program.types.NullType;
  *
  * @author yur
  */
-public final class NullValue extends MiodValue {
+public final class NullValue extends MiodValue implements EqualOp {
     public static final NullValue VALUE = new NullValue();
+
+    @Override
+    public boolean equal(EqualOp other) {
+        return other instanceof NullValue;
+    }
+
     private NullValue() {
         super(NullType.VALUE);
     }
-
 }

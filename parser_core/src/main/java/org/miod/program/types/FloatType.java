@@ -19,6 +19,11 @@ public final class FloatType extends NumericType<FloatType> {
         return this;
     }
 
+    @Override
+    public boolean isComparableTo(MiodType other) {
+        return other instanceof FloatType;
+    }
+
     private FloatType(ValueTypeId typeId) {
         super(typeId);
     }

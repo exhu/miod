@@ -9,7 +9,7 @@ package org.miod.program.types;
  * @author yur
  */
 public abstract class NumericType<T extends NumericType> extends MiodType {
-    public NumericType(ValueTypeId typeId) {
+    protected NumericType(ValueTypeId typeId) {
         super(typeId);
     }
 
