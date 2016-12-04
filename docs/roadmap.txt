@@ -1,6 +1,7 @@
 TODO:
 >- arithmetic expressions
     - supports* methods must check for same type
+    - deprecate isComparableTo
     if RuntimeValue then form a new RuntimeValue using .promote method
     
 
