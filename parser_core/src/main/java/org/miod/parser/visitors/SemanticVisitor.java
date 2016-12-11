@@ -170,7 +170,7 @@ public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
         // check if already defined
         String id = ctx.bareName().getText();
         SymbolLocation loc = ExpressionEval.makeSymLocation(unitName, ctx.getStart());
-        SymbolTableItem sym = unit.symTable.resolve(id);
+        SymbolTableItem sym = currentSymTable.resolve(id);
         if (sym != null) {
             context.getErrorListener().onError(new SymbolRedefinitionError(sym, loc));
             return null;
@@ -204,7 +204,7 @@ public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
             LOGGER.log(Level.INFO, "auto const");            
             desc.type = nodeValue.value.getType();
         }
-        unit.symTable.put(new ConstSymbol(desc, value));
+        currentSymTable.put(new ConstSymbol(desc, value));
         return null;
     }
 
