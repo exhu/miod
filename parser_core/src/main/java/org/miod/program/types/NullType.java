@@ -14,6 +14,7 @@ public final class NullType extends MiodType {
     @Override
     public boolean supportsEqualOp(MiodType other) {
         switch(other.typeId) {
+            case NULL:
             case CLASS_REF:
             case CLASS_WEAK:
             case CLASS_WEAK_REF:

@@ -10,7 +10,6 @@ import org.miod.program.symbol_table.SymbolTableItem;
  *
  * @author yur
  */
-@Deprecated
 public final class UnitType extends MiodType {
     public SymbolTableItem symbol;
     public UnitType(SymbolTableItem symbol) {
