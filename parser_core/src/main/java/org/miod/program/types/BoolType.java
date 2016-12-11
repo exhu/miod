@@ -12,8 +12,8 @@ public final class BoolType extends MiodType {
     public static final BoolType INSTANCE = new BoolType();
 
     @Override
-    public boolean supportsEqualOp() {
-        return true;
+    public boolean supportsEqualOp(MiodType other) {
+        return other.typeId == ValueTypeId.BOOL;
     }
 
     @Override

@@ -19,8 +19,18 @@ public final class NullType extends MiodType {
     }
 
     @Override
-    public boolean supportsEqualOp() {
-        return true;
+    public boolean supportsEqualOp(MiodType other) {
+        switch(other.typeId) {
+            case CLASS_REF:
+            case CLASS_WEAK:
+            case CLASS_WEAK_REF:
+            case METHOD_WITH_INSTANCE_REF:
+            case PROC_REF:
+            case STRING:
+                return true;
+            default:;
+        }
+        return false;
     }
 
     private NullType() {

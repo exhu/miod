@@ -19,19 +19,20 @@ public abstract class MiodType {
         return this;
     }
 
+    @Deprecated
     public boolean isComparableTo(MiodType other) {
         return false;
     }
     
-    public boolean supportsEqualOp() {
+    public boolean supportsEqualOp(MiodType other) {
         return false;
     }
     
-    public boolean supportsLessThanOp() {
+    public boolean supportsLessThanOp(MiodType other) {
         return false;
     }
 
-    public boolean supportsPlusOp() {
+    public boolean supportsPlusOp(MiodType other) {
         return false;
     }
 }

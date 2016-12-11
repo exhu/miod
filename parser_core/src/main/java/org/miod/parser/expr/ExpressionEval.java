@@ -47,7 +47,7 @@ public final class ExpressionEval {
         }
 
         if (comparableValues(left, right, errors)) {
-            if (left.getType().supportsLessThanOp()) {
+            if (left.getType().supportsLessThanOp(right.getType())) {
                 if (left instanceof LessThanOp) {
                     LessThanOp op = (LessThanOp) left;
                     if (op.lessThanOrEqual((LessThanOp) right)) {
@@ -134,7 +134,7 @@ public final class ExpressionEval {
             return null;
         }
 
-        if (left.getType().supportsPlusOp() && right.getType().supportsPlusOp()) {
+        if (left.getType().supportsPlusOp(right.getType())) {
             if (left instanceof PlusOp) {
                 PlusOp op = (PlusOp) left;
                 return op.plusOp(right);

@@ -37,12 +37,7 @@ public final class IntegerType extends NumericType<IntegerType> {
 
     @Override
     public boolean isComparableTo(MiodType other) {
-        if (other instanceof IntegerType) {
-            IntegerType otherInt = (IntegerType)other;
-            return (signed == otherInt.signed) || (typeId == ValueTypeId.CARDINAL
-                   || otherInt.typeId == ValueTypeId.CARDINAL);
-        }
-        return false;
+        return compatibleWith(other);
     }
 
     @Override
@@ -119,5 +114,33 @@ public final class IntegerType extends NumericType<IntegerType> {
                 signed = false;
         }
     }
+
+    private boolean compatibleWith(MiodType other) {
+        if (other instanceof IntegerType) {
+            IntegerType otherInt = (IntegerType)other;
+            return (signed == otherInt.signed) || (typeId == ValueTypeId.CARDINAL
+                   || otherInt.typeId == ValueTypeId.CARDINAL);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean supportsEqualOp(MiodType other) {
+        return compatibleWith(other);
+    }
+
+    @Override
+    public boolean supportsLessThanOp(MiodType other) {
+        return compatibleWith(other);
+    }
+
+    @Override
+    public boolean supportsPlusOp(MiodType other) {
+        return compatibleWith(other);
+    }
+
+
+
+
 
 }
