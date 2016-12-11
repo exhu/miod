@@ -14,9 +14,15 @@ public final class BoolValue extends MiodValue implements EqualOp {
     public static final BoolValue TRUE = new BoolValue(true);
     public static final BoolValue FALSE = new BoolValue(false);
 
+    public static BoolValue fromBoolean(boolean b) {
+        if (b == true)
+            return TRUE;
+        return FALSE;
+    }
+
     @Override
-    public boolean equal(EqualOp other) {
-        return ((BoolValue)other).value == value;
+    public BoolValue equal(EqualOp other) {
+        return fromBoolean(((BoolValue)other).value == value);
     }
 
     public final boolean value;

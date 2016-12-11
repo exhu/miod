@@ -9,6 +9,6 @@ package org.miod.program.values;
  * @author yur
  */
 public interface LessThanOp {
-    boolean lessThan(LessThanOp other);
-    boolean lessThanOrEqual(LessThanOp other);
+    BoolValue lessThan(LessThanOp other);
+    BoolValue lessThanOrEqual(LessThanOp other);
 }

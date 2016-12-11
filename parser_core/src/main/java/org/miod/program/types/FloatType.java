@@ -37,6 +37,6 @@ public final class FloatType extends NumericType<FloatType> {
 
     @Override
     public boolean supportsPlusOp(MiodType other) {
-        return other.typeId == typeId;
+        return (other.typeId == typeId);
     }
 }

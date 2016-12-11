@@ -1,11 +1,10 @@
 TODO:
 >- arithmetic expressions       
-    - if RuntimeValue then form a new RuntimeValue using .promote method,
-    check instanceof PlusOp etc
-    - LessThanOp return BoolValue. etc
-    - remove LessOrEqual ? refactor copypasta on ExpressionEval to abstract iface "apply"
+    + if RuntimeValue then form a new RuntimeValue using .promote method,
+    + check instanceof PlusOp etc
+    + LessThanOp return BoolValue. etc
+    + refactor copypasta on ExpressionEval to abstract iface "apply"
     
-
 + use IntegerType class, write FloatType class
 
 - exclude nstring and nwstring

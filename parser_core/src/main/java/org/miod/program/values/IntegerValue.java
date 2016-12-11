@@ -35,20 +35,20 @@ public final class IntegerValue extends MiodValue implements LessThanOp,
     }
 
     @Override
-    public boolean lessThan(LessThanOp other) {
+    public BoolValue lessThan(LessThanOp other) {
         IntegerValue o = (IntegerValue) other;
-        return value < o.value;
+        return BoolValue.fromBoolean(value < o.value);
     }
 
     @Override
-    public boolean lessThanOrEqual(LessThanOp other) {
+    public BoolValue lessThanOrEqual(LessThanOp other) {
         IntegerValue o = (IntegerValue) other;
-        return value <= o.value;
+        return BoolValue.fromBoolean(value <= o.value);
     }
 
     @Override
-    public boolean equal(EqualOp other) {
-        return value == ((IntegerValue) other).value;
+    public BoolValue equal(EqualOp other) {
+        return BoolValue.fromBoolean(value == ((IntegerValue) other).value);
     }
 
     @Override

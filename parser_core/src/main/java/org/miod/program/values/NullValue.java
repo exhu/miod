@@ -14,8 +14,8 @@ public final class NullValue extends MiodValue implements EqualOp {
     public static final NullValue VALUE = new NullValue();
 
     @Override
-    public boolean equal(EqualOp other) {
-        return other instanceof NullValue;
+    public BoolValue equal(EqualOp other) {
+        return BoolValue.fromBoolean(other instanceof NullValue);
     }
 
     private NullValue() {

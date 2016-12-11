@@ -9,5 +9,5 @@ package org.miod.program.values;
  * @author yur
  */
 public interface EqualOp {
-    boolean equal(EqualOp other);
+    BoolValue equal(EqualOp other);
 }

@@ -14,4 +14,5 @@ import org.miod.program.values.MiodValue;
 public interface ExprApply {
     boolean supportsOp(MiodType left, MiodType right);
     MiodValue apply(MiodValue left, MiodValue right);
+    MiodValue runtimeValue(MiodType left, MiodType right);
 }

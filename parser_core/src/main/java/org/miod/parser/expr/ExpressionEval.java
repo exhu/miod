@@ -9,6 +9,7 @@ import org.miod.parser.ErrorListener;
 import org.miod.program.errors.OperationNotSupported;
 import org.miod.program.symbol_table.SymbolLocation;
 import org.miod.program.types.MiodType;
+import org.miod.program.types.NumericType;
 import org.miod.program.values.BoolValue;
 import org.miod.program.values.EqualOp;
 import org.miod.program.values.ErrorValue;
@@ -33,7 +34,7 @@ public final class ExpressionEval {
     }
 
     public static MiodValue apply(MiodValue left,
-            MiodValue right, RuntimeValue rtValue, ErrorListener errors,
+            MiodValue right, ErrorListener errors,
             ExprApply iface) {
         if (nulls(left, right))
             return null;
@@ -42,7 +43,7 @@ public final class ExpressionEval {
             if (!runtimeValues(left, right)) {
                 return iface.apply(left, right);
             } else {
-                return rtValue;
+                return iface.runtimeValue(left.getType(), right.getType());
             }
         }
         
@@ -57,7 +58,7 @@ public final class ExpressionEval {
      */
     public static MiodValue exprLessOrEqual(MiodValue left, MiodValue right,
             ErrorListener errors) {
-        return apply(left, right, RuntimeValue.BOOL, errors, new ExprApply() {
+        return apply(left, right, errors, new ExprApply() {
             @Override
             public boolean supportsOp(MiodType left, MiodType right) {
                 return left.supportsLessThanOp(right);
@@ -66,57 +67,56 @@ public final class ExpressionEval {
             @Override
             public MiodValue apply(MiodValue left, MiodValue right) {
                 LessThanOp op = (LessThanOp) left;
-                if (op.lessThanOrEqual((LessThanOp) right)) {
-                    return BoolValue.TRUE;
-                } else {
-                    return BoolValue.FALSE;
-                }
+                return op.lessThanOrEqual((LessThanOp) right);
+            }
+
+            @Override
+            public MiodValue runtimeValue(MiodType left, MiodType right) {
+                return RuntimeValue.BOOL;
             }
         });
     }
 
     public static MiodValue exprLess(MiodValue left, MiodValue right,
             ErrorListener errors) {
-        if (nulls(left, right)) {
-            return null;
-        }
+        return apply(left, right, errors, new ExprApply() {
+            @Override
+            public boolean supportsOp(MiodType left, MiodType right) {
+                return left.supportsLessThanOp(right);
+            }
 
-        if (left.getType().supportsLessThanOp(right.getType())) {
-            if (!runtimeValues(left, right)) {
+            @Override
+            public MiodValue apply(MiodValue left, MiodValue right) {
                 LessThanOp op = (LessThanOp) left;
-                if (op.lessThan((LessThanOp) right)) {
-                    return BoolValue.TRUE;
-                } else {
-                    return BoolValue.FALSE;
-                }
-            } else {
+                return op.lessThan((LessThanOp) right);
+            }
+
+            @Override
+            public MiodValue runtimeValue(MiodType left, MiodType right) {
                 return RuntimeValue.BOOL;
             }
-        }
-        errors.onError(new OperationNotSupported());
-        return ErrorValue.UNSUPPORTED;
+        });
     }
 
     public static MiodValue exprEq(MiodValue left, MiodValue right,
             ErrorListener errors) {
-        if (left == null || right == null) {
-            return null;
-        }
+        return apply(left, right, errors, new ExprApply() {
+            @Override
+            public boolean supportsOp(MiodType left, MiodType right) {
+                return left.supportsEqualOp(right);
+            }
 
-        if (left.getType().supportsEqualOp(right.getType())) {
-            if (!runtimeValues(left, right)) {
+            @Override
+            public MiodValue apply(MiodValue left, MiodValue right) {
                 EqualOp op = (EqualOp) left;
-                if (op.equal((EqualOp) right)) {
-                    return BoolValue.TRUE;
-                } else {
-                    return BoolValue.FALSE;
-                }
-            } else {
+                return op.equal((EqualOp) right);
+            }
+
+            @Override
+            public MiodValue runtimeValue(MiodType left, MiodType right) {
                 return RuntimeValue.BOOL;
             }
-        }
-        errors.onError(new OperationNotSupported());
-        return ErrorValue.UNSUPPORTED;
+        });
     }
 
     public static MiodValue invertBool(MiodValue v) {
@@ -138,20 +138,27 @@ public final class ExpressionEval {
 
     public static MiodValue exprPlus(MiodValue left, MiodValue right,
             ErrorListener errors) {
-        if (left == null || right == null) {
-            return null;
-        }
+        
+        return apply(left, right, errors, new ExprApply() {            
+            @Override
+            public boolean supportsOp(MiodType left, MiodType right) {
+                return left.supportsPlusOp(right);
+            }
 
-        if (left.getType().supportsPlusOp(right.getType())) {
-            if (left instanceof PlusOp) {
+            @Override
+            public MiodValue apply(MiodValue left, MiodValue right) {
                 PlusOp op = (PlusOp) left;
                 return op.plusOp(right);
-            } else {
-                
             }
-        }
-        errors.onError(new OperationNotSupported());
-        return ErrorValue.UNSUPPORTED;
+
+            @Override
+            public MiodValue runtimeValue(MiodType left, MiodType right) {
+                if (left instanceof NumericType) {
+                    return RuntimeValue.fromType(((NumericType)left).promote((NumericType)right));
+                }
+                return RuntimeValue.fromType(left);
+            }
+        });        
     }
 
     private ExpressionEval() {
