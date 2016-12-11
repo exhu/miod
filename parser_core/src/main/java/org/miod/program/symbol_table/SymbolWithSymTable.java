@@ -17,7 +17,12 @@ public abstract class SymbolWithSymTable extends SymbolTableItem implements Symb
         super(desc);
         symTable = new BasicSymbolTable(parent, errorListener);
     }
-    
+
+    @Override
+    public SymbolTable getParentTable() {
+        return symTable.getParentTable();
+    }
+ 
     @Override
     public SymbolTableItem resolve(String id) {
         return symTable.resolve(id);
