@@ -8,6 +8,7 @@ import org.antlr.v4.runtime.Token;
 import org.miod.parser.ErrorListener;
 import org.miod.program.errors.OperationNotSupported;
 import org.miod.program.symbol_table.SymbolLocation;
+import org.miod.program.types.MiodType;
 import org.miod.program.values.BoolValue;
 import org.miod.program.values.EqualOp;
 import org.miod.program.values.ErrorValue;
@@ -23,6 +24,31 @@ import org.miod.program.values.RuntimeValue;
  * @author yur
  */
 public final class ExpressionEval {
+    public static boolean runtimeValues(MiodValue left, MiodValue right) {
+        return (left instanceof RuntimeValue) || (right instanceof RuntimeValue);
+    }
+
+    public static boolean nulls(MiodValue left, MiodValue right) {
+        return left == null || right == null;
+    }
+
+    public static MiodValue apply(MiodValue left,
+            MiodValue right, RuntimeValue rtValue, ErrorListener errors,
+            ExprApply iface) {
+        if (nulls(left, right))
+            return null;
+
+        if (iface.supportsOp(left.getType(), right.getType())) {
+            if (!runtimeValues(left, right)) {
+                return iface.apply(left, right);
+            } else {
+                return rtValue;
+            }
+        }
+        
+        errors.onError(new OperationNotSupported());
+        return ErrorValue.UNSUPPORTED;
+    }
 
     /*
         null <= 3 = null
@@ -31,34 +57,32 @@ public final class ExpressionEval {
      */
     public static MiodValue exprLessOrEqual(MiodValue left, MiodValue right,
             ErrorListener errors) {
-        if (left == null || right == null) {
-            return null;
-        }
+        return apply(left, right, RuntimeValue.BOOL, errors, new ExprApply() {
+            @Override
+            public boolean supportsOp(MiodType left, MiodType right) {
+                return left.supportsLessThanOp(right);
+            }
 
-        if (left.getType().supportsLessThanOp(right.getType())) {
-            if (left instanceof LessThanOp) {
+            @Override
+            public MiodValue apply(MiodValue left, MiodValue right) {
                 LessThanOp op = (LessThanOp) left;
                 if (op.lessThanOrEqual((LessThanOp) right)) {
                     return BoolValue.TRUE;
                 } else {
                     return BoolValue.FALSE;
                 }
-            } else {
-                return RuntimeValue.BOOL;
             }
-        }
-        errors.onError(new OperationNotSupported());
-        return ErrorValue.UNSUPPORTED;
+        });
     }
 
     public static MiodValue exprLess(MiodValue left, MiodValue right,
             ErrorListener errors) {
-        if (left == null || right == null) {
+        if (nulls(left, right)) {
             return null;
         }
 
         if (left.getType().supportsLessThanOp(right.getType())) {
-            if (left instanceof LessThanOp) {
+            if (!runtimeValues(left, right)) {
                 LessThanOp op = (LessThanOp) left;
                 if (op.lessThan((LessThanOp) right)) {
                     return BoolValue.TRUE;
@@ -80,7 +104,7 @@ public final class ExpressionEval {
         }
 
         if (left.getType().supportsEqualOp(right.getType())) {
-            if (left instanceof EqualOp) {
+            if (!runtimeValues(left, right)) {
                 EqualOp op = (EqualOp) left;
                 if (op.equal((EqualOp) right)) {
                     return BoolValue.TRUE;
@@ -123,11 +147,11 @@ public final class ExpressionEval {
                 PlusOp op = (PlusOp) left;
                 return op.plusOp(right);
             } else {
-                errors.onError(new OperationNotSupported());
-                return ErrorValue.UNSUPPORTED;
+                
             }
         }
-        return ErrorValue.TYPES_MISMATCH;
+        errors.onError(new OperationNotSupported());
+        return ErrorValue.UNSUPPORTED;
     }
 
     private ExpressionEval() {
