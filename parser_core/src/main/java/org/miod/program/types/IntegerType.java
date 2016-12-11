@@ -36,11 +36,6 @@ public final class IntegerType extends NumericType<IntegerType> {
     }
 
     @Override
-    public boolean isComparableTo(MiodType other) {
-        return compatibleWith(other);
-    }
-
-    @Override
     public IntegerType promote(IntegerType other) {        
         if (signed == other.signed) {
             if (other.bits > bits)

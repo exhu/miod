@@ -18,11 +18,6 @@ public abstract class MiodType {
     MiodType resolve() {
         return this;
     }
-
-    @Deprecated
-    public boolean isComparableTo(MiodType other) {
-        return false;
-    }
     
     public boolean supportsEqualOp(MiodType other) {
         return false;

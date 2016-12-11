@@ -37,7 +37,7 @@ import org.miod.program.values.RuntimeValue;
 
 /**
  * First pass visitor. Gathers declarations, tries to evaluate certain
- * expressions. TODO deprecate ExprNodeData, use MiodValue directly.
+ * expressions.
  *
  * @author yur
  */

@@ -16,12 +16,6 @@ public final class BoolType extends MiodType {
         return other.typeId == ValueTypeId.BOOL;
     }
 
-    @Override
-    public boolean isComparableTo(MiodType other) {
-        return other instanceof BoolType;
-    }
-
-
     private BoolType() {
         super(ValueTypeId.BOOL);
     }

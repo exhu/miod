@@ -7,7 +7,6 @@ package org.miod.parser.expr;
 import org.antlr.v4.runtime.Token;
 import org.miod.parser.ErrorListener;
 import org.miod.program.errors.OperationNotSupported;
-import org.miod.program.errors.TypesMismatch;
 import org.miod.program.symbol_table.SymbolLocation;
 import org.miod.program.values.BoolValue;
 import org.miod.program.values.EqualOp;
@@ -25,16 +24,6 @@ import org.miod.program.values.RuntimeValue;
  */
 public final class ExpressionEval {
 
-    public static boolean comparableValues(MiodValue left, MiodValue right,
-            ErrorListener errors) {
-        if (left.getType().isComparableTo(right.getType())) {
-            return true;
-        } else {
-            errors.onError(new TypesMismatch());
-        }
-        return false;
-    }
-
     /*
         null <= 3 = null
         1 <= 3 = BoolValue(FALSE)
@@ -46,24 +35,20 @@ public final class ExpressionEval {
             return null;
         }
 
-        if (comparableValues(left, right, errors)) {
-            if (left.getType().supportsLessThanOp(right.getType())) {
-                if (left instanceof LessThanOp) {
-                    LessThanOp op = (LessThanOp) left;
-                    if (op.lessThanOrEqual((LessThanOp) right)) {
-                        return BoolValue.TRUE;
-                    } else {
-                        return BoolValue.FALSE;
-                    }
+        if (left.getType().supportsLessThanOp(right.getType())) {
+            if (left instanceof LessThanOp) {
+                LessThanOp op = (LessThanOp) left;
+                if (op.lessThanOrEqual((LessThanOp) right)) {
+                    return BoolValue.TRUE;
                 } else {
-                    return RuntimeValue.BOOL;
+                    return BoolValue.FALSE;
                 }
             } else {
-                errors.onError(new OperationNotSupported());
-                return ErrorValue.UNSUPPORTED;
+                return RuntimeValue.BOOL;
             }
         }
-        return ErrorValue.TYPES_MISMATCH;
+        errors.onError(new OperationNotSupported());
+        return ErrorValue.UNSUPPORTED;
     }
 
     public static MiodValue exprLess(MiodValue left, MiodValue right,
@@ -72,7 +57,7 @@ public final class ExpressionEval {
             return null;
         }
 
-        if (comparableValues(left, right, errors)) {
+        if (left.getType().supportsLessThanOp(right.getType())) {
             if (left instanceof LessThanOp) {
                 LessThanOp op = (LessThanOp) left;
                 if (op.lessThan((LessThanOp) right)) {
@@ -81,11 +66,11 @@ public final class ExpressionEval {
                     return BoolValue.FALSE;
                 }
             } else {
-                errors.onError(new OperationNotSupported());
-                return ErrorValue.UNSUPPORTED;
+                return RuntimeValue.BOOL;
             }
         }
-        return ErrorValue.TYPES_MISMATCH;
+        errors.onError(new OperationNotSupported());
+        return ErrorValue.UNSUPPORTED;
     }
 
     public static MiodValue exprEq(MiodValue left, MiodValue right,
@@ -94,7 +79,7 @@ public final class ExpressionEval {
             return null;
         }
 
-        if (comparableValues(left, right, errors)) {
+        if (left.getType().supportsEqualOp(right.getType())) {
             if (left instanceof EqualOp) {
                 EqualOp op = (EqualOp) left;
                 if (op.equal((EqualOp) right)) {
@@ -103,12 +88,11 @@ public final class ExpressionEval {
                     return BoolValue.FALSE;
                 }
             } else {
-                errors.onError(new OperationNotSupported());
-                return ErrorValue.UNSUPPORTED;
+                return RuntimeValue.BOOL;
             }
         }
-
-        return ErrorValue.TYPES_MISMATCH;
+        errors.onError(new OperationNotSupported());
+        return ErrorValue.UNSUPPORTED;
     }
 
     public static MiodValue invertBool(MiodValue v) {
