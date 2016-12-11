@@ -9,6 +9,8 @@ package org.miod.program.symbol_table;
  * @author yur
  */
 public interface SymbolTable {
+    SymbolTable getParentTable();
+
     /// "::ID" skips first match and goes higher to the parent
     SymbolTableItem resolve(String id);
     

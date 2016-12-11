@@ -27,9 +27,9 @@ public enum ValueTypeId {
     FLOAT,
     DOUBLE,
     NCHAR_LITERAL,
-    NCHAR,
+    //NCHAR,
     STRING_LITERAL,
-    NSTRING,
+    //NSTRING,
     STRING,
     ARRAY_SIZED, // array definition
     ARRAY_VALUE,

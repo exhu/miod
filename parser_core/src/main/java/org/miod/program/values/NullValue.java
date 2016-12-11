@@ -15,6 +15,7 @@ public final class NullValue extends MiodValue implements EqualOp {
 
     @Override
     public BoolValue equal(EqualOp other) {
+        // TODO for ref values
         return BoolValue.fromBoolean(other instanceof NullValue);
     }
 

@@ -23,6 +23,7 @@ import org.miod.program.errors.SymbolRedefinitionError;
 import org.miod.program.errors.TypesMismatch;
 import org.miod.program.symbol_table.SymbolDesc;
 import org.miod.program.symbol_table.SymbolLocation;
+import org.miod.program.symbol_table.SymbolTable;
 import org.miod.program.symbol_table.SymbolTableItem;
 import org.miod.program.symbol_table.SymbolVisibility;
 import org.miod.program.symbol_table.symbols.ConstSymbol;
@@ -47,6 +48,7 @@ public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
     protected final ParserContext context;
     protected CompilationUnit unit;
     protected final String unitName;
+    protected SymbolTable currentSymTable;
 
     public SemanticVisitor(String unitName, ParserContext ctx) {
         this.context = ctx;
@@ -75,6 +77,7 @@ public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
         unit = new CompilationUnit(context.getDefaultSymbolTable(), unitName,
                 0, 0, unitName, context.getErrorListener());
         context.putUnit(unitName, unit);
+        currentSymTable = unit.symTable;
         return super.visitUnitHeader(ctx);
     }
 
@@ -155,7 +158,7 @@ public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
 
     @Override
     public ExprNodeData visitConstExpr(MiodParser.ConstExprContext ctx) {
-        return visit(ctx.expr()); //To change body of generated methods, choose Tools | Templates.
+        return visit(ctx.expr());
     }
 
     @Override
@@ -206,7 +209,8 @@ public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
     }
 
     protected final ExprNodeData resolveSymbol(String name) {
-        SymbolTableItem sym = unit.symTable.resolve(name);
+        // current context local symbol table
+        SymbolTableItem sym = currentSymTable.resolve(name);
         if (sym != null) {
             return ExprNodeData.newFromSymbolTableItem(sym);
         }

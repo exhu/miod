@@ -1,9 +1,13 @@
 TODO:
->- arithmetic expressions       
+>- arithmetic expressions
+    - fix promote: it is wrong for immediate values! e.g. a : int8; a = a + 1 (cardinal) -> int32 which is wrong
     + if RuntimeValue then form a new RuntimeValue using .promote method,
     + check instanceof PlusOp etc
     + LessThanOp return BoolValue. etc
     + refactor copypasta on ExpressionEval to abstract iface "apply"
+
+- update currentSymTable visiting classes, procs/methods, blocks...
+- memorize node values and don't visit calculated? (optimization)
     
 + use IntegerType class, write FloatType class
 

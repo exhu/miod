@@ -153,7 +153,7 @@ public final class ExpressionEval {
 
             @Override
             public MiodValue runtimeValue(MiodType left, MiodType right) {
-                if (left instanceof NumericType) {
+                if (left instanceof NumericType && right instanceof NumericType) {
                     return RuntimeValue.fromType(((NumericType)left).promote((NumericType)right));
                 }
                 return RuntimeValue.fromType(left);

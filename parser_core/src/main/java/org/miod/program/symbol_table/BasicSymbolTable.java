@@ -23,6 +23,11 @@ public class BasicSymbolTable implements SymbolTable {
         this.errorListener = errorListener;
     }
 
+    @Override
+    public SymbolTable getParentTable() {
+        return parent;
+    }
+    
     public final String getItemsAsString() {
         return items.toString();
     }
