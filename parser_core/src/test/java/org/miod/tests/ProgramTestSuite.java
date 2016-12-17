@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.miod.parser.DefaultUnitsPathsResolver;
 import org.miod.parser.ErrorReporter;
+import org.miod.parser.ErrorReporterException;
 import org.miod.parser.UnitParser;
 import org.miod.program.CompilationUnit;
 import org.miod.program.symbol_table.DefaultSymbolTable;
@@ -165,5 +166,30 @@ public class ProgramTestSuite {
         assertEquals(aType.size, 3);
         ArrayType bType = (ArrayType)(((TypeDefSymbol)unit.symTable.resolve("sizedB")).desc.type);
         assertEquals(bType.size, 4);
+    }
+
+    @Test
+    public void intCastTest() {
+        ErrorReporter reporter = new ErrorReporter();
+        reporter.setStopAtFirstError(true);
+
+        List<String> stringPaths = new ArrayList<>();
+        stringPaths.add("test_data");
+        UnitParser parser = new UnitParser(stringPaths, reporter);
+        try {
+            parser.parseFileFromPathString("test_data/pkg1/test_int_cast0001.miod", false);
+        } catch(ErrorReporterException e) {
+            System.out.println(reporter.errorsAsText());
+        }
+        CompilationUnit unit = parser.getContext().getOrParseUnit("pkg1::test_int_cast0001", null);
+        System.out.println(unit.symTable.getItemsAsString());
+
+        ConstSymbol bSym = (ConstSymbol)unit.symTable.resolve("b");
+        IntegerValue bValue = (IntegerValue)bSym.value;
+        assertEquals(bValue.value, 0);
+
+        ConstSymbol aSym = (ConstSymbol)unit.symTable.resolve("a");
+        IntegerValue aValue = (IntegerValue)aSym.value;
+        assertEquals(aValue.value, 127);
     }
 }

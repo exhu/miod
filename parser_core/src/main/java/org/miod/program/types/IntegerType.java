@@ -11,6 +11,7 @@ package org.miod.program.types;
 public final class IntegerType extends NumericType<IntegerType> {
     public final int bits;
     public final boolean signed;
+    public final long maxValue, minValue;
 
     public static final IntegerType INT8 = new IntegerType(ValueTypeId.INT8);
     public static final IntegerType UINT8 = new IntegerType(ValueTypeId.UINT8);
@@ -33,6 +34,10 @@ public final class IntegerType extends NumericType<IntegerType> {
             return UINT64;*/
 
         return INT64;
+    }
+
+    public final boolean isInRange(long v) {
+        return v >= minValue && v <= maxValue;
     }
 
     @Override
@@ -71,42 +76,62 @@ public final class IntegerType extends NumericType<IntegerType> {
             case INT8:
                 bits = 8;
                 signed = true;
+                minValue = Byte.MIN_VALUE;
+                maxValue = Byte.MAX_VALUE;
                 break;
             case INT16:
                 bits = 16;
                 signed = true;
+                minValue = Short.MIN_VALUE;
+                maxValue = Short.MAX_VALUE;
                 break;
             case INT32:
                 bits = 32;
                 signed = true;
+                minValue = Integer.MIN_VALUE;
+                maxValue = Integer.MAX_VALUE;
                 break;
             case INT64:
                 bits = 64;
                 signed = true;
+                minValue = Long.MIN_VALUE;
+                maxValue = Long.MAX_VALUE;
                 break;
             case UINT8:
                 bits = 8;
                 signed = false;
+                minValue = 0;
+                maxValue = 1 << 8 - 1;
                 break;
             case UINT16:
                 bits = 16;
                 signed = false;
+                minValue = 0;
+                maxValue = 1 << 16 - 1;
                 break;
             case UINT32:
                 bits = 32;
                 signed = false;
+                minValue = 0;
+                maxValue = 1 << 32 - 1;
                 break;
             case UINT64:
                 bits = 64;
                 signed = false;
+                minValue = 0;
+                maxValue = Long.MAX_VALUE; // TODO fix
                 break;
             case CARDINAL:
                 bits = 31;
                 signed = false;
+                minValue = 0;
+                maxValue = Integer.MAX_VALUE;
                 break;
             default: 
                 bits = 0;
                 signed = false;
+                minValue = 0;
+                maxValue = 0;
         }
     }
 
@@ -134,8 +159,8 @@ public final class IntegerType extends NumericType<IntegerType> {
         return compatibleWith(other);
     }
 
-
-
-
-
+    @Override
+    public boolean supportsCastTo(MiodType other) {
+        return other instanceof IntegerType;
+    }
 }

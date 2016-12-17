@@ -352,20 +352,26 @@ public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
         ExprNodeData targetTypeData = visit(ctx.typeSpec());
         ExprNodeData exprData = visit(ctx.expr());
         
-        if (ExpressionEval.nulls(targetTypeData, exprData)) {
+        if (ExpressionEval.nulls(targetTypeData, exprData) || exprData.value == null) {
             return null;
         }
+
+        if (exprData.value.getType().supportsCastTo(targetTypeData.typespec)) {
+            return ExprNodeData.newValue(exprData.value.castTo(targetTypeData.typespec));
+        }
+
+        context.getErrorListener().onError(new TypesMismatch(makeSymLocation(ctx.typeSpec().getStart())));
         /* TODO
-            targetType can convert?
-            log error if overflow,
+            + targetType can convert?
+            - log error if overflow?
 
 
-            long -> int
-            double -> float
-            base class -> concrete class
+            + long -> int
+            - double -> float
+            - base class -> concrete class
 
-            1) convert types, insert checks in code generation
-            2) convert values
+            - 1) convert types, insert checks in code generation
+            + 2) convert values
         */
 
         return null;

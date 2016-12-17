@@ -30,4 +30,8 @@ public abstract class MiodType {
     public boolean supportsPlusOp(MiodType other) {
         return false;
     }
+
+    public boolean supportsCastTo(MiodType other) {
+        return false;
+    }
 }

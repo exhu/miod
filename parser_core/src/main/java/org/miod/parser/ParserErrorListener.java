@@ -12,6 +12,7 @@ import org.antlr.v4.runtime.Recognizer;
 import org.antlr.v4.runtime.atn.ATNConfigSet;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.miod.program.errors.SyntaxError;
+import org.miod.program.symbol_table.SymbolLocation;
 
 /**
  * ANTLR-based listener for syntax problems.
@@ -22,16 +23,18 @@ public final class ParserErrorListener implements ANTLRErrorListener {
 
     private final ErrorListener listener;
     public boolean hasErrors = false;
+    private final String fileName;
 
-    public ParserErrorListener(ErrorListener listener) {
+    public ParserErrorListener(ErrorListener listener, String fileName) {
         this.listener = listener;
+        this.fileName = fileName;
     }
 
     @Override
-    public void syntaxError(Recognizer<?, ?> rcgnzr, Object o, int i, int i1,
-            String string, RecognitionException re) {
+    public void syntaxError(Recognizer<?, ?> rcgnzr, Object o, int line, int col,
+            String txt, RecognitionException re) {
         hasErrors = true;
-        listener.onError(new SyntaxError());
+        listener.onError(new SyntaxError(txt, new SymbolLocation(fileName, line, col)));
     }
 
     @Override

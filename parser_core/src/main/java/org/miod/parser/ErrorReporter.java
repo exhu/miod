@@ -25,6 +25,10 @@ public final class ErrorReporter implements ErrorListener {
 
     }
 
+    public String errorsAsText() {
+        return errors.toString();
+    }
+
     public void setStopAtFirstError(boolean b) {
         stopAtFirstError = b;
     }

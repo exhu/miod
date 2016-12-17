@@ -33,4 +33,13 @@ public final class RuntimeValue extends MiodValue {
         super(type);
     }
 
+    @Override
+    public MiodValue castTo(MiodType other) {
+        if (type.supportsCastTo(other)) {
+            return fromType(other);
+        }
+        return null;
+    }
+
+
 }

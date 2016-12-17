@@ -70,7 +70,7 @@ public final class UnitParser implements UnitParserProvider {
     public final void parseFile(String unitName, Path unitPath, boolean multiPass) {
         //final String unitName = pathsResolver.unitNameFromPath(unitPath);
         ParseTree tree;
-        ParserErrorListener antlrErrorListener = new ParserErrorListener(this.errorListener);
+        ParserErrorListener antlrErrorListener = new ParserErrorListener(this.errorListener, unitPath.toString());
         try (BufferedReader reader = Files.newBufferedReader(unitPath,
                 Charset.forName("UTF-8"))) {
             ANTLRInputStream input = new ANTLRInputStream(reader);

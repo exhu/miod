@@ -21,4 +21,8 @@ public abstract class MiodValue {
         this.type = type;
     }
 
+    public MiodValue castTo(MiodType other) {
+        return null;
+    }
+
 }

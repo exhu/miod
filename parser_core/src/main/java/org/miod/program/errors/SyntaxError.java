@@ -4,13 +4,23 @@
  */
 package org.miod.program.errors;
 
+import org.miod.program.symbol_table.SymbolLocation;
+
 /**
  *
  * @author yur
  */
 public final class SyntaxError extends CompilerError {
-    public SyntaxError() {
-        // TODO
-        super(null);
+    private String text;
+    public SyntaxError(String txt, SymbolLocation loc) {
+        super(loc);
+        text = txt;
     }
+
+    @Override
+    public String toString() {
+        return makeErrorText(text);
+    }
+
+
 }

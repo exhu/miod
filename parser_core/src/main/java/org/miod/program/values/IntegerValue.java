@@ -26,12 +26,38 @@ public final class IntegerValue extends MiodValue implements LessThanOp,
         value = v;
     }
 
+    /// Tries to convert, if the value cannot fit the target
+    /// returns a bigger type.
     public IntegerValue convertTo(IntegerType target) {
         if (type.typeId == target.typeId) {
             return this;
         }
 
+        if (target.isInRange(value)) {
+            return new IntegerValue(value, target);
+        }
+
         return new IntegerValue(value, ((IntegerType) type).promote(target));
+    }
+
+    /// Tries to convert preserving the value, otherwise rounds to the lowest
+    /// or highest value of the target type.
+    public IntegerValue castConvert(IntegerType target) {
+        if (type.typeId == target.typeId) {
+            return this;
+        }
+
+        if (target.isInRange(value)) {
+            return new IntegerValue(value, target);
+        }
+
+        return new IntegerValue(value > target.maxValue ? target.maxValue
+                : target.minValue, target);
+    }
+
+    @Override
+    public MiodValue castTo(MiodType other) {
+        return castConvert((IntegerType)other);
     }
 
     @Override
