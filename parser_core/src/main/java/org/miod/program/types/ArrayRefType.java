@@ -10,7 +10,13 @@ package org.miod.program.types;
  */
 public class ArrayRefType extends MiodType {
     public final MiodType elementType;
-    public ArrayRefType(MiodType elementType) {
+
+    // TODO cache for standard types
+    public static ArrayRefType fromMiodType(MiodType t) {
+        return new ArrayRefType(t);
+    }
+
+    private ArrayRefType(MiodType elementType) {
         super(ValueTypeId.ARRAY_REF);
         this.elementType = elementType.resolve();
     }

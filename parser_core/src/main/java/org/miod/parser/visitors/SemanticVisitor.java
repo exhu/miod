@@ -19,7 +19,10 @@ import org.miod.parser.generated.MiodParserBaseVisitor;
 import org.miod.program.CompilationUnit;
 import org.miod.program.errors.BooleanExprExpected;
 import org.miod.program.errors.CompileTimeExpressionExpected;
+import org.miod.program.errors.IntegerExpected;
+import org.miod.program.errors.IntegerInBoundsExpected;
 import org.miod.program.errors.SymbolRedefinitionError;
+import org.miod.program.errors.TypeNameExpected;
 import org.miod.program.errors.TypesMismatch;
 import org.miod.program.symbol_table.SymbolDesc;
 import org.miod.program.symbol_table.SymbolLocation;
@@ -27,6 +30,9 @@ import org.miod.program.symbol_table.SymbolTable;
 import org.miod.program.symbol_table.SymbolTableItem;
 import org.miod.program.symbol_table.SymbolVisibility;
 import org.miod.program.symbol_table.symbols.ConstSymbol;
+import org.miod.program.symbol_table.symbols.TypeDefSymbol;
+import org.miod.program.types.ArrayRefType;
+import org.miod.program.types.ArrayType;
 import org.miod.program.types.IntegerType;
 import org.miod.program.types.MiodType;
 import org.miod.program.types.ValueTypeId;
@@ -218,8 +224,13 @@ public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
     }
 
     @Override
+    public ExprNodeData visitQualifName(MiodParser.QualifNameContext ctx) {
+        return resolveSymbol(ctx.getText());
+    }
+
+    @Override
     public ExprNodeData visitExprQualifName(MiodParser.ExprQualifNameContext ctx) {
-        return resolveSymbol(ctx.qualifName().getText());
+        return visit(ctx.qualifName());
     }
 
     @Override
@@ -237,4 +248,97 @@ public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
         return ExprNodeData.newValue(exprPlus(visit(ctx.left).value,
                 visit(ctx.right).value, context.getErrorListener()));
     }
+
+    @Override
+    public ExprNodeData visitTypeSpecArray(MiodParser.TypeSpecArrayContext ctx) {
+        return visit(ctx.arrayType());
+    }
+
+    @Override
+    public ExprNodeData visitArrayType(MiodParser.ArrayTypeContext ctx) {
+        return visit(ctx.arrayVariant());
+    }
+
+    @Override
+    public ExprNodeData visitUnknownSizeArray(MiodParser.UnknownSizeArrayContext ctx) {        
+        ExprNodeData elementType = visit(ctx.qualifName());
+        if (elementType == null)
+            return null;
+
+        // expect type name
+        if (elementType.value != null) {
+            context.getErrorListener().onError(new TypeNameExpected());
+            return null;
+        }
+
+        return ExprNodeData.newTypespec(ArrayRefType.fromMiodType(elementType.typespec));
+    }
+
+    @Override
+    public ExprNodeData visitSizedArray(MiodParser.SizedArrayContext ctx) {
+        ExprNodeData elementType = visit(ctx.typeSpec());
+        if (elementType == null)
+            return null;
+
+        // expect type name
+        if (elementType.value != null) {
+            context.getErrorListener().onError(new TypeNameExpected());
+            return null;
+        }
+
+        ExprNodeData sizeSpec = visit(ctx.expr());
+        if (sizeSpec == null) {
+            return null;
+        }
+
+        if (sizeSpec.value == null || !(sizeSpec.value instanceof IntegerValue)
+                ) {
+            context.getErrorListener().onError(new IntegerExpected());
+            return null;
+        }
+
+        long sizeValue = ((IntegerValue)sizeSpec.value).value;
+
+        if (sizeValue <= 0 || sizeValue > Integer.MAX_VALUE) {
+            context.getErrorListener().onError(new IntegerInBoundsExpected(0, Integer.MAX_VALUE));
+            return null;
+        }        
+
+        return ExprNodeData.newTypespec(new ArrayType((int)((IntegerValue)sizeSpec.value).value, elementType.typespec));
+    }
+
+    @Override
+    public ExprNodeData visitTypeDeclAssign(MiodParser.TypeDeclAssignContext ctx) {
+        // check if already defined
+        String id = ctx.bareName().getText();
+        SymbolLocation loc = ExpressionEval.makeSymLocation(unitName, ctx.getStart());
+        SymbolTableItem sym = currentSymTable.resolve(id);
+        if (sym != null) {
+            context.getErrorListener().onError(new SymbolRedefinitionError(sym, loc));
+            return null;
+        }
+        // TODO get visibility from context
+        SymbolVisibility visibility = SymbolVisibility.PUBLIC;
+        SymbolDesc desc = new SymbolDesc(id, loc, null, visibility);
+
+        // TODO handle GENERIC, enumDecl
+        if (ctx.arrayType() != null) {
+            ExprNodeData arrayType = visit(ctx.arrayType());
+            if (arrayType != null) {
+                desc.type = arrayType.typespec;
+                currentSymTable.put(new TypeDefSymbol(desc));
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public ExprNodeData visitExprCast(MiodParser.ExprCastContext ctx) {
+        ExprNodeData typeSpecData = visit(ctx.typeSpec());
+        ExprNodeData exprData = visit(ctx.expr());
+        // TODO
+        return super.visitExprCast(ctx);
+    }
+
+
 }

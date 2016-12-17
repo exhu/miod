@@ -12,7 +12,9 @@ import org.miod.program.symbol_table.SymbolDesc;
 import org.miod.program.symbol_table.SymbolTableItem;
 import org.miod.program.symbol_table.SymbolVisibility;
 import org.miod.program.symbol_table.symbols.ConstSymbol;
+import org.miod.program.symbol_table.symbols.TypeDefSymbol;
 import org.miod.program.symbol_table.symbols.VarSymbol;
+import org.miod.program.types.ArrayType;
 import org.miod.program.types.FloatType;
 import org.miod.program.types.IntegerType;
 import org.miod.program.types.MiodType;
@@ -143,5 +145,25 @@ public class ProgramTestSuite {
     @Test
     public void constExpressionEvalTest() {
         // TODO comparable, int/uint/cardinal tests etc.
+    }
+
+    @Test
+    public void arrayTypeTest() {
+        ErrorReporter reporter = new ErrorReporter();
+        reporter.setStopAtFirstError(true);
+
+        List<String> stringPaths = new ArrayList<>();
+        stringPaths.add("test_data");
+        UnitParser parser = new UnitParser(stringPaths, reporter);
+        parser.parseFileFromPathString("test_data/pkg1/test_array0001.miod", false);
+        CompilationUnit unit = parser.getContext().getOrParseUnit("pkg1::test_array0001");
+        System.out.println(unit.symTable.getItemsAsString());
+        assertTrue(unit.symTable.resolve("sizedA") instanceof TypeDefSymbol);
+        assertTrue(unit.symTable.resolve("openA") instanceof TypeDefSymbol);
+        assertTrue(unit.symTable.resolve("sizedB") instanceof TypeDefSymbol);
+        ArrayType aType = (ArrayType)(((TypeDefSymbol)unit.symTable.resolve("sizedA")).desc.type);
+        assertEquals(aType.size, 3);
+        ArrayType bType = (ArrayType)(((TypeDefSymbol)unit.symTable.resolve("sizedB")).desc.type);
+        assertEquals(bType.size, 4);
     }
 }
