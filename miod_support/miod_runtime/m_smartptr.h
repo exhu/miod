@@ -5,33 +5,34 @@
 
 /// smart pointer
 
-struct m_smartptr_desc {
-    long strong_counter;
-    long weak_counter;
-    void * ptr_value;
+struct m_smartptr_object_header {
+    int strong_counter;
+    int weak_counter;    
     m_type_id m_type; /// type to which points, if M_TYPE_INSTANCE then call desctructor on release
+	// ... here object data comes ...
 };
 
 struct m_smart_ptr {
-    struct m_smartptr_desc * ptr_desc;
+    struct m_smartptr_object_header *ptr_desc;
     bool weak; /// if weak, then change weak_counter, else change strong_counter.
 };
 
 
 /// call before any other operations
-void m_smart_ptr_init(struct m_smart_ptr * psp, bool weak);
+void m_smart_ptr_init(struct m_smart_ptr *psp, bool weak);
 
 /// call when pointer is no longer in scope
-void m_smart_ptr_done(struct m_smart_ptr * psp);
+void m_smart_ptr_done(struct m_smart_ptr *psp);
 
 /// make dst point to src
-void m_smart_ptr_assign(struct m_smart_ptr * dst, struct m_smart_ptr * src);
+void m_smart_ptr_assign(struct m_smart_ptr *dst, struct m_smart_ptr *src);
 
 /// set the pointer to manage memory for
-void m_smart_ptr_attach(struct m_smart_ptr * dst, void * p, m_type_id m_type);
+//void m_smart_ptr_attach(struct m_smart_ptr *dst, void * p, m_type_id m_type);
 
 /// returns pointer value, NULL for dst == NULL etc. safe function
-void * m_smart_ptr_get(struct m_smart_ptr * dst);
+void * m_smart_ptr_get(struct m_smart_ptr *dst);
 
 
 #endif // M_SMARTPTR_H_INCLUDED
+

@@ -3,6 +3,11 @@ TODO:
 - float values
 - float casting
 
+- global strings and arrays are statically allocated and initialized
+- local strings and arrays are heap allocated
+
+- code generation in miodc
+
 - optional second pass
 - update currentSymTable visiting classes, procs/methods, blocks...
 - memorize node values and don't visit calculated during second pass (optimization)

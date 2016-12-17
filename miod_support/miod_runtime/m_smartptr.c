@@ -1,7 +1,7 @@
 #include "m_smartptr.h"
 #include <malloc.h>
 
-static void dec_ref(struct m_smart_ptr * psp) {
+static void dec_ref(struct m_smart_ptr *psp) {
     if (psp->ptr_desc == NULL)
         return;
 
@@ -26,7 +26,7 @@ static void dec_ref(struct m_smart_ptr * psp) {
 }
 
 
-static void inc_ref(struct m_smart_ptr * psp) {
+static void inc_ref(struct m_smart_ptr *psp) {
     if (psp->weak)
         psp->ptr_desc->weak_counter += 1;
     else
@@ -34,18 +34,18 @@ static void inc_ref(struct m_smart_ptr * psp) {
 }
 
 
-void m_smart_ptr_init(struct m_smart_ptr * psp, bool weak) {
+void m_smart_ptr_init(struct m_smart_ptr *psp, bool weak) {
     psp->weak = weak;
     psp->ptr_desc = NULL;
 }
 
 
-void m_smart_ptr_done(struct m_smart_ptr * psp) {
+void m_smart_ptr_done(struct m_smart_ptr *psp) {
     dec_ref(psp);
 }
 
 
-void m_smart_ptr_assign(struct m_smart_ptr * dst, struct m_smart_ptr * src) {
+void m_smart_ptr_assign(struct m_smart_ptr *dst, struct m_smart_ptr *src) {
     dec_ref(dst);
 
     if (src == NULL) {
@@ -60,7 +60,7 @@ void m_smart_ptr_assign(struct m_smart_ptr * dst, struct m_smart_ptr * src) {
 }
 
 
-void m_smart_ptr_attach(struct m_smart_ptr * dst, void * p, m_type_id m_type) {
+void m_smart_ptr_attach(struct m_smart_ptr *dst, void *p, m_type_id m_type) {
     dec_ref(dst);
 
     dst->ptr_desc = NULL;
@@ -92,3 +92,4 @@ void * m_smart_ptr_get(struct m_smart_ptr * dst) {
 
     return dst->ptr_desc->ptr_value;
 }
+
