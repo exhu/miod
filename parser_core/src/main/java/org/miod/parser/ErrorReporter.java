@@ -7,7 +7,7 @@ package org.miod.parser;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.miod.parser.visitors.SemanticVisitor;
+import org.miod.parser.generated.MiodParserBaseVisitor;
 import org.miod.program.errors.CompilerError;
 import org.miod.program.errors.CompilerWarning;
 import org.miod.program.symbol_table.SymbolLocation;
@@ -55,7 +55,7 @@ public final class ErrorReporter implements ErrorListener {
     }
 
     @Override
-    public void onUnknownIdentifier(SemanticVisitor visitor, String name, SymbolLocation loc) {
+    public void onUnknownIdentifier(MiodParserBaseVisitor visitor, String name, SymbolLocation loc) {
         // TODO trigger error on second pass
     }
 

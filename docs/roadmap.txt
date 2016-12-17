@@ -1,9 +1,18 @@
 TODO:
 
-- implement integer, float casting
-- check constAssign for integer/float downgrades
+- float values
+- float casting
+
+- optional second pass
+- update currentSymTable visiting classes, procs/methods, blocks...
+- memorize node values and don't visit calculated during second pass (optimization)
+- code generation is a separate visitor class not based on SemanticVisitor which
+uses data collected during 1st and optional second pass
+
++ check constAssign for integer/float downgrades
++ implement integer casts
 + second pass necessary only if symbol resolution failed in the first pass?
-- replace null with UnknownExprNode, ErrorNode
+- replace null with UnknownExprNode, ErrorNode ?
 *>- arithmetic expressions
     POSTPONED:- fix promote: it is wrong for immediate values! e.g. a : int8; a = a + 1 (cardinal) -> int32 which is wrong
     + if RuntimeValue then form a new RuntimeValue using .promote method,
@@ -11,8 +20,8 @@ TODO:
     + LessThanOp return BoolValue. etc
     + refactor copypasta on ExpressionEval to abstract iface "apply"
 
-- update currentSymTable visiting classes, procs/methods, blocks...
-OPTIMIZATION:- memorize node values and don't visit calculated? (optimization)
+
+
 
 + proper error reporting with line number, col
 + array type
