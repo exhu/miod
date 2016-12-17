@@ -4,13 +4,15 @@
  */
 package org.miod.program.errors;
 
+import org.miod.program.symbol_table.SymbolLocation;
+
 /**
  *
  * @author yur
  */
 public abstract class CompilerWarning {
-    protected String text;
-    public CompilerWarning(String msg) {
-        this.text = msg;
+    final SymbolLocation location;
+    public CompilerWarning(SymbolLocation location) {
+        this.location = location;
     }
 }

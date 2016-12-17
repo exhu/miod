@@ -4,13 +4,15 @@
  */
 package org.miod.program.errors;
 
+import org.miod.program.symbol_table.SymbolLocation;
+
 /**
  *
  * @author yur
  */
 public final class BooleanExprExpected extends CompilerError {
-    public BooleanExprExpected() {
-        super("Boolean expression expected.");
+    public BooleanExprExpected(SymbolLocation location) {
+        super(location);
     }
 
 }

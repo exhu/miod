@@ -23,6 +23,7 @@ import org.miod.parser.visitors.SemanticVisitor;
 import org.miod.program.errors.CompilerIOError;
 import org.miod.program.errors.UnitNotFoundError;
 import org.miod.parser.generated.*;
+import org.miod.program.symbol_table.SymbolLocation;
 
 /**
  * Top class to use. Called by ParserContext to resolve imports.
@@ -50,11 +51,11 @@ public final class UnitParser implements UnitParserProvider {
     }
 
     @Override
-    public void parseUnit(String unitName) {
+    public void parseUnit(String unitName, SymbolLocation location) {
         // find file in paths
         final Path unitPath = pathsResolver.pathFromUnitName(unitName);
         if (unitPath == null) {
-            errorListener.onError(new UnitNotFoundError(unitName));
+            errorListener.onError(new UnitNotFoundError(unitName, location));
         } else {
             parseFile(unitName, unitPath, true);
         }        
@@ -83,7 +84,7 @@ public final class UnitParser implements UnitParserProvider {
             LOGGER.log(Level.INFO, () -> tree.toStringTree(parser));
         } catch (IOException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
-            errorListener.onError(new CompilerIOError());
+            errorListener.onError(new CompilerIOError(unitPath.toString()));
             return;
         }
 

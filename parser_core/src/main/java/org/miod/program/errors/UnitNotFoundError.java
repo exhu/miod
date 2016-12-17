@@ -4,12 +4,14 @@
  */
 package org.miod.program.errors;
 
+import org.miod.program.symbol_table.SymbolLocation;
+
 /**
  *
  * @author yur
  */
 public final class UnitNotFoundError extends CompilerError {
-    public UnitNotFoundError(String unitName) {
-        super(String.format("Unit '%s' not found.", unitName));
+    public UnitNotFoundError(String unitName, SymbolLocation location) {
+        super(location);
     }
 }

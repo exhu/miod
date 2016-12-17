@@ -1,5 +1,5 @@
 TODO:
->- proper error reporting with line number, col
+
 - implement integer, float casting
 *>- arithmetic expressions
     POSTPONED:- fix promote: it is wrong for immediate values! e.g. a : int8; a = a + 1 (cardinal) -> int32 which is wrong
@@ -11,6 +11,7 @@ TODO:
 - update currentSymTable visiting classes, procs/methods, blocks...
 OPTIMIZATION:- memorize node values and don't visit calculated? (optimization)
 
++ proper error reporting with line number, col
 + array type
 + use IntegerType class, write FloatType class
 

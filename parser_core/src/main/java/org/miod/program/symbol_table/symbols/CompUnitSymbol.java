@@ -15,8 +15,8 @@ import org.miod.program.types.UnitType;
  * @author yur
  */
 public final class CompUnitSymbol extends SymbolTableItem {
-    public CompUnitSymbol(SymbolLocation location) {
-        super(new SymbolDesc(location.unitName, location,
+    public CompUnitSymbol(SymbolLocation location, String unitFileName) {
+        super(new SymbolDesc(unitFileName, location,
                 null, SymbolVisibility.PRIVATE));
         desc.type = new UnitType(this);
     }

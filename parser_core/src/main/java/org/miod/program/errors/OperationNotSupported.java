@@ -4,13 +4,15 @@
  */
 package org.miod.program.errors;
 
+import org.miod.program.symbol_table.SymbolLocation;
+
 /**
  *
  * @author yur
  */
 public final class OperationNotSupported extends CompilerError {
-    public OperationNotSupported() {
-        super("OperationNotSupported");
+    public OperationNotSupported(SymbolLocation location) {
+        super(location);
     }
 
 }

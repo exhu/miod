@@ -12,9 +12,7 @@ import org.miod.program.symbol_table.SymbolTableItem;
  * @author yur
  */
 public final class SymbolRedefinitionError extends CompilerError {
-    public SymbolRedefinitionError(SymbolTableItem sym, SymbolLocation loc) {
-        // TODO error message
-        super(sym.toString());
-        location = loc;
+    public SymbolRedefinitionError(SymbolTableItem sym, SymbolLocation loc) {        
+        super(loc);
     }
 }

@@ -4,12 +4,14 @@
  */
 package org.miod.program.errors;
 
+import org.miod.program.symbol_table.SymbolLocation;
+
 /**
  *
  * @author yur
  */
 public final class TypeNameExpected extends CompilerError {
-    public TypeNameExpected() {
-        super("TypeNameExpected");
+    public TypeNameExpected(SymbolLocation location) {
+        super(location);
     }
 }

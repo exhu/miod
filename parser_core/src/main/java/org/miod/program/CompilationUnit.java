@@ -39,7 +39,7 @@ public final class CompilationUnit {
         this.filename = filename;
         symTable = new GlobalSymbolTable(defTable, name, errorListener);
         symTable.put(new CompUnitSymbol(new SymbolLocation(name,
-                line, col)));
+                line, col), filename));
     }
 
     /// Adds import into dependencies, symbol table

@@ -100,7 +100,7 @@ public class ProgramTestSuite {
         stringPaths.add("test_data");
         UnitParser parser = new UnitParser(stringPaths, reporter);
         parser.parseFileFromPathString("test_data/pkg1/test0001.miod", false);
-        System.out.println(parser.getContext().getOrParseUnit("pkg1::test0001").symTable.getItemsAsString());
+        System.out.println(parser.getContext().getOrParseUnit("pkg1::test0001", null).symTable.getItemsAsString());
     }
 
     @Test
@@ -112,7 +112,7 @@ public class ProgramTestSuite {
         stringPaths.add("test_data");
         UnitParser parser = new UnitParser(stringPaths, reporter);
         parser.parseFileFromPathString("test_data/pkg1/test0002.miod", false);
-        CompilationUnit unit = parser.getContext().getOrParseUnit("pkg1::test0002");
+        CompilationUnit unit = parser.getContext().getOrParseUnit("pkg1::test0002", null);
         System.out.println(unit.symTable.getItemsAsString());
         assertEquals(((IntegerValue)((ConstSymbol)unit.symTable.resolve("b")).value).value, 15);
     }
@@ -156,7 +156,7 @@ public class ProgramTestSuite {
         stringPaths.add("test_data");
         UnitParser parser = new UnitParser(stringPaths, reporter);
         parser.parseFileFromPathString("test_data/pkg1/test_array0001.miod", false);
-        CompilationUnit unit = parser.getContext().getOrParseUnit("pkg1::test_array0001");
+        CompilationUnit unit = parser.getContext().getOrParseUnit("pkg1::test_array0001", null);
         System.out.println(unit.symTable.getItemsAsString());
         assertTrue(unit.symTable.resolve("sizedA") instanceof TypeDefSymbol);
         assertTrue(unit.symTable.resolve("openA") instanceof TypeDefSymbol);

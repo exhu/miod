@@ -9,6 +9,7 @@ import java.util.Map;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.miod.program.CompilationUnit;
 import org.miod.program.symbol_table.DefaultSymbolTable;
+import org.miod.program.symbol_table.SymbolLocation;
 
 /**
  * Maintains all processed units, predefined directives, options etc.
@@ -51,12 +52,12 @@ public final class ParserContext {
 
     /// unitName = import directive argument e.g. miod::system
     /// check for null return value to handle failure to find the unit
-    public CompilationUnit getOrParseUnit(String unitName) {
+    public CompilationUnit getOrParseUnit(String unitName, SymbolLocation location) {
         CompilationUnit requestedUnit = units.get(unitName);
         if (requestedUnit != null) {
             return requestedUnit;
         } else {
-            parserProvider.parseUnit(unitName);
+            parserProvider.parseUnit(unitName, location);
         }
         // try again
         return units.get(unitName);

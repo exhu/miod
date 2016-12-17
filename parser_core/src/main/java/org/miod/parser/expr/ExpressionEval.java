@@ -35,7 +35,7 @@ public final class ExpressionEval {
 
     public static MiodValue apply(MiodValue left,
             MiodValue right, ErrorListener errors,
-            ExprApply iface) {
+            ExprApply iface, SymbolLocation location) {
         if (nulls(left, right))
             return null;
 
@@ -47,7 +47,7 @@ public final class ExpressionEval {
             }
         }
         
-        errors.onError(new OperationNotSupported());
+        errors.onError(new OperationNotSupported(location));
         return ErrorValue.UNSUPPORTED;
     }
 
@@ -57,7 +57,7 @@ public final class ExpressionEval {
         int <= 4 = RuntimeValue(Bool)        
      */
     public static MiodValue exprLessOrEqual(MiodValue left, MiodValue right,
-            ErrorListener errors) {
+            ErrorListener errors, SymbolLocation location) {
         return apply(left, right, errors, new ExprApply() {
             @Override
             public boolean supportsOp(MiodType left, MiodType right) {
@@ -74,11 +74,11 @@ public final class ExpressionEval {
             public MiodValue runtimeValue(MiodType left, MiodType right) {
                 return RuntimeValue.BOOL;
             }
-        });
+        }, location);
     }
 
     public static MiodValue exprLess(MiodValue left, MiodValue right,
-            ErrorListener errors) {
+            ErrorListener errors, SymbolLocation location) {
         return apply(left, right, errors, new ExprApply() {
             @Override
             public boolean supportsOp(MiodType left, MiodType right) {
@@ -95,11 +95,11 @@ public final class ExpressionEval {
             public MiodValue runtimeValue(MiodType left, MiodType right) {
                 return RuntimeValue.BOOL;
             }
-        });
+        }, location);
     }
 
     public static MiodValue exprEq(MiodValue left, MiodValue right,
-            ErrorListener errors) {
+            ErrorListener errors, SymbolLocation location) {
         return apply(left, right, errors, new ExprApply() {
             @Override
             public boolean supportsOp(MiodType left, MiodType right) {
@@ -116,7 +116,7 @@ public final class ExpressionEval {
             public MiodValue runtimeValue(MiodType left, MiodType right) {
                 return RuntimeValue.BOOL;
             }
-        });
+        }, location);
     }
 
     public static MiodValue invertBool(MiodValue v) {
@@ -137,7 +137,7 @@ public final class ExpressionEval {
     }
 
     public static MiodValue exprPlus(MiodValue left, MiodValue right,
-            ErrorListener errors) {
+            ErrorListener errors, SymbolLocation location) {
         
         return apply(left, right, errors, new ExprApply() {            
             @Override
@@ -158,7 +158,7 @@ public final class ExpressionEval {
                 }
                 return RuntimeValue.fromType(left);
             }
-        });        
+        }, location);
     }
 
     private ExpressionEval() {

@@ -4,14 +4,17 @@
  */
 package org.miod.program.errors;
 
+import org.miod.program.symbol_table.SymbolLocation;
+
 /**
  *
  * @author yur
  */
 public final class CompilerIOError extends CompilerError {
-    public CompilerIOError() {
-        // TODO
-        super("CompilerIOError");
+    final String fileName;
+    public CompilerIOError(String fileName) {
+        super(null);
+        this.fileName = fileName;
     }
 
 }

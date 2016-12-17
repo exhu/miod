@@ -4,7 +4,7 @@
  */
 package org.miod.parser;
 
-import org.miod.program.CompilationUnit;
+import org.miod.program.symbol_table.SymbolLocation;
 
 /**
  *
@@ -12,5 +12,5 @@ import org.miod.program.CompilationUnit;
  */
 public interface UnitParserProvider {
     /// must check if this unit is already parsed
-    void parseUnit(String unitName);
+    void parseUnit(String unitName, SymbolLocation location);
 }

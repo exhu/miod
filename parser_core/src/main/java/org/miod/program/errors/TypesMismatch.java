@@ -4,13 +4,15 @@
  */
 package org.miod.program.errors;
 
+import org.miod.program.symbol_table.SymbolLocation;
+
 /**
  *
  * @author yur
  */
 public final class TypesMismatch extends CompilerError {
-    public TypesMismatch() {
-        super("TypesMismatch");
+    public TypesMismatch(SymbolLocation location) {
+        super(location);
     }
 
 }
