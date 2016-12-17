@@ -1,6 +1,9 @@
 TODO:
 
 - implement integer, float casting
+- check constAssign for integer/float downgrades
++ second pass necessary only if symbol resolution failed in the first pass?
+- replace null with UnknownExprNode, ErrorNode
 *>- arithmetic expressions
     POSTPONED:- fix promote: it is wrong for immediate values! e.g. a : int8; a = a + 1 (cardinal) -> int32 which is wrong
     + if RuntimeValue then form a new RuntimeValue using .promote method,

@@ -29,7 +29,7 @@ public final class ExpressionEval {
         return (left instanceof RuntimeValue) || (right instanceof RuntimeValue);
     }
 
-    public static boolean nulls(MiodValue left, MiodValue right) {
+    public static boolean nulls(Object left, Object right) {
         return left == null || right == null;
     }
 

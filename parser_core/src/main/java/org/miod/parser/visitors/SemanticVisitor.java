@@ -50,12 +50,14 @@ import org.miod.program.values.RuntimeValue;
  * @author yur
  */
 public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
+
     private static final Logger LOGGER = Logger.getLogger(SemanticVisitor.class.getName());
 
     protected final ParserContext context;
     protected CompilationUnit unit;
     protected final String unitName;
     protected SymbolTable currentSymTable;
+    public boolean containsUnresolvedSyms = false;
 
     public SemanticVisitor(String unitName, ParserContext ctx) {
         this.context = ctx;
@@ -115,10 +117,8 @@ public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
         return visit(ctx.literal());
     }
 
-
-
     @Override
-    public ExprNodeData visitExprGreater(MiodParser.ExprGreaterContext ctx) {    ;
+    public ExprNodeData visitExprGreater(MiodParser.ExprGreaterContext ctx) {;
         return ExprNodeData.newValue(invertBool(exprLessOrEqual(
                 visit(ctx.left).value, visit(ctx.right).value,
                 context.getErrorListener(), makeSymLocation(ctx.getStart()))));
@@ -164,7 +164,6 @@ public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
     // 2) type myclass = class parent: myclass end_class
     // -- class type is mutable, so it's put into parent SymbolTable and
     // filled as parsing goes further.
-
     @Override
     public ExprNodeData visitConstExpr(MiodParser.ConstExprContext ctx) {
         return visit(ctx.expr());
@@ -172,9 +171,9 @@ public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
 
     @Override
     public ExprNodeData visitConstAssign(MiodParser.ConstAssignContext ctx) {
-        LOGGER.log(Level.INFO, "const assign var = {0}, expr = {1}", new String[] {
-                ctx.bareName().getText(),
-                ctx.constExpr().getText()});
+        LOGGER.log(Level.INFO, "const assign var = {0}, expr = {1}", new String[]{
+            ctx.bareName().getText(),
+            ctx.constExpr().getText()});
 
         // check if already defined
         String id = ctx.bareName().getText();
@@ -188,19 +187,19 @@ public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
         // TODO get visibility from context
         SymbolVisibility visibility = SymbolVisibility.PUBLIC;
         SymbolDesc desc = new SymbolDesc(id, loc, null, visibility);
-        
+
         ExprNodeData nodeValue = visit(ctx.constExpr());
         MiodValue value = nodeValue.value;
         // create symbol, put to table
         if (ctx.typeSpec() != null) {
-            // TODO check type of the expr
-            LOGGER.log(Level.INFO, "typed const");            
+            // check type of the expr
+            LOGGER.log(Level.INFO, "typed const");
             ExprNodeData typeSpec = visit(ctx.typeSpec());
 
             MiodType targetType = typeSpec.typespec;
 
             if (value instanceof IntegerValue && targetType instanceof IntegerType) {
-                value = ((IntegerValue)value).convertTo((IntegerType)targetType);
+                value = ((IntegerValue) value).convertTo((IntegerType) targetType);
             }
             if (typeSpec.typespec != value.getType()) {
                 context.getErrorListener().onError(new TypesMismatch(makeSymLocation(ctx.typeSpec().getStart())));
@@ -210,25 +209,27 @@ public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
             // TODO handle IntegerValue conversion to lower bits type
         } else {
             // TODO type of the expr
-            LOGGER.log(Level.INFO, "auto const");            
+            LOGGER.log(Level.INFO, "auto const");
             desc.type = nodeValue.value.getType();
         }
         currentSymTable.put(new ConstSymbol(desc, value));
         return null;
     }
 
-    protected final ExprNodeData resolveSymbol(String name) {
+    protected final ExprNodeData resolveSymbol(String name, SymbolLocation loc) {
         // current context local symbol table
         SymbolTableItem sym = currentSymTable.resolve(name);
         if (sym != null) {
             return ExprNodeData.newFromSymbolTableItem(sym);
         }
+        containsUnresolvedSyms = true;
+        context.getErrorListener().onUnknownIdentifier(this, name, loc);
         return null;
     }
 
     @Override
     public ExprNodeData visitQualifName(MiodParser.QualifNameContext ctx) {
-        return resolveSymbol(ctx.getText());
+        return resolveSymbol(ctx.getText(), makeSymLocation(ctx.getStart()));
     }
 
     @Override
@@ -238,7 +239,7 @@ public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
 
     @Override
     public ExprNodeData visitTypeSpecName(MiodParser.TypeSpecNameContext ctx) {
-        return resolveSymbol(ctx.qualifName().getText());
+        return resolveSymbol(ctx.qualifName().getText(), makeSymLocation(ctx.qualifName().getStart()));
     }
 
     @Override
@@ -264,10 +265,11 @@ public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
     }
 
     @Override
-    public ExprNodeData visitUnknownSizeArray(MiodParser.UnknownSizeArrayContext ctx) {        
+    public ExprNodeData visitUnknownSizeArray(MiodParser.UnknownSizeArrayContext ctx) {
         ExprNodeData elementType = visit(ctx.qualifName());
-        if (elementType == null)
+        if (elementType == null) {
             return null;
+        }
 
         // expect type name
         if (elementType.value != null) {
@@ -282,8 +284,9 @@ public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
     @Override
     public ExprNodeData visitSizedArray(MiodParser.SizedArrayContext ctx) {
         ExprNodeData elementType = visit(ctx.typeSpec());
-        if (elementType == null)
+        if (elementType == null) {
             return null;
+        }
 
         // expect type name
         if (elementType.value != null) {
@@ -297,23 +300,22 @@ public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
             return null;
         }
 
-        if (sizeSpec.value == null || !(sizeSpec.value instanceof IntegerValue)
-                ) {
+        if (sizeSpec.value == null || !(sizeSpec.value instanceof IntegerValue)) {
             context.getErrorListener().onError(new IntegerExpected(
                     makeSymLocation(ctx.expr().getStart())));
             return null;
         }
 
-        long sizeValue = ((IntegerValue)sizeSpec.value).value;
+        long sizeValue = ((IntegerValue) sizeSpec.value).value;
 
         if (sizeValue <= 0 || sizeValue > Integer.MAX_VALUE) {
             context.getErrorListener().onError(new IntegerInBoundsExpected(
                     makeSymLocation(ctx.expr().getStart()),
                     0, Integer.MAX_VALUE));
             return null;
-        }        
+        }
 
-        return ExprNodeData.newTypespec(new ArrayType((int)((IntegerValue)sizeSpec.value).value, elementType.typespec));
+        return ExprNodeData.newTypespec(new ArrayType((int) ((IntegerValue) sizeSpec.value).value, elementType.typespec));
     }
 
     protected final SymbolLocation makeSymLocation(Token token) {
@@ -347,11 +349,26 @@ public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
 
     @Override
     public ExprNodeData visitExprCast(MiodParser.ExprCastContext ctx) {
-        ExprNodeData typeSpecData = visit(ctx.typeSpec());
+        ExprNodeData targetTypeData = visit(ctx.typeSpec());
         ExprNodeData exprData = visit(ctx.expr());
-        // TODO
-        return super.visitExprCast(ctx);
-    }
+        
+        if (ExpressionEval.nulls(targetTypeData, exprData)) {
+            return null;
+        }
+        /* TODO
+            targetType can convert?
+            log error if overflow,
 
+
+            long -> int
+            double -> float
+            base class -> concrete class
+
+            1) convert types, insert checks in code generation
+            2) convert values
+        */
+
+        return null;
+    }
 
 }
