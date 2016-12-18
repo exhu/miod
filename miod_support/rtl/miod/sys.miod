@@ -11,6 +11,7 @@ interface BaseInterface
     method toString(): String end
     method getClass(): Class end
     method asObject(): Object end
+    method finalize() end
 end_interface
 
 base_class Object implements BaseInterface
@@ -37,7 +38,7 @@ abstract base_class ArrayBase
 protected
     var len: cardinal
 public
-    property length: cardinal = { getter = len }
+    property length: cardinal = { getter = len }    
 end_class
 
 class ByteArray extends ArrayBase
@@ -45,6 +46,13 @@ private
     var cdata: cpointer
 
 public
+    method allocate(i: cardinal)
+    end
+
+    override method finalize()
+        c_array_free(cdata)
+    end
+
     method getItem(i: cardinal): byte
         return c_array_get_byte(cdata, i)
     end
@@ -61,6 +69,12 @@ public
     method putItem(i: cardinal, o: OBJ)
         return c_array_put_object(cdata, i, o)
     end
+
+    override method finalize()
+        # todo call finalize for all objects
+        c_array_free(cdata)
+    end
+
 end_class
 
 class String
@@ -70,14 +84,13 @@ private
     method getLen(): cardinal
         return data.length
     end
-
-
 public
 
-    method initWithArray(a: array$<byte>)
+    method initWithArray(a: ByteArray)
         data = a
     end
 
+    property length: cardinal = { getter = getLen }
 
 end_class
 
