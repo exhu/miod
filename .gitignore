@@ -26,3 +26,4 @@
 /.nb-gradle/
 /parser_core/lexer_parser/build/
 /lexer_parser/build/
+/miod_support/BUILD/
