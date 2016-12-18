@@ -3,36 +3,81 @@ public
 
 proc refHashCode(Object o): int
 # TODO call native C proc that returns hash from pointer value
-end_proc
+end
 
 interface BaseInterface
-    proc equals(Object other): bool;
-    proc hashCode(): int;
-    proc toString(): String;
-    proc getClass(): Class;
-    proc asObject(): Object;
+    method equals(Object other): bool end
+    method hashCode(): int end
+    method toString(): String end
+    method getClass(): Class end
+    method asObject(): Object end
 end_interface
 
 base_class Object implements BaseInterface
 public
-    proc hashCode(): int, override
+    override method hashCode(): int
         return 0
-    end_proc
+    end
 
-    proc toString(): String, override
+    override method toString(): String
         return "Object"
-    end_proc
+    end
 
-    proc getClass(): Class, override
+    override method getClass(): Class
         return null
-    end_proc
+    end
 
-    proc asObject(): Object, override
+    override method asObject(): Object
         return this
     end
 end_class
 
+
+abstract base_class ArrayBase
+protected
+    var len: cardinal
+public
+    property length: cardinal = { getter = len }
+end_class
+
+class ByteArray extends ArrayBase
+private
+    var cdata: cpointer
+
+public
+    method getItem(i: cardinal): byte
+        return c_array_get_byte(cdata, i)
+    end
+    method putItem(i: cardinal, b: byte): byte
+        return c_array_put_byte(cdata, i, b)
+    end
+end_class
+
+class Array<OBJ> extends ArrayBase
+public
+    method getItem(i: cardinal): OBJ
+       return c_array_get_object(cdata, i) 
+    end
+    method putItem(i: cardinal, o: OBJ)
+        return c_array_put_object(cdata, i, o)
+    end
+end_class
+
 class String
+private
+    var data: ByteArray
+
+    method getLen(): cardinal
+        return data.length
+    end
+
+
+public
+
+    method initWithArray(a: array$<byte>)
+        data = a
+    end
+
 
 end_class
 

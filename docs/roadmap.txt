@@ -1,10 +1,15 @@
 TODO:
 
+- remove arrays altogether?
 - float values
 - float casting
 
 - global strings and arrays are statically allocated and initialized
 - local strings and arrays are heap allocated
+
+- no global vars initialization support yet
+- no struct support yet
++ no fixed sized arrays support
 
 - code generation in miodc
 

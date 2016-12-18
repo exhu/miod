@@ -140,7 +140,7 @@ procArgDecl: bareName (COMMA bareName)* COLON VAR? typeSpec;
 // array type part
 arrayType: ARRAY OPEN_BRACKET arrayVariant CLOSE_BRACKET;
 arrayVariant: qualifName # unknownSizeArray
-    | typeSpec COMMA expr # sizedArray
+//    | typeSpec COMMA expr # sizedArray
     ;
 
 procDecl: annotations? (EXTERN|INLINE)? procHeader statement* END_PROC;

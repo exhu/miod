@@ -281,8 +281,12 @@ public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
         return ExprNodeData.newTypespec(ArrayRefType.fromMiodType(elementType.typespec));
     }
 
+    /*
     @Override
     public ExprNodeData visitSizedArray(MiodParser.SizedArrayContext ctx) {
+        throw new UnsupportedOperationException("fixed sized arrays are not implemented in this version of Miod");
+        
+
         ExprNodeData elementType = visit(ctx.typeSpec());
         if (elementType == null) {
             return null;
@@ -316,7 +320,10 @@ public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
         }
 
         return ExprNodeData.newTypespec(new ArrayType((int) ((IntegerValue) sizeSpec.value).value, elementType.typespec));
+        
+        
     }
+    */
 
     protected final SymbolLocation makeSymLocation(Token token) {
         return ExpressionEval.makeSymLocation(unit.filename, token);
