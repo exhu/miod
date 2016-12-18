@@ -1,19 +1,19 @@
 #include "m_smartptr.h"
 #include <malloc.h>
 
-static void dec_ref(struct m_smart_ptr *psp) {
-    if (psp->ptr_desc == NULL)
+static void dec_ref(m_smart_ptr *psp) {
+    if (psp->object == NULL)
         return;
 
     if (psp->weak)
-        psp->ptr_desc->weak_counter -= 1;
+        psp->object->weak_counter -= 1;
     else {
-        psp->ptr_desc->strong_counter -= 1;
+        psp->object->strong_counter -= 1;
 
-        if (psp->ptr_desc->strong_counter == 0) {
-            // TODO call desctructor
-
-            free(psp->ptr_desc->ptr_value);
+        if (psp->object->strong_counter == 0) {
+            // call desctructor
+            psp->object->finalize(pst->object);
+            free(psp->object);
             psp->ptr_desc->ptr_value = NULL;
         }
     }
@@ -26,7 +26,7 @@ static void dec_ref(struct m_smart_ptr *psp) {
 }
 
 
-static void inc_ref(struct m_smart_ptr *psp) {
+static void inc_ref(m_smart_ptr *psp) {
     if (psp->weak)
         psp->ptr_desc->weak_counter += 1;
     else
@@ -34,18 +34,20 @@ static void inc_ref(struct m_smart_ptr *psp) {
 }
 
 
-void m_smart_ptr_init(struct m_smart_ptr *psp, bool weak) {
+void m_smart_ptr_init(m_smart_ptr *psp, bool weak,
+    object_finalizer_proc finalize, m_smartptr_object_header *obj) {
     psp->weak = weak;
-    psp->ptr_desc = NULL;
+    psp->finalize = finalize;
+    psp->object = obj;
 }
 
 
-void m_smart_ptr_done(struct m_smart_ptr *psp) {
+void m_smart_ptr_done(m_smart_ptr *psp) {
     dec_ref(psp);
 }
 
 
-void m_smart_ptr_assign(struct m_smart_ptr *dst, struct m_smart_ptr *src) {
+void m_smart_ptr_assign(m_smart_ptr *dst, m_smart_ptr *src) {
     dec_ref(dst);
 
     if (src == NULL) {
@@ -60,7 +62,7 @@ void m_smart_ptr_assign(struct m_smart_ptr *dst, struct m_smart_ptr *src) {
 }
 
 
-void m_smart_ptr_attach(struct m_smart_ptr *dst, void *p, m_type_id m_type) {
+void m_smart_ptr_attach(m_smart_ptr *dst, void *p, m_type_id m_type) {
     dec_ref(dst);
 
     dst->ptr_desc = NULL;
@@ -75,7 +77,7 @@ void m_smart_ptr_attach(struct m_smart_ptr *dst, void *p, m_type_id m_type) {
         return;
 
 
-    dst->ptr_desc = (struct m_smartptr_desc *) malloc(sizeof(struct m_smartptr_desc));
+    dst->ptr_desc = (m_smartptr_desc *) malloc(sizeof(m_smartptr_desc));
     dst->ptr_desc->m_type = M_TYPE_UNSPECIFIED;
     dst->ptr_desc->ptr_value = p;
     dst->ptr_desc->strong_counter = 1;
@@ -83,7 +85,7 @@ void m_smart_ptr_attach(struct m_smart_ptr *dst, void *p, m_type_id m_type) {
 }
 
 
-void * m_smart_ptr_get(struct m_smart_ptr * dst) {
+void *m_smart_ptr_get(m_smart_ptr * dst) {
     if (dst == NULL)
         return NULL;
 
