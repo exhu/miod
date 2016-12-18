@@ -26,8 +26,9 @@ public enum ValueTypeId {
     UINT64, //-- not properly supported
     FLOAT,
     DOUBLE,
-    NCHAR_LITERAL,
+    //NCHAR_LITERAL,
     //NCHAR,
+    CHAR_LITERAL,
     STRING_LITERAL,
     //NSTRING,
     STRING,

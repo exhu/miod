@@ -1,0 +1,38 @@
+unit miod::sys
+public
+
+proc refHashCode(Object o): int
+# TODO call native C proc that returns hash from pointer value
+end_proc
+
+interface BaseInterface
+    proc equals(Object other): bool;
+    proc hashCode(): int;
+    proc toString(): String;
+    proc getClass(): Class;
+    proc asObject(): Object;
+end_interface
+
+base_class Object implements BaseInterface
+public
+    proc hashCode(): int, override
+        return 0
+    end_proc
+
+    proc toString(): String, override
+        return "Object"
+    end_proc
+
+    proc getClass(): Class, override
+        return null
+    end_proc
+
+    proc asObject(): Object, override
+        return this
+    end
+end_class
+
+class String
+
+end_class
+
