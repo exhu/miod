@@ -139,11 +139,11 @@ fragment OCTAL: [0-7_];
 fragment BIN: [01_];
 ID: [a-zA-Z_]+[0-9a-zA-Z]*;
 
-INT_OCTAL: '-'? '0o' OCTAL+ 'U'?;
-INT_HEX: '-'? '0x' HEX+ 'U'?;
-INT_BIN: '-'? '0b' BIN+ 'U'?;
-FLOAT: '-'? ((DIGIT+ '.' DIGIT*) | (DIGIT* '.' DIGIT+)) ([eE][+\-]DIGIT+)? 'f'?;
-INTEGER: '-'? DIGIT+ 'U'?;
+INT_OCTAL: '-'? '0o' OCTAL+ ('_' OCTAL+)* 'U'?;
+INT_HEX: '-'? '0x' HEX+ ('_' HEX+)* 'U'?;
+INT_BIN: '-'? '0b' BIN+ ('_' HEX+)* 'U'?;
+FLOAT: '-'? ((DIGIT+ ('_' DIGIT+)* '.' DIGIT*) | ('.' DIGIT+)) ([eE][+\-]DIGIT+)? 'f'?;
+INTEGER: '-'? DIGIT+ ('_' DIGIT+)* 'U'?;
 
 
 //////

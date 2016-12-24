@@ -1,7 +1,7 @@
 TODO:
 
 - see moid_support/cruntime/m_smartptr.h
-- remove arrays altogether?
+- remove arrays altogether? NO! make array copy on assignment
 - float values
 - float casting
 
