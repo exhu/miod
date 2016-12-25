@@ -1,6 +1,8 @@
 #include "m_smartptr.h"
 #include <malloc.h>
 
+#if 0
+
 static void dec_ref(m_smart_ptr *psp) {
     if (psp->object == NULL)
         return;
@@ -94,4 +96,6 @@ void *m_smart_ptr_get(m_smart_ptr * dst) {
 
     return dst->ptr_desc->ptr_value;
 }
+
+#endif
 

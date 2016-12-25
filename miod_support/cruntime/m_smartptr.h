@@ -1,7 +1,7 @@
 #ifndef M_SMARTPTR_H_INCLUDED
 #define M_SMARTPTR_H_INCLUDED
 
-#include "m_types.h"
+//#include "m_types.h"
 
 /*
     TODO
@@ -23,7 +23,7 @@
         - if weak_counter != null
             - weak_counter.object = null
             
-    When weak refrence is goes out of scope:
+    When weak refrence goes out of scope:
         - dec ref weak_counter
         - if weak_counter == 0:
             - weak.object.weak_counter = null
@@ -46,18 +46,39 @@
 
 // TODO rewrite everything
 
-/// smart pointer
 struct _m_smartptr_object_header;
 
-typedef void (*object_finalizer_proc)(struct _m_smartptr_object_header *obj);
+typedef struct _m_base_interface {
+    struct _m_smartptr_object_header *(*asObject)(struct _m_base_interface *i);
+} m_base_interface;
+
+
+typedef struct {
+    char *name;
+    m_base_interface *interface; // methods table to fill new instance from
+    ptrdiff_t base_object_offset; // base_object instance pointer + offset = interface instance ptr
+} m_interface_entry;
+
+typedef struct {
+    char *name;
+    char **base_classes; // NULL terminates the list
+    m_interface_entry interfaces; // NULL terminates
+    // TODO properties etc RTTI
+} m_class;
 
 typedef struct _m_smartptr_object_header{
     int strong_counter;
     m_weak_counter *weak_counter;    
-    m_type_id m_type; /// type to which points, if M_TYPE_INSTANCE then call desctructor on release
-    object_finalizer_proc finalize;
+    void (*object_finalizer_proc)(struct _m_smartptr_object_header *obj);
 	// ... here object data comes ...
 } m_smartptr_object_header;
+
+
+typedef struct m_base_object {
+    m_smartptr_object_header header;
+    m_base_interface base_interface; // 'this' for when accessed by interface
+    int (*hashCode)();
+};
 
 typedef struct {
     m_smartptr_object_header *object;
@@ -67,6 +88,13 @@ typedef struct {
     int weak_count;
     m_smartptr_object_header *object;
 } m_weak_counter;
+
+typedef struct {
+    m_weak_counter *counter;
+} m_weak_ref;
+
+
+#if 0
 
 /// call before any other operations
 void m_smart_ptr_init(m_smart_ptr *psp, bool weak,
@@ -85,7 +113,7 @@ void m_smart_ptr_assign(m_smart_ptr *dst, m_smart_ptr *src);
 m_smartptr_object_header *m_smart_ptr_get(m_smart_ptr *dst);
 
 m_weak_counter
-
+#endif
 
 #endif // M_SMARTPTR_H_INCLUDED
 
