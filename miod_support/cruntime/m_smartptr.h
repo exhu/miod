@@ -1,6 +1,8 @@
 #ifndef M_SMARTPTR_H_INCLUDED
 #define M_SMARTPTR_H_INCLUDED
 
+// OBSOLETE
+
 //#include "m_types.h"
 
 /*

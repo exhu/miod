@@ -1,3 +1,5 @@
+// OBSOLETE
+
 #include "m_smartptr.h"
 #include <malloc.h>
 
