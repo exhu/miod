@@ -5,13 +5,13 @@
 /*
     Class definition produces:
 
-    const char *MIOD_CLASS_xxxxx_NAME = "xxxxx";
+    const char *MIOD_CLASS_ccccc_NAME = "ccccc";
 
-    MIOD_IFACE_fffff_STRUCT MIOD_CLASS_xxxxx__fffff = {&xxxxx__method1, };
+    MIOD_IFACE_iiiii_STRUCT MIOD_CLASS_ccccc__iiiii = {&ccccc__method1, };
 
-    m_interface_item MIOD_CLASS_xxxxx__fffff_ITEM = {
-        MIOD_CLASS_xxxxx_NAME, offsetof(MIOD_CLASS_xxxxx, fffff),
-        &MIOD_CLASS_xxxxx__fffff};
+    m_interface_item MIOD_CLASS_ccccc__iiiii_ITEM = {
+        MIOD_CLASS_ccccc_NAME, offsetof(MIOD_CLASS_ccccc, iiiii),
+        &MIOD_CLASS_ccccc__iiiii};
 
     
     todo...
@@ -19,13 +19,14 @@
 
 */
 
-struct _m_object_header;
+typedef struct _m_base_object m_base_object;
+typedef struct _m_base_interface m_base_interface;
 
 // strong ref to interface is pointer to such member-structure,
 // weak ref is pointer to m_weak_counter
 
 typedef struct _m_base_interface {
-    struct _m_object_header *(*asObject)(struct _m_base_interface *i);
+    struct _m_object_header *(*asObject)(m_base_interface *i);
 } m_base_interface;
 
 // sample interface struct
@@ -49,22 +50,20 @@ typedef struct {
     // TODO properties etc RTTI
 } m_class;
 
-struct _m_base_object;
-
 // weak reference is a pointer to m_weak_counter
 typedef struct {
     int weak_count;
-    _m_base_object *object;
+    m_base_object *object;
 } m_weak_counter;
 
-struct _m_string_object;
+typedef struct _m_string_object m_string_object;
 
 typedef struct _m_base_object {
     int strong_counter;
     m_class *pclass;
     void (*object_finalizer_proc)(struct _m_base_object *obj);
     int (*hashCode)();
-    struct _m_string_object *(*asString)();
+    m_string_object *(*asString)();
     m_weak_counter *weak_counter;
 	// ... here object data comes ...
 } m_base_object;
