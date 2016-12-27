@@ -1,8 +1,13 @@
 TODO:
 
-- see moid_support/cruntime/m_object.h
 
-- implement only classes (no interfaces) first to support String
+- see moid_support/cruntime/m_object.h
+- implement only classes (no interfaces) first to support String:
+    - BareObject -- contains nothing (only ref counting)
+    - BaseObject -- hashCode(), toString() etc.
+
+- emulate interfaces with .asInstanceOf("class::name") which
+creates an object descendant proxy which contains a strong reference to the original?
 
 - remove arrays altogether? NO! make array copy on assignment
 - float values
