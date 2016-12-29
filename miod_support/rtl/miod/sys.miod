@@ -1,20 +1,26 @@
 unit miod::sys
 public
 
+type cstring = opaque
+
 proc refHashCode(Object o): int
 # TODO call native C proc that returns hash from pointer value
 end
 
 interface BaseInterface
-    method equals(Object other): bool end
-    method hashCode(): int end
-    method toString(): String end
-    method getClass(): Class end
-    method asObject(): Object end
-    method finalize() end
+    method equals(Object other): bool;
+    method hashCode(): int;
+    method toString(): String;
+    method getClass(): Class;
+    method asObject(): Object;
 end_interface
 
-base_class Object implements BaseInterface
+base_class BareObject
+    method finalize()
+    end
+end_class
+
+base_class Object extends BareObject implements BaseInterface
 public
     override method hashCode(): int
         return 0

@@ -143,10 +143,12 @@ arrayVariant: qualifName # unknownSizeArray
 //    | typeSpec COMMA expr # sizedArray
     ;
 
-procDecl: annotations? (EXTERN|INLINE)? procHeader statement* END_PROC;
+procDecl: annotations? (EXTERN|INLINE)? procHeader procBody;
+
+procBody: statement* END_PROC;
 
 procOrMethodDecl: annotations? (EXTERN|INLINE)? (procHeader|methodHeader)
-    statement* END_PROC;
+    procBody;
 
 procHeader: PROC bareName procOrMethodArgs;
 methodHeader: (ABSTRACT|VIRTUAL|OVERRIDE)? METHOD bareName procOrMethodArgs;
@@ -155,7 +157,7 @@ procOrMethodArgs: OPEN_PAREN procArgsDecl CLOSE_PAREN (COLON typeSpec)?;
 
 procMethodStructDecl: annotations? (EXTERN|INLINE)?
     (PROC|METHOD) bareName
-    OPEN_PAREN procArgsDecl CLOSE_PAREN (COLON typeSpec)? statement* END_PROC;
+    OPEN_PAREN procArgsDecl CLOSE_PAREN (COLON typeSpec)? (SEMICOLON | procBody);
 
 interfaceProcOrMethodDecl: procMethodStructDecl;
 
