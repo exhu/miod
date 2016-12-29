@@ -1,7 +1,11 @@
+#@_cattr{inline: "typedef const char *CPCHAR"}
+@_cattr{headers: ["miod_csys.h"]}
 unit miod::sys
 public
 
-type cstring = opaque
+type
+    @_cattr{name: "CPCHAR"}
+    cstring = opaque
 
 proc refHashCode(Object o): int
 # TODO call native C proc that returns hash from pointer value
@@ -16,7 +20,7 @@ interface BaseInterface
 end_interface
 
 base_class BareObject
-    method finalize()
+    virtual method finalize()
     end
 end_class
 
@@ -50,6 +54,10 @@ public
 
     method initWithCString(a: cstring)
         data = strdup(a)
+    end
+
+    methods asCString(): cstring
+        return data
     end
 
     property length: cardinal = { getter = len }
