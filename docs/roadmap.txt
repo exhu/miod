@@ -1,5 +1,6 @@
 TODO:
 
+- _cattr annotations support
 - return arrays support
 - implement vars
 - implement proc definition

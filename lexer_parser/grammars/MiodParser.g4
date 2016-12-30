@@ -68,6 +68,8 @@ varTypeAssign: bareName (COLON typeSpec)? ASSIGN expr;
 typeArgsOpen: TYPE_ARGS_OPEN;
 typeArgsClose: GREATER;
 
+commaExpr: (COMMA expr)+;
+
 // Recursive rules are to be here.
 // If current scope is global then fails for procedure/method calls and property access
 expr: literal #exprLiteral
@@ -79,9 +81,9 @@ expr: literal #exprLiteral
     | VAR qualifName #exprVar
     | expr MEMBER_ACCESS bareName #exprMemberAccess
     | expr OPEN_BRACKET expr CLOSE_BRACKET #exprIndex
-    | expr OPEN_PAREN (expr (COMMA expr)*)? CLOSE_PAREN #exprCall
+    | expr OPEN_PAREN (expr commaExpr?)? CLOSE_PAREN #exprCall
     | OPEN_CURLY expr COLON expr (COMMA expr COLON expr)* CLOSE_CURLY #exprDictStruct
-    | OPEN_BRACKET expr (COMMA expr)* CLOSE_BRACKET #exprArray
+    | OPEN_BRACKET expr commaExpr? CLOSE_BRACKET #exprArray
     | MINUS expr #exprNeg
     | BNOT expr #exprBNot
     | expr MUL expr #exprMul

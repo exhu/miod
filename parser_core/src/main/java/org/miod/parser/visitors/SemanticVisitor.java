@@ -384,4 +384,11 @@ public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
         return null;
     }
 
+    @Override
+    public ExprNodeData visitExprArray(MiodParser.ExprArrayContext ctx) {
+        return super.visitExprArray(ctx); //To change body of generated methods, choose Tools | Templates.
+    }
+
+
+
 }
