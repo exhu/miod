@@ -1,9 +1,10 @@
 TODO:
 
 >- _cattr annotations support
-    - ExprNodeData must support series of values, refactor into abstact, type,
+    + ExprNodeData must support series of values, refactor into abstact, type,
     value, items classes.
 + return arrays support
+- do we need ValueTypeId ?
 - implement vars
 - implement proc definition
     - code blocks

@@ -9,6 +9,9 @@ import java.util.logging.Logger;
 import org.antlr.v4.runtime.Token;
 import org.miod.parser.ParserContext;
 import org.miod.parser.expr.ExprNodeData;
+import org.miod.parser.expr.ExprNodeList;
+import org.miod.parser.expr.ExprNodeType;
+import org.miod.parser.expr.ExprNodeValue;
 import org.miod.parser.expr.ExpressionEval;
 import static org.miod.parser.expr.ExpressionEval.exprEq;
 import static org.miod.parser.expr.ExpressionEval.exprLess;
@@ -66,7 +69,7 @@ public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
 
     @Override
     public ExprNodeData visitGlobalStaticIf(MiodParser.GlobalStaticIfContext ctx) {
-        MiodValue res = visit(ctx.boolExpr()).value;
+        MiodValue res = ((ExprNodeValue)visit(ctx.boolExpr())).value;
         if (res == null || res instanceof RuntimeValue) {
             context.getErrorListener().onError(
                     new CompileTimeExpressionExpected(makeSymLocation(ctx.boolExpr().getStart())));
@@ -94,22 +97,22 @@ public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
 
     @Override
     public ExprNodeData visitLiteralNull(MiodParser.LiteralNullContext ctx) {
-        return ExprNodeData.newValue(NullValue.VALUE);
+        return ExprNodeValue.newValue(NullValue.VALUE);
     }
 
     @Override
     public ExprNodeData visitLiteralFalse(MiodParser.LiteralFalseContext ctx) {
-        return ExprNodeData.newValue(BoolValue.FALSE);
+        return ExprNodeValue.newValue(BoolValue.FALSE);
     }
 
     @Override
     public ExprNodeData visitLiteralTrue(MiodParser.LiteralTrueContext ctx) {
-        return ExprNodeData.newValue(BoolValue.TRUE);
+        return ExprNodeValue.newValue(BoolValue.TRUE);
     }
 
     @Override
     public ExprNodeData visitLiteralInteger(MiodParser.LiteralIntegerContext ctx) {
-        return ExprNodeData.newValue(new IntegerValue(Long.parseLong(ctx.INTEGER().getText())));
+        return ExprNodeValue.newValue(new IntegerValue(Long.parseLong(ctx.INTEGER().getText())));
     }
 
     @Override
@@ -118,43 +121,50 @@ public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
     }
 
     @Override
-    public ExprNodeData visitExprGreater(MiodParser.ExprGreaterContext ctx) {;
-        return ExprNodeData.newValue(invertBool(exprLessOrEqual(
-                visit(ctx.left).value, visit(ctx.right).value,
+    public ExprNodeData visitExprGreater(MiodParser.ExprGreaterContext ctx) {
+        return ExprNodeValue.newValue(invertBool(exprLessOrEqual(
+                ((ExprNodeValue)visit(ctx.left)).value,
+                ((ExprNodeValue)visit(ctx.right)).value,
                 context.getErrorListener(), makeSymLocation(ctx.getStart()))));
     }
 
     @Override
     public ExprNodeData visitExprLess(MiodParser.ExprLessContext ctx) {
-        return ExprNodeData.newValue(exprLess(visit(ctx.left).value,
-                visit(ctx.right).value,
+        return ExprNodeValue.newValue(exprLess(
+                ((ExprNodeValue)visit(ctx.left)).value,
+                ((ExprNodeValue)visit(ctx.right)).value,
                 context.getErrorListener(), makeSymLocation(ctx.getStart())));
     }
 
     @Override
     public ExprNodeData visitExprGreaterEq(MiodParser.ExprGreaterEqContext ctx) {
-        return ExprNodeData.newValue(exprLessOrEqual(visit(ctx.right).value,
-                visit(ctx.left).value,
+        return ExprNodeValue.newValue(exprLessOrEqual(
+                ((ExprNodeValue)visit(ctx.right)).value,
+                ((ExprNodeValue)visit(ctx.left)).value,
                 context.getErrorListener(), makeSymLocation(ctx.getStart())));
     }
 
     @Override
     public ExprNodeData visitExprLessEq(MiodParser.ExprLessEqContext ctx) {
-        return ExprNodeData.newValue(exprLessOrEqual(visit(ctx.left).value,
-                visit(ctx.right).value,
+        return ExprNodeValue.newValue(exprLessOrEqual(
+                ((ExprNodeValue)visit(ctx.left)).value,
+                ((ExprNodeValue)visit(ctx.right)).value,
                 context.getErrorListener(), makeSymLocation(ctx.getStart())));
     }
 
     @Override
     public ExprNodeData visitExprEquals(MiodParser.ExprEqualsContext ctx) {
-        return ExprNodeData.newValue(exprEq(visit(ctx.left).value, visit(ctx.right).value,
+        return ExprNodeValue.newValue(
+                exprEq(((ExprNodeValue)visit(ctx.left)).value,
+                ((ExprNodeValue)visit(ctx.right)).value,
                 context.getErrorListener(), makeSymLocation(ctx.getStart())));
     }
 
     @Override
     public ExprNodeData visitExprNotEq(MiodParser.ExprNotEqContext ctx) {
-        return ExprNodeData.newValue(invertBool(exprEq(visit(ctx.left).value,
-                visit(ctx.right).value,
+        return ExprNodeValue.newValue(invertBool(exprEq(
+                ((ExprNodeValue)visit(ctx.left)).value,
+                ((ExprNodeValue)visit(ctx.right)).value,
                 context.getErrorListener(), makeSymLocation(ctx.getStart()))));
     }
 
@@ -188,13 +198,13 @@ public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
         SymbolVisibility visibility = SymbolVisibility.PUBLIC;
         SymbolDesc desc = new SymbolDesc(id, loc, null, visibility);
 
-        ExprNodeData nodeValue = visit(ctx.constExpr());
+        ExprNodeValue nodeValue = (ExprNodeValue)visit(ctx.constExpr());
         MiodValue value = nodeValue.value;
         // create symbol, put to table
         if (ctx.typeSpec() != null) {
             // check type of the expr
             LOGGER.log(Level.INFO, "typed const");
-            ExprNodeData typeSpec = visit(ctx.typeSpec());
+            ExprNodeType typeSpec = (ExprNodeType)visit(ctx.typeSpec());
 
             MiodType targetType = typeSpec.typespec;
 
@@ -249,8 +259,10 @@ public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
 
     @Override
     public ExprNodeData visitExprPlus(MiodParser.ExprPlusContext ctx) {
-        return ExprNodeData.newValue(exprPlus(visit(ctx.left).value,
-                visit(ctx.right).value, context.getErrorListener(),
+        return ExprNodeValue.newValue(exprPlus(
+                ((ExprNodeValue)visit(ctx.left)).value,
+                ((ExprNodeValue)visit(ctx.right)).value,
+                context.getErrorListener(),
                 makeSymLocation(ctx.getStart())));
     }
 
@@ -272,13 +284,13 @@ public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
         }
 
         // expect type name
-        if (elementType.value != null) {
+        if (elementType instanceof ExprNodeType == false) {
             context.getErrorListener().onError(new TypeNameExpected(
                     makeSymLocation(ctx.qualifName().getStart())));
             return null;
         }
 
-        return ExprNodeData.newTypespec(ArrayRefType.fromMiodType(elementType.typespec));
+        return ExprNodeType.newTypespec(ArrayRefType.fromMiodType(((ExprNodeType)elementType).typespec));
     }
 
     @Override
@@ -289,13 +301,13 @@ public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
         }
 
         // expect type name
-        if (elementType.value != null) {
+        if (elementType instanceof ExprNodeType == false) {
             context.getErrorListener().onError(new TypeNameExpected(
                     makeSymLocation(ctx.typeSpec().getStart())));
             return null;
         }
 
-        ExprNodeData sizeSpec = visit(ctx.expr());
+        ExprNodeValue sizeSpec = (ExprNodeValue)visit(ctx.expr());
         if (sizeSpec == null) {
             return null;
         }
@@ -315,7 +327,7 @@ public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
             return null;
         }
 
-        return ExprNodeData.newTypespec(new ArrayType((int) ((IntegerValue) sizeSpec.value).value, elementType.typespec));
+        return ExprNodeType.newTypespec(new ArrayType((int) ((IntegerValue) sizeSpec.value).value, ((ExprNodeType)elementType).typespec));
 
     }
 
@@ -339,7 +351,7 @@ public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
 
         // TODO handle GENERIC, enumDecl
         if (ctx.arrayType() != null) {
-            ExprNodeData arrayType = visit(ctx.arrayType());
+            ExprNodeType arrayType = (ExprNodeType)visit(ctx.arrayType());
             if (arrayType != null) {
                 desc.type = arrayType.typespec;
                 currentSymTable.put(new TypeDefSymbol(desc));
@@ -350,15 +362,15 @@ public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
 
     @Override
     public ExprNodeData visitExprCast(MiodParser.ExprCastContext ctx) {
-        ExprNodeData targetTypeData = visit(ctx.typeSpec());
-        ExprNodeData exprData = visit(ctx.expr());
+        ExprNodeType targetTypeData = (ExprNodeType)visit(ctx.typeSpec());
+        ExprNodeValue exprData = (ExprNodeValue)visit(ctx.expr());
 
-        if (ExpressionEval.nulls(targetTypeData, exprData) || exprData.value == null) {
+        if (ExpressionEval.nulls(targetTypeData, exprData)) {
             return null;
         }
 
         if (exprData.value.getType().supportsCastTo(targetTypeData.typespec)) {
-            return ExprNodeData.newValue(exprData.value.castTo(targetTypeData.typespec));
+            return ExprNodeValue.newValue(exprData.value.castTo(targetTypeData.typespec));
         }
 
         context.getErrorListener().onError(new TypesMismatch(makeSymLocation(ctx.typeSpec().getStart())));
@@ -386,6 +398,8 @@ public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
         if (firstElem == null) {
             return null;
         }
+
+        ExprNodeList nodeList;
 
         return super.visitExprArray(ctx);
     }
