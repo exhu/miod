@@ -9,9 +9,8 @@ package org.miod.program.annotations;
  * @author yur
  */
 public abstract class MiodAnnotation {
-    private String name;
+    private final String name;
     public MiodAnnotation(String name) {
         this.name = name;
     }
-
 }

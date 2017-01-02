@@ -8,6 +8,9 @@ package org.miod.program.annotations;
  *
  * @author yur
  */
-public class MiodBuiltinAnnotation {
+public abstract class MiodBuiltinAnnotation {
+    public MiodBuiltinAnnotation(String name) {
+        super(name);
+    }
 
 }

@@ -32,6 +32,8 @@ public final class DefaultSymbolTable extends BasicSymbolTable {
         putDefaultType("int16", IntegerType.INT16);
         putDefaultType("int32", IntegerType.INT32);
         putDefaultType("cardinal", IntegerType.CARDINAL);
+
+        // TODO define built-in annotations
     }
 
 }

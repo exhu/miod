@@ -20,8 +20,6 @@ import org.miod.parser.generated.MiodParserBaseVisitor;
 import org.miod.program.CompilationUnit;
 import org.miod.program.errors.BooleanExprExpected;
 import org.miod.program.errors.CompileTimeExpressionExpected;
-import org.miod.program.errors.IntegerExpected;
-import org.miod.program.errors.IntegerInBoundsExpected;
 import org.miod.program.errors.SymbolRedefinitionError;
 import org.miod.program.errors.TypeNameExpected;
 import org.miod.program.errors.TypesMismatch;
@@ -33,7 +31,6 @@ import org.miod.program.symbol_table.SymbolVisibility;
 import org.miod.program.symbol_table.symbols.ConstSymbol;
 import org.miod.program.symbol_table.symbols.TypeDefSymbol;
 import org.miod.program.types.ArrayRefType;
-import org.miod.program.types.ArrayType;
 import org.miod.program.types.IntegerType;
 import org.miod.program.types.MiodType;
 import org.miod.program.types.ValueTypeId;
@@ -386,6 +383,7 @@ public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
 
     @Override
     public ExprNodeData visitExprArray(MiodParser.ExprArrayContext ctx) {
+        // TODO
         return super.visitExprArray(ctx); //To change body of generated methods, choose Tools | Templates.
     }
 
