@@ -2,7 +2,7 @@ unit pkg1::test_array0001
 
 type
 openA = array[int]
-#sizedA = array[int,3]
+sizedA = array[int,3]
 const sz = 4
-#type sizedB = array[int,sz]
+type sizedB = array[int,sz]
 

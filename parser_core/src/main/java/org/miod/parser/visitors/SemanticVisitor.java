@@ -20,6 +20,8 @@ import org.miod.parser.generated.MiodParserBaseVisitor;
 import org.miod.program.CompilationUnit;
 import org.miod.program.errors.BooleanExprExpected;
 import org.miod.program.errors.CompileTimeExpressionExpected;
+import org.miod.program.errors.IntegerExpected;
+import org.miod.program.errors.IntegerInBoundsExpected;
 import org.miod.program.errors.SymbolRedefinitionError;
 import org.miod.program.errors.TypeNameExpected;
 import org.miod.program.errors.TypesMismatch;
@@ -31,6 +33,7 @@ import org.miod.program.symbol_table.SymbolVisibility;
 import org.miod.program.symbol_table.symbols.ConstSymbol;
 import org.miod.program.symbol_table.symbols.TypeDefSymbol;
 import org.miod.program.types.ArrayRefType;
+import org.miod.program.types.ArrayType;
 import org.miod.program.types.IntegerType;
 import org.miod.program.types.MiodType;
 import org.miod.program.types.ValueTypeId;
@@ -278,12 +281,8 @@ public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
         return ExprNodeData.newTypespec(ArrayRefType.fromMiodType(elementType.typespec));
     }
 
-    /*
     @Override
     public ExprNodeData visitSizedArray(MiodParser.SizedArrayContext ctx) {
-        throw new UnsupportedOperationException("fixed sized arrays are not implemented in this version of Miod");
-        
-
         ExprNodeData elementType = visit(ctx.typeSpec());
         if (elementType == null) {
             return null;
@@ -317,10 +316,8 @@ public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
         }
 
         return ExprNodeData.newTypespec(new ArrayType((int) ((IntegerValue) sizeSpec.value).value, elementType.typespec));
-        
-        
+
     }
-    */
 
     protected final SymbolLocation makeSymLocation(Token token) {
         return ExpressionEval.makeSymLocation(unit.filename, token);
@@ -355,7 +352,7 @@ public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
     public ExprNodeData visitExprCast(MiodParser.ExprCastContext ctx) {
         ExprNodeData targetTypeData = visit(ctx.typeSpec());
         ExprNodeData exprData = visit(ctx.expr());
-        
+
         if (ExpressionEval.nulls(targetTypeData, exprData) || exprData.value == null) {
             return null;
         }
@@ -376,17 +373,21 @@ public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
 
             - 1) convert types, insert checks in code generation
             + 2) convert values
-        */
+         */
 
         return null;
     }
 
     @Override
     public ExprNodeData visitExprArray(MiodParser.ExprArrayContext ctx) {
-        // TODO
-        return super.visitExprArray(ctx); //To change body of generated methods, choose Tools | Templates.
+        // TODO get type from the first expr, make sure the rest are of the same type
+        ExprNodeData firstElem = visit(ctx.expr());
+
+        if (firstElem == null) {
+            return null;
+        }
+
+        return super.visitExprArray(ctx);
     }
-
-
 
 }
