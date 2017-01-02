@@ -1,6 +1,7 @@
 TODO:
 
 >- _cattr annotations support
+    - annotations parsing
     + ExprNodeData must support series of values, refactor into abstact, type,
     value, items classes.
 + return arrays support

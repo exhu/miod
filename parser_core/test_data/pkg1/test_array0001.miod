@@ -5,4 +5,4 @@ openA = array[int]
 sizedA = array[int,3]
 const sz = 4
 type sizedB = array[int,sz]
-
+const initArray = [1, 2, 3]

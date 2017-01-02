@@ -166,7 +166,9 @@ public class ProgramTestSuite {
         ArrayType aType = (ArrayType)(((TypeDefSymbol)unit.symTable.resolve("sizedA")).desc.type);
         assertEquals(aType.size, 3);
         ArrayType bType = (ArrayType)(((TypeDefSymbol)unit.symTable.resolve("sizedB")).desc.type);
-        assertEquals(bType.size, 4);        
+        assertEquals(bType.size, 4);
+        ArrayType initedArray = (ArrayType)(((ConstSymbol)unit.symTable.resolve("initArray")).value.getType());
+        assertEquals(initedArray.size, 3);
     }
 
     @Test

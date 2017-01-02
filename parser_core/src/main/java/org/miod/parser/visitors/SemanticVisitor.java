@@ -28,6 +28,7 @@ import org.miod.program.errors.IntegerInBoundsExpected;
 import org.miod.program.errors.SymbolRedefinitionError;
 import org.miod.program.errors.TypeNameExpected;
 import org.miod.program.errors.TypesMismatch;
+import org.miod.program.errors.ValueExpected;
 import org.miod.program.symbol_table.SymbolDesc;
 import org.miod.program.symbol_table.SymbolLocation;
 import org.miod.program.symbol_table.SymbolTable;
@@ -40,6 +41,7 @@ import org.miod.program.types.ArrayType;
 import org.miod.program.types.IntegerType;
 import org.miod.program.types.MiodType;
 import org.miod.program.types.ValueTypeId;
+import org.miod.program.values.ArrayValue;
 import org.miod.program.values.BoolValue;
 import org.miod.program.values.IntegerValue;
 import org.miod.program.values.MiodValue;
@@ -399,9 +401,51 @@ public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
             return null;
         }
 
-        ExprNodeList nodeList;
+        if (firstElem instanceof ExprNodeValue == false) {
+            context.getErrorListener().onError(new ValueExpected(makeSymLocation(ctx.expr().getStart())));
+            return null;
+        }
 
-        return super.visitExprArray(ctx);
+        final MiodType arrayItemType = ((ExprNodeValue)firstElem).value.getType();
+
+        ExprNodeList nodeList = (ExprNodeList)visit(ctx.commaExpr());
+
+        for(ExprNodeData i : nodeList.list) {
+            if (i == null)
+                return null;
+
+            if (i instanceof ExprNodeValue == false) {
+                context.getErrorListener().onError(new ValueExpected(makeSymLocation(ctx.commaExpr().getStart())));
+                return null;
+            }
+
+            if (((ExprNodeValue)i).value.getType() != arrayItemType) {
+                context.getErrorListener().onError(new TypesMismatch(makeSymLocation(ctx.commaExpr().getStart())));
+                return null;
+            }
+        }
+
+        MiodValue[] values = new MiodValue[nodeList.list.length + 1];
+        values[0] = ((ExprNodeValue)firstElem).value;
+        int vIndex = 1;
+        for(ExprNodeData i : nodeList.list) {
+            values[vIndex] = ((ExprNodeValue)i).value;
+            ++vIndex;
+        }
+
+        return ExprNodeValue.newValue(new ArrayValue(new ArrayType(values.length, arrayItemType), values));
     }
+
+    @Override
+    public ExprNodeData visitCommaExpr(MiodParser.CommaExprContext ctx) {
+        ExprNodeData[] nodes = new ExprNodeData[ctx.expr().size()];
+        int nodeIndex = 0;
+        for(MiodParser.ExprContext e : ctx.expr()) {
+            nodes[nodeIndex] = visit(e);
+            ++nodeIndex;
+        }
+        return new ExprNodeList(nodes); //To change body of generated methods, choose Tools | Templates.
+    }
+
 
 }
