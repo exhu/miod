@@ -118,6 +118,22 @@ public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
     }
 
     @Override
+    public ExprNodeData visitLiteralCharStr(MiodParser.LiteralCharStrContext ctx) {
+        // TODO strip quotes, return uint8
+        return super.visitLiteralCharStr(ctx);
+    }
+
+    @Override
+    public ExprNodeData visitLiteralString(MiodParser.LiteralStringContext ctx) {
+        // TODO strip quotes, return StringValue
+        return super.visitLiteralString(ctx);
+    }
+
+
+
+
+
+    @Override
     public ExprNodeData visitExprLiteral(MiodParser.ExprLiteralContext ctx) {
         return visit(ctx.literal());
     }
@@ -446,6 +462,7 @@ public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
         }
         return new ExprNodeList(nodes); //To change body of generated methods, choose Tools | Templates.
     }
+
 
 
 }

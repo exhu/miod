@@ -128,10 +128,8 @@ fragment ESC: '\\"' | '\\\\';
 fragment ESC_CHAR: '\\\'' | '\\\\';
 STRING: '"' (ESC|~('\r'|'\n'))*? '"';
 RAW_STRING: '"""' .*? '"""';
-// must evaluate to single code unit enough to store the code point, 
-// i.e. 1 byte for ASCII,
-// 2 byte for widechar etc.
-CHAR_STR: '\'' (ESC_CHAR|~('\r'|'\n'))*? '\'';
+// only 32-127 ASCII char can be specified
+CHAR_STR: '\'' (ESC_CHAR|[ -\u007F])*? '\'';
 
 fragment HEX: [a-fA-F0-9_];
 fragment DIGIT: [0-9_];
