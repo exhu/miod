@@ -4,7 +4,7 @@
  */
 package org.miod.program.values;
 
-import org.miod.program.types.MiodType;
+import org.miod.program.types.StringType;
 
 /**
  *
@@ -12,8 +12,8 @@ import org.miod.program.types.MiodType;
  */
 public class StringValue extends MiodValue {
     public final String value;
-    public StringValue(String v, MiodType type) {
-        super(type);
+    public StringValue(String v) {
+        super(StringType.VALUE);
         value = v;
     }
 

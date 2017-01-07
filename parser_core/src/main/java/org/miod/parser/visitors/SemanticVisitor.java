@@ -47,6 +47,7 @@ import org.miod.program.values.IntegerValue;
 import org.miod.program.values.MiodValue;
 import org.miod.program.values.NullValue;
 import org.miod.program.values.RuntimeValue;
+import org.miod.program.values.StringValue;
 
 /**
  * First pass visitor. Gathers declarations, tries to evaluate certain
@@ -124,14 +125,10 @@ public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
     }
 
     @Override
-    public ExprNodeData visitLiteralString(MiodParser.LiteralStringContext ctx) {
-        // TODO strip quotes, return StringValue
-        return super.visitLiteralString(ctx);
+    public ExprNodeData visitLiteralString(MiodParser.LiteralStringContext ctx) {        
+        return ExprNodeValue.newValue(new StringValue(
+                ExpressionEval.extractStringFromLiteral(ctx.STRING().getText())));
     }
-
-
-
-
 
     @Override
     public ExprNodeData visitExprLiteral(MiodParser.ExprLiteralContext ctx) {

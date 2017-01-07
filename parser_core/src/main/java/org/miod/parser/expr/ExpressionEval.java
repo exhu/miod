@@ -161,6 +161,12 @@ public final class ExpressionEval {
         }, location);
     }
 
+    public static String extractStringFromLiteral(String literalText) {
+        // TODO strip quotes
+        // TODO translate 'escape sequences'
+        return literalText;
+    }
+
     private ExpressionEval() {
     }
 }

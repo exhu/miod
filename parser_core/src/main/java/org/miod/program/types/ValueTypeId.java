@@ -28,8 +28,8 @@ public enum ValueTypeId {
     DOUBLE,
     //NCHAR_LITERAL,
     //NCHAR,
-    CHAR_LITERAL,
-    STRING_LITERAL,
+    //CHAR_LITERAL,
+    //STRING_LITERAL,
     //NSTRING,
     STRING,
     ARRAY_SIZED, // array definition
