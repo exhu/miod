@@ -2,7 +2,7 @@
     Copyright 2016 Yury Benesh
     see COPYING.txt
  */
-package org.miod.parser.expr;
+package org.miod.parser.node;
 
 import org.miod.program.symbol_table.SymbolTableItem;
 import org.miod.program.symbol_table.symbols.ConstSymbol;
@@ -12,7 +12,7 @@ import org.miod.program.symbol_table.symbols.TypeDefSymbol;
  *
  * @author yur
  */
-public abstract class ExprNodeData {
+public abstract class MiodNodeData {
     /// Can be null for the first pass, e.g. yet unknown identifiers,
     /// error if null for the second pass.
     /// Contains explicit value for literals and through constants expansion,
@@ -20,11 +20,11 @@ public abstract class ExprNodeData {
     /// typespec for type name etc. e.g. const a : int = 3, 'int' -> MiodType
     // TODO store values for common types and values and return constants.
 
-    public static ExprNodeData newFromSymbolTableItem(SymbolTableItem sym) {
+    public static MiodNodeData newFromSymbolTableItem(SymbolTableItem sym) {
         if (sym instanceof ConstSymbol) {
-            return ExprNodeValue.newValue(((ConstSymbol) sym).value);
+            return MiodNodeValue.newValue(((ConstSymbol) sym).value);
         } else if (sym instanceof TypeDefSymbol) {
-            return ExprNodeType.newTypespec(((TypeDefSymbol) sym).desc.type);
+            return MiodNodeType.newTypespec(((TypeDefSymbol) sym).desc.type);
         }
 
         return null;

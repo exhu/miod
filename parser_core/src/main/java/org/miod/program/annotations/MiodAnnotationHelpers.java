@@ -4,7 +4,7 @@
  */
 package org.miod.program.annotations;
 
-import org.miod.parser.expr.ExprNodeDict;
+import org.miod.parser.node.MiodNodeDict;
 
 /**
  *
@@ -19,7 +19,7 @@ public final class MiodAnnotationHelpers {
         return name.equals(CAttrAnnotation.NAME);
     }
 
-    static public MiodBuiltinAnnotation newBuiltin(String name, ExprNodeDict dict) {
+    static public MiodBuiltinAnnotation newBuiltin(String name, MiodNodeDict dict) {
         if (name.equals(CAttrAnnotation.NAME)) {
             // TODO
         }

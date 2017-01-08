@@ -1,6 +1,5 @@
 TODO:
 
-- refactor parser.expr: ExprNode is not only for expressions
 >- _cattr annotations support
     - annotations parsing
         * StringValue
@@ -74,6 +73,8 @@ uses data collected during 1st and optional second pass
 - dynamic arrays are allocated via C implementation.
 - review grammar
 - var a : type -> add symbol table item with resolved 'type' (i.e. bypass alias)
+
++ refactor parser.expr: ExprNode is not only for expressions
 
 Version 1 features
 

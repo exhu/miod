@@ -2,7 +2,7 @@
     Copyright 2016 Yury Benesh
     see COPYING.txt
  */
-package org.miod.parser.expr;
+package org.miod.parser.node;
 
 import org.miod.program.values.BoolValue;
 import org.miod.program.values.MiodValue;
@@ -12,10 +12,10 @@ import org.miod.program.values.NullValue;
  *
  * @author yur
  */
-public final class ExprNodeValue extends ExprNodeData {
+public final class MiodNodeValue extends MiodNodeData {
     public final MiodValue value;
 
-    public static ExprNodeValue newValue(MiodValue v) {
+    public static MiodNodeValue newValue(MiodValue v) {
         if (v == NullValue.INSTANCE) {
             return VALUE_NULL;
         }
@@ -26,14 +26,14 @@ public final class ExprNodeValue extends ExprNodeData {
             return VALUE_TRUE;
         }
 
-        return new ExprNodeValue(v);
+        return new MiodNodeValue(v);
     }
 
-    private final static ExprNodeValue VALUE_NULL = new ExprNodeValue(NullValue.INSTANCE);
-    private final static ExprNodeValue VALUE_FALSE = new ExprNodeValue(BoolValue.FALSE);
-    private final static ExprNodeValue VALUE_TRUE = new ExprNodeValue(BoolValue.TRUE);
+    private final static MiodNodeValue VALUE_NULL = new MiodNodeValue(NullValue.INSTANCE);
+    private final static MiodNodeValue VALUE_FALSE = new MiodNodeValue(BoolValue.FALSE);
+    private final static MiodNodeValue VALUE_TRUE = new MiodNodeValue(BoolValue.TRUE);
 
-    private ExprNodeValue(MiodValue v) {
+    private MiodNodeValue(MiodValue v) {
         this.value = v;
     }
 

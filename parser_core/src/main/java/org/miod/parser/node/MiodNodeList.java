@@ -2,18 +2,18 @@
     Copyright 2016 Yury Benesh
     see COPYING.txt
  */
-package org.miod.parser.expr;
+package org.miod.parser.node;
 
 /**
  * A list of expressions, e.g. array literal or proc arguments enumeration.
  *
  * @author yur
  */
-public final class ExprNodeList extends ExprNodeData {
+public final class MiodNodeList extends MiodNodeData {
 
-    public final ExprNodeData[] list;
+    public final MiodNodeData[] list;
 
-    public ExprNodeList(ExprNodeData[] list) {
+    public MiodNodeList(MiodNodeData[] list) {
         this.list = list;
     }
 }
