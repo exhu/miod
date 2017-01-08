@@ -507,12 +507,14 @@ public class SemanticVisitor extends MiodParserBaseVisitor<MiodNodeData> {
     public MiodNodeData visitAnnotation(MiodParser.AnnotationContext ctx) {
         final String name = ctx.qualifName().getText();
         MiodNodeDict dict = null;
+        SymbolLocation loc = makeSymLocation(ctx.start);
         if (ctx.annotationDict() != null) {
             dict = (MiodNodeDict)visit(ctx.annotationDict());
         }
 
         if (MiodAnnotationHelpers.isBuiltin(name)) {
-            return new MiodNodeAnnotation(MiodAnnotationHelpers.newBuiltin(name, dict));
+            return new MiodNodeAnnotation(MiodAnnotationHelpers.newBuiltin(name,
+                    dict, context.getErrorListener(), loc));
         }
 
         // TODO qualif name to symbol

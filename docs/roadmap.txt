@@ -8,6 +8,8 @@ TODO:
     + ExprNodeData must support series of values, refactor into abstact, type,
     value, items classes.
 + return arrays support
+- builtin annotations must share the same code for custom user annotations for
+type checks etc.
 - do we need ValueTypeId ?
 - implement vars
 - implement proc definition

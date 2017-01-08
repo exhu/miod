@@ -4,6 +4,11 @@
  */
 package org.miod.program.annotations;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+
 /**
  * "_cattr" annotation, all fields are optional.
  *
@@ -11,6 +16,8 @@ package org.miod.program.annotations;
  */
 public final class CAttrAnnotation extends MiodBuiltinAnnotation {
     public static final String NAME = "_cattr";
+    public static final HashSet<String> VALID_KEYS = new HashSet<>(
+            Arrays.asList("cname", "headers"));
 
     public final String cname;
     public final String[] headers;

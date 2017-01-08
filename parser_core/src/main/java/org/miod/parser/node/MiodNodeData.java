@@ -8,7 +8,7 @@ import org.miod.program.symbol_table.SymbolTableItem;
 import org.miod.program.symbol_table.symbols.ConstSymbol;
 import org.miod.program.symbol_table.symbols.TypeDefSymbol;
 
-/**
+/** AST visitor node data returned by visitor methods.
  *
  * @author yur
  */
