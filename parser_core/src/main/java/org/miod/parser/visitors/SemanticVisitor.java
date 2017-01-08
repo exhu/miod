@@ -4,25 +4,31 @@
  */
 package org.miod.parser.visitors;
 
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.antlr.v4.runtime.Token;
 import org.miod.parser.ParserContext;
 import org.miod.parser.expr.ExprNodeData;
+import org.miod.parser.expr.ExprNodeDict;
 import org.miod.parser.expr.ExprNodeList;
+import org.miod.parser.expr.ExprNodeNameData;
 import org.miod.parser.expr.ExprNodeType;
 import org.miod.parser.expr.ExprNodeValue;
-import org.miod.parser.expr.ExpressionEval;
-import static org.miod.parser.expr.ExpressionEval.exprEq;
-import static org.miod.parser.expr.ExpressionEval.exprLess;
-import static org.miod.parser.expr.ExpressionEval.exprLessOrEqual;
-import static org.miod.parser.expr.ExpressionEval.exprPlus;
-import static org.miod.parser.expr.ExpressionEval.invertBool;
+import org.miod.parser.expr.ExprEvalHelpers;
+import static org.miod.parser.expr.ExprEvalHelpers.exprEq;
+import static org.miod.parser.expr.ExprEvalHelpers.exprLess;
+import static org.miod.parser.expr.ExprEvalHelpers.exprLessOrEqual;
+import static org.miod.parser.expr.ExprEvalHelpers.exprPlus;
+import static org.miod.parser.expr.ExprEvalHelpers.invertBool;
+import org.miod.parser.expr.MiodNodeAnnotation;
 import org.miod.parser.generated.MiodParser;
 import org.miod.parser.generated.MiodParserBaseVisitor;
 import org.miod.program.CompilationUnit;
+import org.miod.program.annotations.MiodAnnotationHelpers;
 import org.miod.program.errors.BooleanExprExpected;
 import org.miod.program.errors.CompileTimeExpressionExpected;
+import org.miod.program.errors.DuplicateKey;
 import org.miod.program.errors.IntegerExpected;
 import org.miod.program.errors.IntegerInBoundsExpected;
 import org.miod.program.errors.SymbolRedefinitionError;
@@ -40,7 +46,6 @@ import org.miod.program.types.ArrayRefType;
 import org.miod.program.types.ArrayType;
 import org.miod.program.types.IntegerType;
 import org.miod.program.types.MiodType;
-import org.miod.program.types.ValueTypeId;
 import org.miod.program.values.ArrayValue;
 import org.miod.program.values.BoolValue;
 import org.miod.program.values.IntegerValue;
@@ -79,14 +84,12 @@ public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
             } else {
                 return visit(ctx.falseStmts);
             }
+        } else if (res instanceof RuntimeValue) {
+            context.getErrorListener().onError(
+                    new CompileTimeExpressionExpected(makeSymLocation(ctx.boolExpr().getStart())));
         } else {
-            if (res instanceof RuntimeValue) {
-                context.getErrorListener().onError(
-                        new CompileTimeExpressionExpected(makeSymLocation(ctx.boolExpr().getStart())));
-            } else {
-                context.getErrorListener().onError(new BooleanExprExpected(
-                        makeSymLocation(ctx.boolExpr().getStart())));
-            }
+            context.getErrorListener().onError(new BooleanExprExpected(
+                    makeSymLocation(ctx.boolExpr().getStart())));
         }
         return null;
     }
@@ -129,7 +132,7 @@ public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
     @Override
     public ExprNodeData visitLiteralString(MiodParser.LiteralStringContext ctx) {
         return ExprNodeValue.newValue(new StringValue(
-                ExpressionEval.extractStringFromLiteral(ctx.STRING().getText())));
+                ExprEvalHelpers.extractStringFromLiteral(ctx.STRING().getText())));
     }
 
     @Override
@@ -349,7 +352,7 @@ public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
     }
 
     protected final SymbolLocation makeSymLocation(Token token) {
-        return ExpressionEval.makeSymLocation(unit.filename, token);
+        return ExprEvalHelpers.makeSymLocation(unit.filename, token);
     }
 
     @Override
@@ -382,7 +385,7 @@ public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
         ExprNodeType targetTypeData = (ExprNodeType) visit(ctx.typeSpec());
         ExprNodeValue exprData = (ExprNodeValue) visit(ctx.expr());
 
-        if (ExpressionEval.nulls(targetTypeData, exprData)) {
+        if (ExprEvalHelpers.nulls(targetTypeData, exprData)) {
             return null;
         }
 
@@ -460,7 +463,81 @@ public class SemanticVisitor extends MiodParserBaseVisitor<ExprNodeData> {
             nodes[nodeIndex] = visit(e);
             ++nodeIndex;
         }
-        return new ExprNodeList(nodes); //To change body of generated methods, choose Tools | Templates.
+        return new ExprNodeList(nodes);
     }
+
+    @Override
+    public ExprNodeData visitAnnotationDictValue(MiodParser.AnnotationDictValueContext ctx) {
+        return new ExprNodeNameData(ctx.bareName().getText(), visit(ctx.constExpr()));
+    }
+
+    @Override
+    public ExprNodeData visitAnnotationDictValues(MiodParser.AnnotationDictValuesContext ctx) {
+        ExprNodeData[] list = new ExprNodeData[ctx.annotationDictValue().size()];
+        int index = 0;
+        for (MiodParser.AnnotationDictValueContext i : ctx.annotationDictValue()) {
+            list[index] = visit(i);
+            ++index;
+        }
+
+        return new ExprNodeList(list);
+    }
+
+    @Override
+    public ExprNodeData visitAnnotationDict(MiodParser.AnnotationDictContext ctx) {
+        // check for duplicate keys!
+        if (ctx.annotationDictValues() == null) {
+            HashMap<String, ExprNodeData> dict = new HashMap<>(1);
+            dict.put(ctx.bareName().getText(), visit(ctx.constExpr()));
+            return new ExprNodeDict(dict);
+        }
+
+        ExprNodeList list = (ExprNodeList) visit(ctx.annotationDictValues());
+
+        HashMap<String, ExprNodeData> dict = new HashMap<>(1 + list.list.length);
+        for (ExprNodeData i : list.list) {
+            ExprNodeNameData pair = (ExprNodeNameData) i;
+            if (dict.containsKey(pair.name)) {
+                context.getErrorListener().onError(new DuplicateKey(
+                        makeSymLocation(ctx.annotationDictValues().getStart()),
+                        pair.name));
+                return null;
+            }
+
+            dict.put(pair.name, pair.data);
+        }
+
+        return new ExprNodeDict(dict);
+    }
+
+    @Override
+    public ExprNodeData visitAnnotation(MiodParser.AnnotationContext ctx) {
+        final String name = ctx.qualifName().getText();
+        ExprNodeDict dict = null;
+        if (ctx.annotationDict() != null) {
+            dict = (ExprNodeDict)visit(ctx.annotationDict());
+        }
+
+        if (MiodAnnotationHelpers.isBuiltin(name)) {
+            return new MiodNodeAnnotation(MiodAnnotationHelpers.newBuiltin(name, dict));
+        }
+
+        // TODO qualif name to symbol
+        // TODO support user annotations
+        return null;
+    }
+
+    @Override
+    public ExprNodeData visitAnnotations(MiodParser.AnnotationsContext ctx) {
+        ExprNodeData [] list = new ExprNodeData[ctx.annotation().size()];
+        int index = 0;
+        for(MiodParser.AnnotationContext i : ctx.annotation()) {
+            list[index] = visit(i);
+        }
+        return new ExprNodeList(list);
+    }
+
+
+
 
 }

@@ -1,5 +1,6 @@
 TODO:
 
+- refactor parser.expr: ExprNode is not only for expressions
 >- _cattr annotations support
     - annotations parsing
         * StringValue

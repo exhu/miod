@@ -14,8 +14,10 @@ qualifNameOnlyTxt: bareName (NAMESPACE_SEP bareName)+;
 annotations: annotation+;
 // Must check for predefined annotations like @_rtti
 annotation: ANNOTATE qualifName annotationDict?;
-annotationDict: OPEN_CURLY bareName COLON constExpr (COMMA bareName COLON constExpr)* CLOSE_CURLY;
+annotationDict: OPEN_CURLY bareName COLON constExpr annotationDictValues? CLOSE_CURLY;
 
+annotationDictValues: annotationDictValue+;
+annotationDictValue: COMMA bareName COLON constExpr;
 
 unitBody: importDecl* globalStmt+;
 

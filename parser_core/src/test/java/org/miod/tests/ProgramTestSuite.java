@@ -144,6 +144,7 @@ public class ProgramTestSuite {
         assertEquals(IntegerType.fromLiteral((long)(Integer.MIN_VALUE)-1), IntegerType.INT64);
         assertEquals(IntegerType.fromLiteral(Long.MIN_VALUE), IntegerType.INT64);
         assertEquals(IntegerType.fromLiteral(Long.MAX_VALUE), IntegerType.INT64);
+        assertEquals(IntegerType.fromLiteral(0xFFFFFFFFL), IntegerType.INT64);
     }
 
     @Test

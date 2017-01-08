@@ -9,6 +9,7 @@ package org.miod.program.types;
  * @author yur
  */
 public final class IntegerType extends NumericType<IntegerType> {
+
     public final int bits;
     public final boolean signed;
     public final long maxValue, minValue;
@@ -26,14 +27,16 @@ public final class IntegerType extends NumericType<IntegerType> {
 
     public static IntegerType fromLiteral(long v) {
         if (v <= Integer.MAX_VALUE) {
-            if (v >= 0)
+            if (v >= 0) {
                 return CARDINAL;
-            else if (v >= Integer.MIN_VALUE)
+            } else if (v >= Integer.MIN_VALUE) {
                 return INT32;
+            } else {
+                return INT64;
+            }
         }
-        /*else if (v > Long.MAX_VALUE) -- TODO replace long with BigInt?
-            return UINT64;*/
 
+        // TODO replace long with BigInt?
         return INT64;
     }
 
@@ -42,14 +45,15 @@ public final class IntegerType extends NumericType<IntegerType> {
     }
 
     @Override
-    public IntegerType promote(IntegerType other) {        
+    public IntegerType promote(IntegerType other) {
         if (signed == other.signed) {
-            if (other.bits > bits)
+            if (other.bits > bits) {
                 return other;
-            else
+            } else {
                 return this;
+            }
         }
-        
+
         // cardinal        
         IntegerType card = null, noncard = null;
 
@@ -62,10 +66,11 @@ public final class IntegerType extends NumericType<IntegerType> {
         }
 
         if (card != null) {
-            if (noncard.bits < 32)
+            if (noncard.bits < 32) {
                 return INT32;
-            else
+            } else {
                 return noncard;
+            }
         }
 
         return null;
@@ -77,24 +82,22 @@ public final class IntegerType extends NumericType<IntegerType> {
         this.bits = bits;
         this.isCardinal = (bits == 31) && (signed == false);
 
-        assert(bits <= 64 && bits >= 8);
+        assert (bits <= 64 && bits >= 8);
 
         if (signed) {
-            maxValue = (1L << (bits-1)) - 1L;
-            minValue = -(1L << (bits-1));
-        }
-        else {
+            maxValue = (1L << (bits - 1)) - 1L;
+            minValue = -(1L << (bits - 1));
+        } else {
             minValue = 0;
             maxValue = (1L << bits) - 1L;
         }
     }
 
-
     private boolean compatibleWith(MiodType other) {
         if (other instanceof IntegerType) {
-            IntegerType otherInt = (IntegerType)other;
+            IntegerType otherInt = (IntegerType) other;
             return (signed == otherInt.signed) || (isCardinal
-                   || otherInt.isCardinal);
+                    || otherInt.isCardinal);
         }
         return false;
     }

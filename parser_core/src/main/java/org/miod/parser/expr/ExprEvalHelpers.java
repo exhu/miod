@@ -24,7 +24,10 @@ import org.miod.program.values.RuntimeValue;
  *
  * @author yur
  */
-public final class ExpressionEval {
+public final class ExprEvalHelpers {
+    private ExprEvalHelpers() {
+    }
+
     public static boolean runtimeValues(MiodValue left, MiodValue right) {
         return (left instanceof RuntimeValue) || (right instanceof RuntimeValue);
     }
@@ -165,8 +168,5 @@ public final class ExpressionEval {
         // TODO strip quotes
         // TODO translate 'escape sequences'
         return literalText;
-    }
-
-    private ExpressionEval() {
-    }
+    }    
 }

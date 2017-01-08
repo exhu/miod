@@ -10,12 +10,13 @@ package org.miod.program.annotations;
  * @author yur
  */
 public final class CAttrAnnotation extends MiodBuiltinAnnotation {
+    public static final String NAME = "_cattr";
 
     public final String cname;
     public final String[] headers;
 
     public CAttrAnnotation(String cname, String[] headers) {
-        super("_cattr");
+        super(NAME);
         this.cname = cname;
         this.headers = headers;
     }

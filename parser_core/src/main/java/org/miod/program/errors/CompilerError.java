@@ -19,7 +19,7 @@ public abstract class CompilerError {
     }
 
     final protected String makeErrorText(String msg) {
-        return String.format("'%s', at '%s' %d:%d", msg,
+        return String.format("%s, at '%s' %d:%d", msg,
                     location.unitPath, location.line, location.column);
     }
 
