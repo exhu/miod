@@ -17,15 +17,13 @@ public final class RuntimeValue extends MiodValue {
     public static final RuntimeValue BOOL = new RuntimeValue(BoolType.INSTANCE);
     public static final RuntimeValue CARDINAL = new RuntimeValue(IntegerType.CARDINAL);
 
-    public static RuntimeValue fromType(MiodType t) {        
-        switch(t.typeId) {
-            case CARDINAL:
-                return RuntimeValue.CARDINAL;
-            case BOOL:
-                return RuntimeValue.BOOL;
+    public static RuntimeValue fromType(MiodType t) {
+        if (t == IntegerType.CARDINAL)
+            return RuntimeValue.CARDINAL;
 
-            default:;
-        }        
+        if (t == BoolType.INSTANCE)
+            return RuntimeValue.BOOL;
+        
         return null;
     }
 

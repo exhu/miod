@@ -12,16 +12,17 @@ public final class IntegerType extends NumericType<IntegerType> {
     public final int bits;
     public final boolean signed;
     public final long maxValue, minValue;
+    public final boolean isCardinal;
 
-    public static final IntegerType INT8 = new IntegerType(ValueTypeId.INT8);
-    public static final IntegerType UINT8 = new IntegerType(ValueTypeId.UINT8);
-    public static final IntegerType INT16 = new IntegerType(ValueTypeId.INT16);
-    public static final IntegerType UINT16 = new IntegerType(ValueTypeId.UINT16);
-    public static final IntegerType INT32 = new IntegerType(ValueTypeId.INT32);
-    public static final IntegerType UINT32 = new IntegerType(ValueTypeId.UINT32);
-    public static final IntegerType INT64 = new IntegerType(ValueTypeId.INT64);
-    public static final IntegerType UINT64 = new IntegerType(ValueTypeId.UINT64);
-    public static final IntegerType CARDINAL = new IntegerType(ValueTypeId.CARDINAL);
+    public static final IntegerType INT8 = new IntegerType(true, 8);
+    public static final IntegerType UINT8 = new IntegerType(false, 8);
+    public static final IntegerType INT16 = new IntegerType(true, 16);
+    public static final IntegerType UINT16 = new IntegerType(false, 16);
+    public static final IntegerType INT32 = new IntegerType(true, 32);
+    public static final IntegerType UINT32 = new IntegerType(false, 32);
+    public static final IntegerType INT64 = new IntegerType(true, 64);
+    //public static final IntegerType UINT64 = new IntegerType(false, 64);
+    public static final IntegerType CARDINAL = new IntegerType(false, 31);
 
     public static IntegerType fromLiteral(long v) {
         if (v <= Integer.MAX_VALUE) {
@@ -52,10 +53,10 @@ public final class IntegerType extends NumericType<IntegerType> {
         // cardinal        
         IntegerType card = null, noncard = null;
 
-        if (typeId == ValueTypeId.CARDINAL) {
+        if (isCardinal) {
             card = this;
             noncard = other;
-        } else if (other.typeId == ValueTypeId.CARDINAL) {
+        } else if (other.isCardinal) {
             card = other;
             noncard = this;
         }
@@ -70,76 +71,30 @@ public final class IntegerType extends NumericType<IntegerType> {
         return null;
     }
 
-    private IntegerType(ValueTypeId typeId) {
-        super(typeId);
-        switch(typeId) {
-            case INT8:
-                bits = 8;
-                signed = true;
-                minValue = Byte.MIN_VALUE;
-                maxValue = Byte.MAX_VALUE;
-                break;
-            case INT16:
-                bits = 16;
-                signed = true;
-                minValue = Short.MIN_VALUE;
-                maxValue = Short.MAX_VALUE;
-                break;
-            case INT32:
-                bits = 32;
-                signed = true;
-                minValue = Integer.MIN_VALUE;
-                maxValue = Integer.MAX_VALUE;
-                break;
-            case INT64:
-                bits = 64;
-                signed = true;
-                minValue = Long.MIN_VALUE;
-                maxValue = Long.MAX_VALUE;
-                break;
-            case UINT8:
-                bits = 8;
-                signed = false;
-                minValue = 0;
-                maxValue = 1 << 8 - 1;
-                break;
-            case UINT16:
-                bits = 16;
-                signed = false;
-                minValue = 0;
-                maxValue = 1 << 16 - 1;
-                break;
-            case UINT32:
-                bits = 32;
-                signed = false;
-                minValue = 0;
-                maxValue = 1 << 32 - 1;
-                break;
-            case UINT64:
-                bits = 64;
-                signed = false;
-                minValue = 0;
-                maxValue = Long.MAX_VALUE; // TODO fix
-                break;
-            case CARDINAL:
-                bits = 31;
-                signed = false;
-                minValue = 0;
-                maxValue = Integer.MAX_VALUE;
-                break;
-            default: 
-                bits = 0;
-                signed = false;
-                minValue = 0;
-                maxValue = 0;
+    private IntegerType(boolean signed, int bits) {
+        super(ValueTypeId.INTEGER);
+        this.signed = signed;
+        this.bits = bits;
+        this.isCardinal = (bits == 31) && (signed == false);
+
+        assert(bits <= 64 && bits >= 8);
+
+        if (signed) {
+            maxValue = (1L << (bits-1)) - 1L;
+            minValue = -(1L << (bits-1));
+        }
+        else {
+            minValue = 0;
+            maxValue = (1L << bits) - 1L;
         }
     }
+
 
     private boolean compatibleWith(MiodType other) {
         if (other instanceof IntegerType) {
             IntegerType otherInt = (IntegerType)other;
-            return (signed == otherInt.signed) || (typeId == ValueTypeId.CARDINAL
-                   || otherInt.typeId == ValueTypeId.CARDINAL);
+            return (signed == otherInt.signed) || (isCardinal
+                   || otherInt.isCardinal);
         }
         return false;
     }

@@ -9,22 +9,11 @@ package org.miod.program.types;
  * @author yur
  */
 public final class NullType extends MiodType {
-    public static final NullType VALUE = new NullType();
+    public static final NullType INSTANCE = new NullType();
 
     @Override
     public boolean supportsEqualOp(MiodType other) {
-        switch(other.typeId) {
-            case NULL:
-            case CLASS_REF:
-            case CLASS_WEAK:
-            case CLASS_WEAK_REF:
-            case METHOD_WITH_INSTANCE_REF:
-            case PROC_REF:
-            case STRING:
-                return true;
-            default:;
-        }
-        return false;
+        return other.isReferenceType;
     }
 
     private NullType() {

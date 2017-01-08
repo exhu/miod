@@ -13,7 +13,7 @@ public final class BoolType extends MiodType {
 
     @Override
     public boolean supportsEqualOp(MiodType other) {
-        return other.typeId == ValueTypeId.BOOL;
+        return other instanceof BoolType;
     }
 
     private BoolType() {

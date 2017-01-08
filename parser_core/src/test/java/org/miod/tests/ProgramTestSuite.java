@@ -120,6 +120,22 @@ public class ProgramTestSuite {
     
     @Test
     public void integerTest() {
+        assertEquals(IntegerType.INT8.maxValue, Byte.MAX_VALUE);
+        assertEquals(IntegerType.INT8.minValue, Byte.MIN_VALUE);
+        assertEquals(IntegerType.UINT8.maxValue, 255);
+        assertEquals(IntegerType.UINT8.minValue, 0);
+        assertEquals(IntegerType.UINT32.maxValue, 0xFFFFFFFFL);
+        assertEquals(IntegerType.UINT32.minValue, 0);
+        assertEquals(IntegerType.INT32.maxValue, Integer.MAX_VALUE);
+        assertEquals(IntegerType.INT32.minValue, Integer.MIN_VALUE);
+        assertEquals(IntegerType.INT64.maxValue, Long.MAX_VALUE);
+        assertEquals(IntegerType.INT64.minValue, Long.MIN_VALUE);
+        assertEquals(IntegerType.CARDINAL.maxValue, Integer.MAX_VALUE);
+        assertEquals(IntegerType.CARDINAL.minValue, 0);
+
+        assertEquals(IntegerType.CARDINAL.isCardinal, true);
+        assertEquals(IntegerType.INT32.isCardinal, false);
+
         assertEquals(IntegerType.fromLiteral(0), IntegerType.CARDINAL);
         assertEquals(IntegerType.fromLiteral(-1), IntegerType.INT32);
         assertEquals(IntegerType.fromLiteral(Integer.MIN_VALUE), IntegerType.INT32);

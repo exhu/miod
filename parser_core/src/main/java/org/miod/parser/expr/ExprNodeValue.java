@@ -16,7 +16,7 @@ public final class ExprNodeValue extends ExprNodeData {
     public final MiodValue value;
 
     public static ExprNodeValue newValue(MiodValue v) {
-        if (v == NullValue.VALUE) {
+        if (v == NullValue.INSTANCE) {
             return VALUE_NULL;
         }
         if (v == BoolValue.FALSE) {
@@ -29,7 +29,7 @@ public final class ExprNodeValue extends ExprNodeData {
         return new ExprNodeValue(v);
     }
 
-    private final static ExprNodeValue VALUE_NULL = new ExprNodeValue(NullValue.VALUE);
+    private final static ExprNodeValue VALUE_NULL = new ExprNodeValue(NullValue.INSTANCE);
     private final static ExprNodeValue VALUE_FALSE = new ExprNodeValue(BoolValue.FALSE);
     private final static ExprNodeValue VALUE_TRUE = new ExprNodeValue(BoolValue.TRUE);
 

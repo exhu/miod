@@ -9,34 +9,41 @@ package org.miod.program.types;
  * @author yur
  */
 public final class FloatType extends NumericType<FloatType> {
+    public final boolean doublePrecision;
 
-    public final static FloatType FLOAT = new FloatType(ValueTypeId.FLOAT);
-    public final static FloatType DOUBLE = new FloatType(ValueTypeId.DOUBLE);
+    public final static FloatType FLOAT = new FloatType(false);
+    public final static FloatType DOUBLE = new FloatType(true);
 
     @Override
     public FloatType promote(FloatType other) {
-        if (other.typeId == ValueTypeId.DOUBLE) {
+        if (other.doublePrecision) {
             return other;
         }
         return this;
     }
 
-    private FloatType(ValueTypeId typeId) {
-        super(typeId);
+    private FloatType(boolean doublePrecision) {
+        super(ValueTypeId.FLOAT);
+        this.doublePrecision = doublePrecision;
+    }
+
+    private boolean isSameType(MiodType other) {
+        return other instanceof FloatType
+                && ((FloatType)other).doublePrecision == doublePrecision;
     }
 
     @Override
     public boolean supportsEqualOp(MiodType other) {
-        return other.typeId == typeId;
+        return isSameType(other);
     }
 
     @Override
     public boolean supportsLessThanOp(MiodType other) {
-        return other.typeId == typeId;
+        return isSameType(other);
     }
 
     @Override
     public boolean supportsPlusOp(MiodType other) {
-        return (other.typeId == typeId);
+        return isSameType(other);
     }
 }

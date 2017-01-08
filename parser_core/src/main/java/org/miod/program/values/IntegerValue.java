@@ -26,10 +26,17 @@ public final class IntegerValue extends MiodValue implements LessThanOp,
         value = v;
     }
 
+    private boolean isSameType(IntegerType target) {
+        IntegerType thisType = (IntegerType)type;
+        return (thisType.signed == target.signed
+                && thisType.bits == target.bits);
+    }
+
     /// Tries to convert, if the value cannot fit the target
     /// returns a bigger type.
     public IntegerValue convertTo(IntegerType target) {
-        if (type.typeId == target.typeId) {
+        IntegerType thisType = (IntegerType)type;
+        if (isSameType(target)) {
             return this;
         }
 
@@ -37,13 +44,13 @@ public final class IntegerValue extends MiodValue implements LessThanOp,
             return new IntegerValue(value, target);
         }
 
-        return new IntegerValue(value, ((IntegerType) type).promote(target));
+        return new IntegerValue(value, thisType.promote(target));
     }
 
     /// Tries to convert preserving the value, otherwise rounds to the lowest
     /// or highest value of the target type.
     public IntegerValue castConvert(IntegerType target) {
-        if (type.typeId == target.typeId) {
+        if (isSameType(target)) {
             return this;
         }
 

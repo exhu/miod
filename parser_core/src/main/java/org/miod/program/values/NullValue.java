@@ -11,7 +11,7 @@ import org.miod.program.types.NullType;
  * @author yur
  */
 public final class NullValue extends MiodValue implements EqualOp {
-    public static final NullValue VALUE = new NullValue();
+    public static final NullValue INSTANCE = new NullValue();
 
     @Override
     public BoolValue equal(EqualOp other) {
@@ -20,6 +20,6 @@ public final class NullValue extends MiodValue implements EqualOp {
     }
 
     private NullValue() {
-        super(NullType.VALUE);
+        super(NullType.INSTANCE);
     }
 }

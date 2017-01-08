@@ -13,7 +13,7 @@ import org.miod.program.types.StringType;
 public class StringValue extends MiodValue {
     public final String value;
     public StringValue(String v) {
-        super(StringType.VALUE);
+        super(StringType.INSTANCE);
         value = v;
     }
 
