@@ -1,5 +1,9 @@
 TODO:
 
+- use org.antlr.v4.runtime.tree.ParseTreeProperty
+    - if node context in map, then return that value,
+    otherwise calculate and put into map
+
 >- _cattr annotations support
     - annotations parsing
         * StringValue
