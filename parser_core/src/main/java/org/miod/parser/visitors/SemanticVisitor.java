@@ -171,8 +171,8 @@ public class SemanticVisitor extends MiodParserBaseVisitor<MiodNodeData> {
     @Override
     public MiodNodeData visitExprEquals(MiodParser.ExprEqualsContext ctx) {
         return MiodNodeValue.newValue(exprEq(((MiodNodeValue) visit(ctx.left)).value,
-                        ((MiodNodeValue) visit(ctx.right)).value,
-                        context.getErrorListener(), makeSymLocation(ctx.getStart())));
+                ((MiodNodeValue) visit(ctx.right)).value,
+                context.getErrorListener(), makeSymLocation(ctx.getStart())));
     }
 
     @Override
@@ -509,7 +509,7 @@ public class SemanticVisitor extends MiodParserBaseVisitor<MiodNodeData> {
         MiodNodeDict dict = null;
         SymbolLocation loc = makeSymLocation(ctx.start);
         if (ctx.annotationDict() != null) {
-            dict = (MiodNodeDict)visit(ctx.annotationDict());
+            dict = (MiodNodeDict) visit(ctx.annotationDict());
         }
 
         if (MiodAnnotationHelpers.isBuiltin(name)) {
@@ -524,14 +524,46 @@ public class SemanticVisitor extends MiodParserBaseVisitor<MiodNodeData> {
 
     @Override
     public MiodNodeData visitAnnotations(MiodParser.AnnotationsContext ctx) {
-        MiodNodeData [] list = new MiodNodeData[ctx.annotation().size()];
+        MiodNodeData[] list = new MiodNodeData[ctx.annotation().size()];
         int index = 0;
-        for(MiodParser.AnnotationContext i : ctx.annotation()) {
+        for (MiodParser.AnnotationContext i : ctx.annotation()) {
             list[index] = visit(i);
         }
         return new MiodNodeList(list);
     }
 
+    @Override
+    public MiodNodeData visitStatementAssign(MiodParser.StatementAssignContext ctx) {
+        MiodNodeData left = visit(ctx.left);
+        MiodNodeData right = visit(ctx.right);
+        if (ExprEvalHelpers.nulls(left, right)) {
+            return null;
+        }
+
+        /* TODO
+            Can assign to:
+            - variable
+            - member variable
+            - class property
+
+            Call type assignment proc?
+        */
+        return null;
+    }
+
+    @Override
+    public MiodNodeData visitStatementCall(MiodParser.StatementCallContext ctx) {
+        MiodNodeData callable = visit(ctx.callable);
+        if (callable == null) {
+            return null;
+        }
+
+        /* TODO check if left:
+            - proc
+            - method
+        */
+        return null;
+    }
 
 
 

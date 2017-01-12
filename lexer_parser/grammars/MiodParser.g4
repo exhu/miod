@@ -83,7 +83,7 @@ expr: literal #exprLiteral
     | VAR qualifName #exprVar
     | expr MEMBER_ACCESS bareName #exprMemberAccess
     | expr OPEN_BRACKET expr CLOSE_BRACKET #exprIndex
-    | expr OPEN_PAREN (expr commaExpr?)? CLOSE_PAREN #exprCall
+    | callable=expr OPEN_PAREN (expr commaExpr?)? CLOSE_PAREN #exprCall
     | OPEN_CURLY expr COLON expr (COMMA expr COLON expr)* CLOSE_CURLY #exprDictStruct
     | OPEN_BRACKET expr commaExpr? CLOSE_BRACKET #exprArray
     | MINUS expr #exprNeg
@@ -169,14 +169,14 @@ statement: RETURN expr? #statementReturn
     | constDecl #statementConstDecl
     | varDecl #statementVarDecl
     | staticIf #statementStaticIf
-    | expr OPEN_PAREN (expr (COMMA expr)*)? CLOSE_PAREN #statementCall
+    | callable=expr OPEN_PAREN (expr commaExpr?)? CLOSE_PAREN #statementCall
     | FINALLY statement* END_FINALLY #statementFinally
     | BREAK #statementBreak
     | CONTINUE #statementContinue
     | forEachLoop #statementForEach
     | whileLoop #statementWhile
     // semantic check for lvalue, e.g. id, memberAccess, index
-    | expr ASSIGN expr #statementAssign
+    | left=expr ASSIGN right=expr #statementAssign
     | ifStatement #statementIf
     | WITH qualifName (COMMA qualifName)* statement+ END_WITH #statementWith
     | SEMICOLON #emptyStatement

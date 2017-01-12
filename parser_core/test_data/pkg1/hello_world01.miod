@@ -1,0 +1,21 @@
+unit pkg1::hello_world01
+
+const hi = "hello, world!\n"
+
+@_cattr {cname: "const char *"}
+type cstring = opaque
+
+@_cattr {sys_headers: ["stdio.h"] }
+extern proc printf(cstring fmt);
+
+@_cattr {headers:["miod_sys.h"], cname: "miod_cstr"}
+extern proc cstr(string s): cstring;
+
+@_cattr {cname: "miod_slen"}
+extern proc slen(string s): cardinal;
+
+proc main()
+    printf(cstr(hi))
+end
+
+# string = mutable array with zero-termination?
