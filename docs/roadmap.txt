@@ -2,7 +2,7 @@ TODO:
 
 - StringValue = StringLiteral and/or evaluated const
     - strings must be passed around as class references with SymbolTableItem
-        with optional evaluated value (for const expr)
+        with optional evaluated value (for const expr?)
 
 - use org.antlr.v4.runtime.tree.ParseTreeProperty
     - if node context in map, then return that value,
