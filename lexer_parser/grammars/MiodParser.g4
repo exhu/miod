@@ -214,7 +214,7 @@ structOrClassField: bareName (COMMA bareName)* COLON typeSpec;
 
 structBodyStmt: structOrClassField
     | procMethodStructDecl
-    | STATIC_IF boolExpr THEN structBodyStmt* (ELSE structBodyStmt*)? END_IF
+//    | STATIC_IF boolExpr THEN structBodyStmt* (ELSE structBodyStmt*)? END_IF
     ;
 
 classDecl: annotations? EXTERN? ((ABSTRACT? BASE_CLASS)|CLASS) bareName

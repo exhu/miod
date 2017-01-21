@@ -1,5 +1,12 @@
 unit pkg1::hello_world01
 
+struct _cattr
+    cname: string
+    sys_headers: array[string]
+    headers: array[string]
+end_struct
+
+
 const hi = "hello, world!\n"
 
 @_cattr {cname: "const char *"}
