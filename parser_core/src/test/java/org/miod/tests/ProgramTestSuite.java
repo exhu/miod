@@ -212,4 +212,22 @@ public class ProgramTestSuite {
         IntegerValue aValue = (IntegerValue)aSym.value;
         assertEquals(aValue.value, 127);
     }
+
+    @Test
+    public void cattrAnnotationTest() {
+        ErrorReporter reporter = new ErrorReporter();
+        reporter.setStopAtFirstError(true);
+
+        List<String> stringPaths = new ArrayList<>();
+        stringPaths.add("test_data");
+        UnitParser parser = new UnitParser(stringPaths, reporter);
+        try {
+        parser.parseFileFromPathString("test_data/pkg1/hello_world01.miod", false);
+        } catch(ErrorReporterException e) {
+            System.err.println(reporter.errorsAsText());
+            assertTrue(false);
+        }
+        CompilationUnit unit = parser.getContext().getOrParseUnit("pkg1::hello_world01", null);
+        System.out.println(unit.symTable.getItemsAsString());
+    }
 }

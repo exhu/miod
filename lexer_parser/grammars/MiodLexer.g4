@@ -28,6 +28,7 @@ IMPORT: 'import'; // items are accessible via fully qualified name only
 IMPORT_ALL: 'import_all'; // injects into global namespace
 INCLUDE: 'include';
 TYPE: 'type';
+OPAQUE: 'opaque';
 STATIC_IF: 'static_if';
 IF: 'if';
 THEN: 'then';

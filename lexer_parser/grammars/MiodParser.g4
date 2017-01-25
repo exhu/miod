@@ -147,7 +147,7 @@ arrayVariant: qualifName # unknownSizeArray
     | typeSpec COMMA expr # sizedArray
     ;
 
-procDecl: annotations? (EXTERN|INLINE)? procHeader procBody;
+procDecl: annotations? (EXTERN|INLINE)? procHeader (SEMICOLON|procBody);
 
 procBody: statement* END_PROC;
 
@@ -157,11 +157,11 @@ procOrMethodDecl: annotations? (EXTERN|INLINE)? (procHeader|methodHeader)
 procHeader: PROC bareName procOrMethodArgs;
 methodHeader: (ABSTRACT|VIRTUAL|OVERRIDE)? METHOD bareName procOrMethodArgs;
 
-procOrMethodArgs: OPEN_PAREN procArgsDecl CLOSE_PAREN (COLON typeSpec)?;
+procOrMethodArgs: OPEN_PAREN procArgsDecl? CLOSE_PAREN (COLON typeSpec)?;
 
 procMethodStructDecl: annotations? (EXTERN|INLINE)?
     (PROC|METHOD) bareName
-    OPEN_PAREN procArgsDecl CLOSE_PAREN (COLON typeSpec)? (SEMICOLON | procBody);
+    OPEN_PAREN procArgsDecl? CLOSE_PAREN (COLON typeSpec)? (SEMICOLON | procBody);
 
 interfaceProcOrMethodDecl: procMethodStructDecl;
 
@@ -199,7 +199,7 @@ aliasDecl: ALIAS bareName ASSIGN qualifName;
 typeDecl: (TYPE typeDeclAssign+)
     | (structDecl|classDecl)+;
 
-typeDeclAssign: bareName ASSIGN (GENERIC|arrayType|enumDecl);
+typeDeclAssign: annotations? bareName ASSIGN (GENERIC|arrayType|enumDecl|OPAQUE);
 
 enumDecl: annotations? ENUM (typeArgsOpen typeSpec typeArgsClose)?
     (bareName (ASSIGN constExpr)?)+ END_ENUM

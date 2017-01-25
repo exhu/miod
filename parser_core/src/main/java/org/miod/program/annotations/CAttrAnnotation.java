@@ -17,7 +17,7 @@ import java.util.HashSet;
 public final class CAttrAnnotation extends MiodBuiltinAnnotation {
     public static final String NAME = "_cattr";
     public static final HashSet<String> VALID_KEYS = new HashSet<>(
-            Arrays.asList("cname", "headers"));
+            Arrays.asList("cname", "headers", "sysHeaders"));
 
     public final String cname;
     public final String[] headers;

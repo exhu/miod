@@ -41,20 +41,20 @@ public final class ParserErrorListener implements ANTLRErrorListener {
     public void reportAmbiguity(Parser parser, DFA dfa, int i, int i1,
             boolean bln, BitSet bitset, ATNConfigSet atncs) {
         hasErrors = true;
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new UnsupportedOperationException("Ambiguity.");
     }
 
     @Override
     public void reportAttemptingFullContext(Parser parser, DFA dfa, int i,
             int i1, BitSet bitset, ATNConfigSet atncs) {
         hasErrors = true;
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new UnsupportedOperationException("AttemptingFullContext.");
     }
 
     @Override
     public void reportContextSensitivity(Parser parser, DFA dfa, int i, int i1,
             int i2, ATNConfigSet atncs) {
         hasErrors = true;
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new UnsupportedOperationException("ContextSensitivity.");
     }
 }
