@@ -46,14 +46,28 @@ public final class MiodAnnotationHelpers {
         return null;
     }
 
+    public static String asStringValue(MiodNodeData data) {
+        if (data instanceof MiodNodeValue) {
+            if (((MiodNodeValue) data).value instanceof StringValue) {
+                return ((StringValue) ((MiodNodeValue) data).value).value;
+            }
+        }
+        return null;
+    }
+
+    public static MiodNodeData[] asNodeDataArray(MiodNodeData data) {
+        if (data instanceof MiodNodeList) {
+            return ((MiodNodeList) data).list;
+        }
+        return null;
+    }
+
     private static CAttrAnnotation newCAttr(MiodNodeDict dict, ErrorListener lst,
             SymbolLocation loc) {
 
         String[] headers = null;
         String cname = null;
-
-        // TODO refactor the mess below:
-
+        
         if (dict != null) {
             String invalidKey = findInvalidKey(dict.map, CAttrAnnotation.VALID_KEYS);
             if (invalidKey != null) {
@@ -61,37 +75,33 @@ public final class MiodAnnotationHelpers {
                 return null;
             }
 
-            if (dict.map.get("cname") != null) {
-                if (dict.map.get("cname") instanceof MiodNodeValue) {
-                    if (((MiodNodeValue) dict.map.get("cname")).value instanceof StringValue) {
-                        cname = ((StringValue)((MiodNodeValue) dict.map.get("cname")).value).value;
-                    } else {
-                        lst.onError(new TypesMismatch(loc));
-                        return null;
-                    }
-
+            final MiodNodeData cnameObj = dict.map.get("cname");
+            if (cnameObj != null) {
+                final String cnameValue = asStringValue(cnameObj);
+                if (cnameValue != null) {
+                    cname = cnameValue;
                 } else {
                     lst.onError(new TypesMismatch(loc));
                     return null;
                 }
             }
 
-            if (dict.map.get("headers") != null) {
-                if (dict.map.get("headers") instanceof MiodNodeList) {
-                    MiodNodeList headersNodes = (MiodNodeList) dict.map.get("headers");
-                    if (headersNodes.list[0] instanceof MiodNodeValue
-                            && ((MiodNodeValue) headersNodes.list[0]).value instanceof StringValue) {
-                        headers = new String[headersNodes.list.length];
-                        int index = 0;
-                        for (MiodNodeData n : headersNodes.list) {
-                            MiodNodeValue valueNode = (MiodNodeValue) n;
-                            headers[index] = ((StringValue) valueNode.value).value;
-                            ++index;
+            MiodNodeData headersObj = dict.map.get("headers");
+            if (headersObj != null) {
+                final MiodNodeData[] dataArray = asNodeDataArray(headersObj);
+                if (dataArray != null) {
+                    headers = new String[dataArray.length];
+                    int index = 0;
+                    for (MiodNodeData n : dataArray) {
+                        final String value = asStringValue(n);
+                        if (value != null) {
+                            headers[index] = value;
+                        } else {
+                            lst.onError(new TypesMismatch(loc));
+                            return null;
                         }
-                    } else {
-                        lst.onError(new TypesMismatch(loc));
-                        return null;
-                    }
+                        ++index;
+                    }                    
                 } else {
                     lst.onError(new TypesMismatch(loc));
                     return null;
