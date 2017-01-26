@@ -23,7 +23,8 @@ extern proc printf(fmt: cstring);
 # extern proc slen(s: string): cardinal;
 
 proc main()
-     printf(cstr(hi))
+    printf(cstr(hi))
+     printf(cstr(hi), d)
 end
 
 # string = mutable array with zero-termination?

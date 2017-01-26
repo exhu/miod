@@ -75,6 +75,7 @@ commaExpr: (COMMA expr)+;
 // Recursive rules are to be here.
 // If current scope is global then fails for procedure/method calls and property access
 expr: literal #exprLiteral
+    | OPEN_PAREN expr CLOSE_PAREN #exprParen
     | callable=expr OPEN_PAREN (expr commaExpr?)? CLOSE_PAREN #exprCall
     | NEW OPEN_PAREN typeSpec CLOSE_PAREN #exprNew
     | CAST typeArgsOpen typeSpec typeArgsClose OPEN_PAREN expr CLOSE_PAREN #exprCast
@@ -108,7 +109,6 @@ expr: literal #exprLiteral
     | expr OR expr #exprOr
     | LITERAL (typeArgsOpen (NSTRING|NWSTRING) typeArgsClose)? OPEN_PAREN expr CLOSE_PAREN #exprLiteralOper
     | BASE #exprBase
-    | OPEN_PAREN expr CLOSE_PAREN #exprParen
     ;
 
 literal: NULL   #literalNull
@@ -169,7 +169,7 @@ statement: RETURN expr? #statementReturn
     | constDecl #statementConstDecl
     | varDecl #statementVarDecl
     | staticIf #statementStaticIf
-    | callable=expr OPEN_PAREN (expr commaExpr?)? CLOSE_PAREN #statementCall
+    //| callable=expr OPEN_PAREN (expr commaExpr?)? CLOSE_PAREN #statementCall
     | FINALLY statement* END_FINALLY #statementFinally
     | BREAK #statementBreak
     | CONTINUE #statementContinue
@@ -180,6 +180,7 @@ statement: RETURN expr? #statementReturn
     | ifStatement #statementIf
     | WITH qualifName (COMMA qualifName)* statement+ END_WITH #statementWith
     | SEMICOLON #emptyStatement
+    | expr #exprStatement
     ;
 
 staticIf:

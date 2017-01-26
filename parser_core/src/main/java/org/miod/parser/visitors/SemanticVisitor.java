@@ -552,6 +552,8 @@ public class SemanticVisitor extends MiodParserBaseVisitor<MiodNodeData> {
         return null;
     }
 
+    
+    /*
     @Override
     public MiodNodeData visitStatementCall(MiodParser.StatementCallContext ctx) {
         MiodNodeData callable = visit(ctx.callable);
@@ -559,12 +561,14 @@ public class SemanticVisitor extends MiodParserBaseVisitor<MiodNodeData> {
             return null;
         }
 
-        /* TODO check if left:
+        / TODO check if left:
             - proc
             - method
-        */
+        /
         return null;
     }
+*/
+
 
     @Override
     public MiodNodeData visitExprMul(MiodParser.ExprMulContext ctx) {
