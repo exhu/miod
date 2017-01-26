@@ -72,18 +72,20 @@ typeArgsClose: GREATER;
 
 commaExpr: (COMMA expr)+;
 
+/*
 callRule: qualifName OPEN_PAREN (expr commaExpr?)? CLOSE_PAREN
 |   callRule OPEN_PAREN (expr commaExpr?)? CLOSE_PAREN;
+*/
+primary: OPEN_PAREN expr CLOSE_PAREN #exprParen
+    | literal #exprLiteral
+    | qualifName #exprQualifName
+    ;
 
 // Recursive rules are to be here.
 // If current scope is global then fails for procedure/method calls and property access
-expr: literal #exprLiteral
-    | callRule #exprCall
-    | OPEN_PAREN expr CLOSE_PAREN #exprParen
-    //| callable=qualifName OPEN_PAREN (expr commaExpr?)? CLOSE_PAREN #exprCall
+expr: primary #exprPrimary
     | NEW OPEN_PAREN typeSpec CLOSE_PAREN #exprNew
     | CAST typeArgsOpen typeSpec typeArgsClose OPEN_PAREN expr CLOSE_PAREN #exprCast
-    | qualifName #exprQualifName
     //| qualifName (typeArgsOpen qualifName (COMMA qualifName)* typeArgsClose)? #exprQualifNameGeneric
     | VAR qualifName #exprVar
     | expr MEMBER_ACCESS bareName #exprMemberAccess
@@ -92,6 +94,7 @@ expr: literal #exprLiteral
     | OPEN_BRACKET expr commaExpr? CLOSE_BRACKET #exprArray
     | MINUS expr #exprNeg
     | BNOT expr #exprBNot
+    | callable=expr OPEN_PAREN (expr commaExpr?)? CLOSE_PAREN #exprCall
     | left=expr MUL right=expr #exprMul
     | expr DIV expr #exprDiv
     | expr MOD expr #exprMod

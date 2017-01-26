@@ -578,5 +578,12 @@ public class SemanticVisitor extends MiodParserBaseVisitor<MiodNodeData> {
                 makeSymLocation(ctx.getStart())));
     }
 
+    @Override
+    public MiodNodeData visitExprPrimary(MiodParser.ExprPrimaryContext ctx) {
+        return visit(ctx.primary());
+    }
+
+
+    
 
 }

@@ -1,0 +1,32 @@
+apply plugin: 'java'
+
+evaluationDependsOn ':lexer_parser'
+
+dependencies {
+    compile project(':lexer_parser')    
+    compile 'antlrTool:antlr-runtime:4.+' //-- for gui, antl4 runtime excluded in lexer_parser
+    compile 'ST:ST:4.+'
+    testCompile 'org.testng:testng:6.+'
+    //testRuntime fileTree(dir:'test_data', include:'*.txt')
+    //testRuntime fileTree(dir:'templates', include:'*.st*')
+}
+
+compileJava {
+    //options.compilerArgs += "-Xlint:deprecation"
+}
+
+//jar(type:Jar, dependsOn: ':lexer_parser:compileJava') { 
+jar {
+    dependsOn ':lexer_parser:compileJava'
+    //from project(':lexer_parser').sourceSets.main.output
+}
+
+
+test {
+    useTestNG()
+    include 'org/miod/tests/**'
+    testLogging.showStandardStreams = true
+    //outputs.upToDateWhen { false }
+
+}
+

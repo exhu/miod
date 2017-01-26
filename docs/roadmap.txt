@@ -1,4 +1,6 @@
 TODO:
+- debug expr rules in test_expr project
+
 >- _cattr annotations support
     - annotations parsing
         >uncomment and make hello_world parsed complete

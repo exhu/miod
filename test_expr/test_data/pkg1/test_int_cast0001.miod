@@ -1,0 +1,5 @@
+unit pkg1::test_int_cast0001
+
+const sz = 4,
+a: int8 = cast$<int8>(345 + sz),
+b: cardinal = cast$<cardinal>(-1)

@@ -1,0 +1,30 @@
+unit pkg1::hello_world01
+
+# struct _cattr
+#     cname: string
+#     sys_headers: array[string]
+#     headers: array[string]
+# end_struct
+
+
+const hi = "hello, world!\n"
+
+type 
+@_cattr {cname: "const char *"}
+cstring = opaque
+
+@_cattr {sysHeaders: ["stdio.h", "math.h"] }
+extern proc printf(fmt: cstring);
+
+# @_cattr {headers:["miod_sys.h"], cname: "miod_cstr"}
+# extern proc cstr(s: string): cstring;
+
+# @_cattr {cname: "miod_slen"}
+# extern proc slen(s: string): cardinal;
+
+proc main()
+    printf(cstr(hi))
+    # printf(cstr(hi)(), d(a)(b)) # cstr returns func, d(a) returns func
+end
+
+# string = mutable array with zero-termination?
