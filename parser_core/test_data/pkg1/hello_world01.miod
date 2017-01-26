@@ -22,8 +22,8 @@ extern proc printf(fmt: cstring);
 # @_cattr {cname: "miod_slen"}
 # extern proc slen(s: string): cardinal;
 
-# proc main()
-#     printf(cstr(hi))
-# end
+proc main()
+     printf(cstr(hi))
+end
 
 # string = mutable array with zero-termination?

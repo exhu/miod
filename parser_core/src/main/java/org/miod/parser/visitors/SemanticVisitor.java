@@ -19,6 +19,7 @@ import org.miod.parser.expr.ExprEvalHelpers;
 import static org.miod.parser.expr.ExprEvalHelpers.exprEq;
 import static org.miod.parser.expr.ExprEvalHelpers.exprLess;
 import static org.miod.parser.expr.ExprEvalHelpers.exprLessOrEqual;
+import static org.miod.parser.expr.ExprEvalHelpers.exprMul;
 import static org.miod.parser.expr.ExprEvalHelpers.exprPlus;
 import static org.miod.parser.expr.ExprEvalHelpers.invertBool;
 import org.miod.parser.node.MiodNodeAnnotation;
@@ -565,6 +566,13 @@ public class SemanticVisitor extends MiodParserBaseVisitor<MiodNodeData> {
         return null;
     }
 
+    @Override
+    public MiodNodeData visitExprMul(MiodParser.ExprMulContext ctx) {
+        return MiodNodeValue.newValue(exprMul(((MiodNodeValue) visit(ctx.left)).value,
+                ((MiodNodeValue) visit(ctx.right)).value,
+                context.getErrorListener(),
+                makeSymLocation(ctx.getStart())));
+    }
 
 
 }

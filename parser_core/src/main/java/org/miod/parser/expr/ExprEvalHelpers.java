@@ -15,6 +15,7 @@ import org.miod.program.values.EqualOp;
 import org.miod.program.values.ErrorValue;
 import org.miod.program.values.LessThanOp;
 import org.miod.program.values.MiodValue;
+import org.miod.program.values.MulOp;
 import org.miod.program.values.PlusOp;
 import org.miod.program.values.RuntimeValue;
 
@@ -152,6 +153,31 @@ public final class ExprEvalHelpers {
             public MiodValue apply(MiodValue left, MiodValue right) {
                 PlusOp op = (PlusOp) left;
                 return op.plusOp(right);
+            }
+
+            @Override
+            public MiodValue runtimeValue(MiodType left, MiodType right) {
+                if (left instanceof NumericType && right instanceof NumericType) {
+                    return RuntimeValue.fromType(((NumericType)left).promote((NumericType)right));
+                }
+                return RuntimeValue.fromType(left);
+            }
+        }, location);
+    }
+    
+    public static MiodValue exprMul(MiodValue left, MiodValue right,
+            ErrorListener errors, SymbolLocation location) {
+        
+        return apply(left, right, errors, new ExprApply() {            
+            @Override
+            public boolean supportsOp(MiodType left, MiodType right) {
+                return left.supportsMulOp(right);
+            }
+
+            @Override
+            public MiodValue apply(MiodValue left, MiodValue right) {
+                MulOp op = (MulOp) left;
+                return op.mulOp(right);
             }
 
             @Override

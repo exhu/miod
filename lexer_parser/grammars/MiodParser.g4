@@ -75,7 +75,7 @@ commaExpr: (COMMA expr)+;
 // Recursive rules are to be here.
 // If current scope is global then fails for procedure/method calls and property access
 expr: literal #exprLiteral
-    | OPEN_PAREN expr CLOSE_PAREN #exprParen
+    | callable=expr OPEN_PAREN (expr commaExpr?)? CLOSE_PAREN #exprCall
     | NEW OPEN_PAREN typeSpec CLOSE_PAREN #exprNew
     | CAST typeArgsOpen typeSpec typeArgsClose OPEN_PAREN expr CLOSE_PAREN #exprCast
     | qualifName #exprQualifName
@@ -83,12 +83,11 @@ expr: literal #exprLiteral
     | VAR qualifName #exprVar
     | expr MEMBER_ACCESS bareName #exprMemberAccess
     | expr OPEN_BRACKET expr CLOSE_BRACKET #exprIndex
-    | callable=expr OPEN_PAREN (expr commaExpr?)? CLOSE_PAREN #exprCall
     | OPEN_CURLY expr COLON expr (COMMA expr COLON expr)* CLOSE_CURLY #exprDictStruct
     | OPEN_BRACKET expr commaExpr? CLOSE_BRACKET #exprArray
     | MINUS expr #exprNeg
     | BNOT expr #exprBNot
-    | expr MUL expr #exprMul
+    | left=expr MUL right=expr #exprMul
     | expr DIV expr #exprDiv
     | expr MOD expr #exprMod
     | left=expr PLUS right=expr #exprPlus
@@ -109,6 +108,7 @@ expr: literal #exprLiteral
     | expr OR expr #exprOr
     | LITERAL (typeArgsOpen (NSTRING|NWSTRING) typeArgsClose)? OPEN_PAREN expr CLOSE_PAREN #exprLiteralOper
     | BASE #exprBase
+    | OPEN_PAREN expr CLOSE_PAREN #exprParen
     ;
 
 literal: NULL   #literalNull

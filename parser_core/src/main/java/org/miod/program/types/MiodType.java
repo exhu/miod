@@ -47,4 +47,8 @@ public abstract class MiodType {
     public boolean supportsCastTo(MiodType other) {
         return false;
     }
+    
+    public boolean supportsMulOp(MiodType other) {
+        return false;
+    }
 }

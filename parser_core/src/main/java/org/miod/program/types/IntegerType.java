@@ -121,4 +121,11 @@ public final class IntegerType extends NumericType<IntegerType> {
     public boolean supportsCastTo(MiodType other) {
         return other instanceof IntegerType;
     }
+
+    @Override
+    public boolean supportsMulOp(MiodType other) {
+        return true;
+    }
+    
+    
 }

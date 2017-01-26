@@ -115,7 +115,7 @@ public class ProgramTestSuite {
         parser.parseFileFromPathString("test_data/pkg1/test0002.miod", false);
         CompilationUnit unit = parser.getContext().getOrParseUnit("pkg1::test0002", null);
         System.out.println(unit.symTable.getItemsAsString());
-        assertEquals(((IntegerValue)((ConstSymbol)unit.symTable.resolve("b")).value).value, 15);
+        assertEquals(((IntegerValue)((ConstSymbol)unit.symTable.resolve("b")).value).value, 28);
     }
     
     @Test
