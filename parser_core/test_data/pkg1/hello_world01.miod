@@ -23,7 +23,7 @@ extern proc printf(fmt: cstring);
 # extern proc slen(s: string): cardinal;
 
 proc main()
-    printf(cstr(hi))
+    printf(cstr(hi));
     # printf(cstr(hi)(), d(a)(b)) # cstr returns func, d(a) returns func
 end
 

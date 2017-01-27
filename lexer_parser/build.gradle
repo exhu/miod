@@ -39,3 +39,23 @@ sourceSets {
      }
 }
 
+task(grun, type: JavaExec, dependsOn: ':lexer_parser:compileJava') {
+    classpath sourceSets.main.runtimeClasspath
+    classpath configurations.compile.asPath
+
+    main 'org.antlr.v4.gui.TestRig'
+    args 'org.miod.parser.generated.Miod',
+        'compUnit',
+        '-diagnostics',
+        '-SLL',
+        //'-trace',
+        //'-tokens',
+        //'-gui',
+        //file('../parser_core/test_data/pkg1/test0001.miod')
+        file('../parser_core/test_data/pkg1/hello_world01.miod')
+
+    doFirst {
+      println commandLine
+    }
+}
+
