@@ -40,7 +40,7 @@ sourceSets {
 }
 
 task(grun, type: JavaExec, dependsOn: ':test_expr:compileJava') {
-    classpath file("$buildDir/generated-src/")
+    classpath sourceSets.main.runtimeClasspath
     classpath configurations.compile.asPath
     workingDir genSourcesDir
 
@@ -48,7 +48,7 @@ task(grun, type: JavaExec, dependsOn: ':test_expr:compileJava') {
     args 'org.miod.test.generated.Test',
         'compUnit',
         '-gui',
-        'test_data/pkg1/hello_world01.miod'
+        file('test_data/pkg1/hello_world01.miod')
 
     doFirst {
       println commandLine
