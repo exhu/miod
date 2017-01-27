@@ -1,3 +1,4 @@
 include 'lexer_parser'
 include 'parser_core'
 include 'miodc'
+include 'test_expr'

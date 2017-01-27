@@ -1,32 +1,57 @@
 apply plugin: 'java'
 
-evaluationDependsOn ':lexer_parser'
+//jar.enabled = false
 
 dependencies {
-    compile project(':lexer_parser')    
-    compile 'antlrTool:antlr-runtime:4.+' //-- for gui, antl4 runtime excluded in lexer_parser
-    compile 'ST:ST:4.+'
-    testCompile 'org.testng:testng:6.+'
-    //testRuntime fileTree(dir:'test_data', include:'*.txt')
-    //testRuntime fileTree(dir:'templates', include:'*.st*')
+    compile 'antlrTool:antlr:4.+:complete'
+    //runtime 'antlr:antlr:4.+:complete'
 }
 
-compileJava {
-    //options.compilerArgs += "-Xlint:deprecation"
+configurations {
+     // excluded to let link with antl4 gui or bare antlr runtime
+    runtime.exclude group:'antlrTool'
 }
 
-//jar(type:Jar, dependsOn: ':lexer_parser:compileJava') { 
-jar {
-    dependsOn ':lexer_parser:compileJava'
-    //from project(':lexer_parser').sourceSets.main.output
+def genSourcesDir = file("$buildDir/generated-src/org/miod/test/generated")
+
+task generateSources(type: JavaExec) {
+    def lexer = file("grammars/TestLexer.g4")
+    def parser = file("grammars/TestParser.g4")
+    inputs.files(lexer, parser)
+    outputs.dir genSourcesDir
+    doFirst {
+        genSourcesDir.exists() || genSourcesDir.mkdirs()
+    }
+    // generate using antlr'
+
+    classpath configurations.compile.asPath //antlrJar
+    main 'org.antlr.v4.Tool'
+    args "-visitor", "-package", "org.miod.test.generated", "-o",
+        "$genSourcesDir", "$lexer", "$parser"
 }
 
+compileJava.dependsOn generateSources
+sourceSets {
+    main {
+        java {
+            srcDir genSourcesDir
+        }
+     }
+}
 
-test {
-    useTestNG()
-    include 'org/miod/tests/**'
-    testLogging.showStandardStreams = true
-    //outputs.upToDateWhen { false }
+task(grun, type: JavaExec, dependsOn: ':test_expr:compileJava') {
+    classpath file("$buildDir/generated-src/")
+    classpath configurations.compile.asPath
+    workingDir genSourcesDir
 
+    main 'org.antlr.v4.gui.TestRig'
+    args 'org.miod.test.generated.Test',
+        'compUnit',
+        '-gui',
+        'test_data/pkg1/hello_world01.miod'
+
+    doFirst {
+      println commandLine
+    }
 }
 
