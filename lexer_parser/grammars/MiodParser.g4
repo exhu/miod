@@ -72,18 +72,29 @@ typeArgsClose: GREATER;
 
 commaExpr: (COMMA expr)+;
 
+/*
+callExpr:
+    (memberAccess|qualifName) OPEN_PAREN (expr commaExpr?)? CLOSE_PAREN #callExpr
+    ;
+
+memberAccess:
+    (qualifName|callExpr) (MEMBER_ACCESS memberAccess)* #memberAccess
+    ;
+    */
+
+call: OPEN_PAREN (expr commaExpr?)? CLOSE_PAREN;
+member: qualifName ((MEMBER_ACCESS member)* | call*);
 
 // Recursive rules are to be here.
 // If current scope is global then fails for procedure/method calls and property access
-expr: callable=expr OPEN_PAREN (expr commaExpr?)? CLOSE_PAREN #exprCall
-    | OPEN_PAREN expr CLOSE_PAREN #exprParen
+expr: OPEN_PAREN expr CLOSE_PAREN #exprParen
     | literal #exprLiteral
-    | qualifName #exprQualifName
+    //| qualifName #exprQualifName
     | NEW OPEN_PAREN typeSpec CLOSE_PAREN #exprNew
     | CAST typeArgsOpen typeSpec typeArgsClose OPEN_PAREN expr CLOSE_PAREN #exprCast
     //| qualifName (typeArgsOpen qualifName (COMMA qualifName)* typeArgsClose)? #exprQualifNameGeneric
-    | VAR qualifName #exprVar
-    | expr MEMBER_ACCESS bareName #exprMemberAccess
+    //| VAR qualifName #exprVar
+    | member #exprMemberAccess
     | expr OPEN_BRACKET expr CLOSE_BRACKET #exprIndex
     | OPEN_CURLY expr COLON expr (COMMA expr COLON expr)* CLOSE_CURLY #exprDictStruct
     | OPEN_BRACKET expr commaExpr? CLOSE_BRACKET #exprArray

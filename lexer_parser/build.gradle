@@ -50,7 +50,7 @@ task(grun, type: JavaExec, dependsOn: ':lexer_parser:compileJava') {
         '-SLL',
         //'-trace',
         //'-tokens',
-        //'-gui',
+        '-gui',
         //file('../parser_core/test_data/pkg1/test0001.miod')
         file('../parser_core/test_data/pkg1/hello_world01.miod')
 
