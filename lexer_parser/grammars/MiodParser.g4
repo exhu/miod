@@ -70,34 +70,27 @@ varTypeAssign: bareName (COLON typeSpec)? ASSIGN expr;
 typeArgsOpen: TYPE_ARGS_OPEN;
 typeArgsClose: GREATER;
 
-commaExpr: (COMMA expr)+;
+exprList: expr (COMMA expr)*;
 
-/*
-callExpr:
-    (memberAccess|qualifName) OPEN_PAREN (expr commaExpr?)? CLOSE_PAREN #callExpr
-    ;
-
-memberAccess:
-    (qualifName|callExpr) (MEMBER_ACCESS memberAccess)* #memberAccess
-    ;
-    */
-
-call: OPEN_PAREN (expr commaExpr?)? CLOSE_PAREN;
-member: qualifName ((MEMBER_ACCESS member)* | call*);
+call: OPEN_PAREN exprList? CLOSE_PAREN;
+memberOrCall: qualifName
+    | qualifName (MEMBER_ACCESS memberOrCall)+
+    | qualifName call+;
 
 // Recursive rules are to be here.
 // If current scope is global then fails for procedure/method calls and property access
-expr: OPEN_PAREN expr CLOSE_PAREN #exprParen
+
+expr: 
+    VAR? memberOrCall #exprMemberOrCall
+    | OPEN_PAREN expr CLOSE_PAREN #exprParen
     | literal #exprLiteral
-    //| qualifName #exprQualifName
     | NEW OPEN_PAREN typeSpec CLOSE_PAREN #exprNew
     | CAST typeArgsOpen typeSpec typeArgsClose OPEN_PAREN expr CLOSE_PAREN #exprCast
-    //| qualifName (typeArgsOpen qualifName (COMMA qualifName)* typeArgsClose)? #exprQualifNameGeneric
-    //| VAR qualifName #exprVar
-    | member #exprMemberAccess
-    | expr OPEN_BRACKET expr CLOSE_BRACKET #exprIndex
     | OPEN_CURLY expr COLON expr (COMMA expr COLON expr)* CLOSE_CURLY #exprDictStruct
-    | OPEN_BRACKET expr commaExpr? CLOSE_BRACKET #exprArray
+    | OPEN_BRACKET exprList? CLOSE_BRACKET #exprArray
+    | LITERAL (typeArgsOpen (NSTRING|NWSTRING) typeArgsClose)? OPEN_PAREN expr CLOSE_PAREN #exprLiteralOper
+    | BASE #exprBase
+    | expr OPEN_BRACKET expr CLOSE_BRACKET #exprIndex
     | MINUS expr #exprNeg
     | BNOT expr #exprBNot
     | left=expr MUL right=expr #exprMul
@@ -119,8 +112,6 @@ expr: OPEN_PAREN expr CLOSE_PAREN #exprParen
     | left=expr NOT_EQ right=expr #exprNotEq
     | expr AND expr #exprAnd
     | expr OR expr #exprOr
-    | LITERAL (typeArgsOpen (NSTRING|NWSTRING) typeArgsClose)? OPEN_PAREN expr CLOSE_PAREN #exprLiteralOper
-    | BASE #exprBase
     ;
 
 literal: NULL   #literalNull

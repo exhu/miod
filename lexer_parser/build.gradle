@@ -47,7 +47,7 @@ task(grun, type: JavaExec, dependsOn: ':lexer_parser:compileJava') {
     args 'org.miod.parser.generated.Miod',
         'compUnit',
         '-diagnostics',
-        '-SLL',
+        //'-SLL',
         //'-trace',
         //'-tokens',
         '-gui',
