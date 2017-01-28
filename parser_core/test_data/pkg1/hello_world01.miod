@@ -24,6 +24,7 @@ extern proc printf(fmt: cstring);
 
 proc main()
     printf(cstr(hi));
+    printf(cstr(hi)()(a))
     # printf(cstr(hi)(), d(a)(b)) # cstr returns func, d(a) returns func
 end
 

@@ -4,22 +4,27 @@ options {tokenVocab = TestLexer;}
 
 compUnit: statement+;
 
+/*
 bareName: ID | SETTER | GETTER;
 qualifName: NAMESPACE_SEP? qualifNameTxt;
 qualifNameOnly: NAMESPACE_SEP? qualifNameOnlyTxt;
 
 qualifNameTxt: bareName (NAMESPACE_SEP bareName)*;
 qualifNameOnlyTxt: bareName (NAMESPACE_SEP bareName)+;
+*/
 
-commaExpr: (COMMA expr)+;
+exprList: expr (COMMA expr)*;
 
-exprList: expr commaExpr?;
+primary
+    : BASE
+    | literal
+    | ID
+    | OPEN_PAREN expr CLOSE_PAREN
+    ;
 
-expr: OPEN_PAREN expr CLOSE_PAREN #exprParen
-    | expr OPEN_PAREN exprList? CLOSE_PAREN #exprCall
-    | literal #exprLiteral
-    | qualifName #exprQualifName
-    | BASE #exprBase
+expr
+    : primary
+    | expr OPEN_PAREN exprList? CLOSE_PAREN
     ;
 
 statement: expr;

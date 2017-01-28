@@ -72,22 +72,27 @@ typeArgsClose: GREATER;
 
 exprList: expr (COMMA expr)*;
 
-call: OPEN_PAREN exprList? CLOSE_PAREN;
-memberOrCall: qualifName
-    | qualifName (MEMBER_ACCESS memberOrCall)+
-    | qualifName call+;
-
 // Recursive rules are to be here.
 // If current scope is global then fails for procedure/method calls and property access
 
-expr: 
-    VAR? memberOrCall #exprMemberOrCall
-    | OPEN_PAREN expr CLOSE_PAREN #exprParen
-    | literal #exprLiteral
+dotMember: qualifName | literal;
+
+primary: 
+    literal
+    | qualifName
+    ;
+
+call
+    : OPEN_PAREN exprList? CLOSE_PAREN;
+
+expr: primary call*
+    | OPEN_PAREN expr CLOSE_PAREN
+    | OPEN_BRACKET exprList? CLOSE_BRACKET
+ /*
+    | VAR? expr #exprVar
     | NEW OPEN_PAREN typeSpec CLOSE_PAREN #exprNew
     | CAST typeArgsOpen typeSpec typeArgsClose OPEN_PAREN expr CLOSE_PAREN #exprCast
     | OPEN_CURLY expr COLON expr (COMMA expr COLON expr)* CLOSE_CURLY #exprDictStruct
-    | OPEN_BRACKET exprList? CLOSE_BRACKET #exprArray
     | LITERAL (typeArgsOpen (NSTRING|NWSTRING) typeArgsClose)? OPEN_PAREN expr CLOSE_PAREN #exprLiteralOper
     | BASE #exprBase
     | expr OPEN_BRACKET expr CLOSE_BRACKET #exprIndex
@@ -112,6 +117,7 @@ expr:
     | left=expr NOT_EQ right=expr #exprNotEq
     | expr AND expr #exprAnd
     | expr OR expr #exprOr
+    */
     ;
 
 literal: NULL   #literalNull
@@ -168,6 +174,9 @@ procMethodStructDecl: annotations? (EXTERN|INLINE)?
 
 interfaceProcOrMethodDecl: procMethodStructDecl;
 
+statementExpr
+    : qualifName OPEN_PAREN exprList? CLOSE_PAREN;
+
 statement: RETURN expr? #statementReturn
     | constDecl #statementConstDecl
     | varDecl #statementVarDecl
@@ -183,7 +192,7 @@ statement: RETURN expr? #statementReturn
     | ifStatement #statementIf
     | WITH qualifName (COMMA qualifName)* statement+ END_WITH #statementWith
     | SEMICOLON #emptyStatement
-    | expr #exprStatement
+    | statementExpr #statExpr
     ;
 
 staticIf:

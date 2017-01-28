@@ -47,8 +47,8 @@ task(grun, type: JavaExec, dependsOn: ':test_expr:compileJava') {
     main 'org.antlr.v4.gui.TestRig'
     args 'org.miod.test.generated.Test',
         'compUnit',
-        '-gui',
-        file('test_data/pkg1/hello_world01.miod')
+        '-diagnostics',
+        file('test_data/pkg1/t1.miod')
 
     doFirst {
       println commandLine
